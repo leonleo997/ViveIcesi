@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+    >
+
+    <group android:checkableBehavior="single"
+        >
+        <item
+            android:id="@+id/nav_deporte"
+            android:icon="@mipmap/deporte"
+            android:title="Deporte y actividad física"
+            />
+        <item
+            android:id="@+id/nav_cultura"
+            android:icon="@mipmap/cultura"
+            android:title="Cultura" />
+        <item
+            android:id="@+id/nav_salud"
+            android:icon="@mipmap/salud"
+            android:title="Desarollo humano y salud" />
+        <item
+            android:id="@+id/nav_psu"
+            android:icon="@mipmap/psu"
+            android:title="PSU" />
+        <item
+            android:id="@+id/nav_calendario"
+            android:icon="@mipmap/calendario"
+            android:title="Calendario" />
+        <item
+            android:id="@+id/nav_informacion"
+            android:icon="@mipmap/informacion"
+            android:title="Información" />
+    </group>
+
+    <item android:title="Usuario">
+        <menu>
+            <item
+                android:id="@+id/nav_perfil"
+                android:icon="@mipmap/perfil"
+                android:title="Editar perfil" />
+            <item
+                android:id="@+id/nav_contrasenha"
+                android:icon="@mipmap/contrasenha"
+                android:title="Cambiar contraseña" />
+
+            <item
+                android:id="@+id/nav_sesion"
+                android:icon="@mipmap/sesion"
+                android:title="Cerrar sesión" />
+        </menu>
+    </item>
+
+</menu>

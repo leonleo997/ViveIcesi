@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "819083200855",
+    "firebase_url": "https://bienestar-actividades.firebaseio.com",
+    "project_id": "bienestar-actividades",
+    "storage_bucket": "bienestar-actividades.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819083200855:android:c2b173ba19fe4b26",
+        "android_client_info": {
+          "package_name": "co.edu.icesi.www.bienestaractividades"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819083200855-qv2n3vc8rd1pi62j1vnlthttkohg13b8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB-6OftaoSp1YHb2NhMU5UsCT8VVa4pVs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819083200855:android:dc3f26fe69190299",
+        "android_client_info": {
+          "package_name": "co.highusoft.viveicesi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819083200855-n5kf325joh9guc7fncir6va957h5567q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.highusoft.viveicesi",
+            "certificate_hash": "a9ec1747fbc4aeefb730a2074487e83aedd7e91b"
+          }
+        },
+        {
+          "client_id": "819083200855-qv2n3vc8rd1pi62j1vnlthttkohg13b8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB-6OftaoSp1YHb2NhMU5UsCT8VVa4pVs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819083200855-qv2n3vc8rd1pi62j1vnlthttkohg13b8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

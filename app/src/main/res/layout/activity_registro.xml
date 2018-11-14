@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="40dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:text="Regístrate"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre Completo"
+            android:textColor="@color/blue_sky"
+            android:textColorHint="@color/blue_sky"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/et_usr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Usuario"
+            android:textColor="@color/blue_sky"
+            android:textColorHint="@color/blue_sky"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Correo Electrónico"
+            android:textColor="@color/blue_sky"
+            android:textColorHint="@color/blue_sky"
+            android:textSize="20sp" />
+
+
+        <EditText
+            android:id="@+id/et_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:textColor="@color/blue_sky"
+            android:textColorHint="@color/blue_sky"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/et_con_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirmar Contraseña"
+            android:inputType="textPassword"
+            android:textColor="@color/blue_sky"
+            android:textColorHint="@color/blue_sky"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/rg_tipo_usuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_estudiante"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estudiante"
+                    android:textColor="@color/blue_sky"
+                    android:textSize="20sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_trabajador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Trabajador"
+                    android:textColor="@color/blue_sky"
+                    android:textSize="20sp" />
+            </RadioGroup>
+
+
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/sp_tipo_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></Spinner>
+
+        <CheckBox
+            android:id="@+id/cb_terminos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Acepto los términos y conddicciones"
+            android:textSize="10dp" />
+
+        <Button
+            android:id="@+id/btn_registrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_shape_green"
+            android:text="Registrar"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>
