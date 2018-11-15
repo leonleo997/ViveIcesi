@@ -23,12 +23,13 @@ import co.highusoft.viveicesi.FragActividad;
 import co.highusoft.viveicesi.FragCalendario;
 import co.highusoft.viveicesi.FragContrasenia;
 import co.highusoft.viveicesi.FragItems;
+import co.highusoft.viveicesi.FragMostrarEvento;
 import co.highusoft.viveicesi.FragPerfil;
 import co.highusoft.viveicesi.R;
 
 public class MenuBienestar extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragPerfil.OnFragmentInteractionListener, FragItems.OnFragmentInteractionListener, FragmentoInfo.OnFragmentInteractionListener,
-        FragCalendario.OnFragmentInteractionListener, AgregarEvento.OnFragmentInteractionListener {
+        FragCalendario.OnFragmentInteractionListener, AgregarEvento.OnFragmentInteractionListener, FragMostrarEvento.OnFragmentInteractionListener{
 
 
     private FragCalendario fragCalendario;
@@ -38,6 +39,8 @@ public class MenuBienestar extends AppCompatActivity
     private FragContrasenia fragContrasenia;
     private AgregarEvento fragAgregarEvento;
     private FragActividad fragActividad ;
+    private FragMostrarEvento fragMostrarEventos ;
+
 
     FirebaseAuth auth;
 
@@ -58,6 +61,7 @@ public class MenuBienestar extends AppCompatActivity
         fragItems = new FragItems();
         fragAgregarEvento= new AgregarEvento();
         fragActividad = new FragActividad();
+        fragMostrarEventos= new FragMostrarEvento();
 
         //
 
@@ -156,7 +160,7 @@ public class MenuBienestar extends AppCompatActivity
         } else if (id == R.id.nav_informacion) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragmentoInfo).commit();
         } else if (id == R.id.nav_contrasenha) {
-            fragmentTransaction.replace(R.id.contenedorFragments, fragContrasenia).commit();
+            fragmentTransaction.replace(R.id.contenedorFragments, fragMostrarEventos).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
