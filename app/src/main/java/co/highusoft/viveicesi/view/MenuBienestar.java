@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import co.highusoft.viveicesi.FragActividad;
 import co.highusoft.viveicesi.FragCalendario;
 import co.highusoft.viveicesi.FragContrasenia;
 import co.highusoft.viveicesi.FragItems;
@@ -24,12 +25,15 @@ import co.highusoft.viveicesi.FragPerfil;
 import co.highusoft.viveicesi.R;
 
 public class MenuBienestar extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragPerfil.OnFragmentInteractionListener, FragItems.OnFragmentInteractionListener, FragmentoInfo.OnFragmentInteractionListener, FragCalendario.OnFragmentInteractionListener {
-    FragCalendario fragCalendario;
-    FragmentoInfo fragmentoInfo;
-    FragPerfil fragPerfil;
-    FragItems fragItems;
-    FragContrasenia fragContrasenia;
+        implements NavigationView.OnNavigationItemSelectedListener, FragPerfil.OnFragmentInteractionListener, FragItems.OnFragmentInteractionListener, FragmentoInfo.OnFragmentInteractionListener,
+        FragCalendario.OnFragmentInteractionListener, AgregarEvento.OnFragmentInteractionListener {
+    private FragCalendario fragCalendario;
+    private FragmentoInfo fragmentoInfo;
+    private FragPerfil fragPerfil;
+    private FragItems fragItems;
+    private FragContrasenia fragContrasenia;
+    private AgregarEvento fragAgregarEvento;
+    private FragActividad fragActividad ;
     String FRAGMENT_ITEMS = "items";
     String FRAGMENT_INFORMACION = "informacion";
     String FRAGMENT_CALENDARIO = "calendario";
@@ -45,7 +49,8 @@ public class MenuBienestar extends AppCompatActivity
         fragmentoInfo = new FragmentoInfo();
         fragPerfil = new FragPerfil();
         fragItems = new FragItems();
-
+        fragAgregarEvento= new AgregarEvento();
+        fragActividad = new FragActividad();
 
         //
 
@@ -142,7 +147,10 @@ public class MenuBienestar extends AppCompatActivity
         } else if (id == R.id.nav_cultura) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragItems).commit();
         } else if (id == R.id.nav_calendario) {
-            fragmentTransaction.replace(R.id.contenedorFragments, fragCalendario).commit();
+
+            //fragmentTransaction.replace(R.id.contenedorFragments, fragCalendario).commit();
+
+            fragmentTransaction.replace(R.id.contenedorFragments, fragActividad).commit();
         } else if (id == R.id.nav_sesion) {
             Intent i = new Intent(MenuBienestar.this, Login.class);
             startActivity(i);
@@ -155,7 +163,8 @@ public class MenuBienestar extends AppCompatActivity
 
 
         } else if (id == R.id.nav_perfil) {
-            fragmentTransaction.replace(R.id.contenedorFragments, fragPerfil).commit();
+            fragmentTransaction.replace(R.id.contenedorFragments,fragAgregarEvento).commit();
+//            fragmentTransaction.replace(R.id.contenedorFragments, fragPerfil).commit();
         } else if (id == R.id.nav_informacion) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragmentoInfo).commit();
         } else if (id == R.id.nav_contrasenha) {

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.AgregarEvento">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="40dp">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:text="Agregar Actividad"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre Actividad"
+                android:textColor="@color/blue_sky"
+                android:textColorHint="@color/blue_sky"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/et_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descripción"
+                android:textColor="@color/blue_sky"
+                android:textColorHint="@color/blue_sky"
+                android:textSize="20sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="30dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha:"
+                        android:textColor="@color/blue_sky"
+                        android:textColorHint="@color/blue_sky"
+                        android:textSize="20sp"
+                        android:layout_marginRight="20sp"/>
+                    <TextView
+                        android:id="@+id/etDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="AAAA/MM/DD"
+                        android:gravity="center"
+                        android:textColorHint="@color/blue_sky"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hora:"
+                        android:textColor="@color/blue_sky"
+                        android:textColorHint="@color/blue_sky"
+                        android:textSize="20sp"
+                        android:layout_marginRight="20sp"/>
+                    <TextView
+                        android:id="@+id/etHour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="HH:MM"
+                        android:gravity="center"
+                        android:textColorHint="@color/blue_sky"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <Spinner
+                android:id="@+id/sp_tipo_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ></Spinner>
+
+
+            <Button
+                android:layout_marginTop="50dp"
+                android:id="@+id/btn_guardar_evento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_shape_green"
+                android:text="Guardar Evento"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

@@ -29,7 +29,6 @@ public class FragmentoCalendario extends FragmentActivity  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_fragmento_calendario);
-
         calendarView=findViewById(R.id.cv_calendar);
         tv_mes=findViewById(R.id.tv_mes);
         lv_agenda=findViewById(R.id.lv_agenda);

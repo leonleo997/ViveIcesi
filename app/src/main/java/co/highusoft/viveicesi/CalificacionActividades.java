@@ -3,36 +3,25 @@ package co.highusoft.viveicesi;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragCalendario.OnFragmentInteractionListener} interface
+ * {@link CalificacionActividades.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragCalendario#newInstance} factory method to
+ * Use the {@link CalificacionActividades#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragCalendario extends Fragment {
+public class CalificacionActividades extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private CalendarView calendarView;
-    private TextView tv_mes;
-    private ListView lv_agenda;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -40,7 +29,7 @@ public class FragCalendario extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FragCalendario() {
+    public CalificacionActividades() {
         // Required empty public constructor
     }
 
@@ -50,11 +39,11 @@ public class FragCalendario extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragCalendario.
+     * @return A new instance of fragment CalificacionActividades.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragCalendario newInstance(String param1, String param2) {
-        FragCalendario fragment = new FragCalendario();
+    public static CalificacionActividades newInstance(String param1, String param2) {
+        CalificacionActividades fragment = new CalificacionActividades();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -74,22 +63,8 @@ public class FragCalendario extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View inflate =inflater.inflate(R.layout.fragment_frag_calendario,null);
-
-        calendarView=inflate.findViewById(R.id.cv_calendar);
-        tv_mes=inflate.findViewById(R.id.tv_mes);
-        lv_agenda=inflate.findViewById(R.id.lv_agenda);
-
-
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-
-            }
-        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_calendario, container, false);
+        return inflater.inflate(R.layout.fragment_calificacion_actividades, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CalificacionActividades">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+android:gravity="center_horizontal"
+      >
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="100dp"
+          android:text="NOMBRE DE ACTIVIDAD"
+          android:textSize="35dp"
+          android:textColor="#0109ea"
+          />
+
+      <TextView
+          android:layout_marginTop="15dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="CALIFICACIÓN CLASE"
+          />
+      <RatingBar
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:numStars="5"
+          android:stepSize="1"
+          android:rating="3"
+          android:id="@+id/actividad_Calificacion_clase"/>
+
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="CALIFICACIÓN PROFESOR"
+          />
+
+      <RatingBar
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:numStars="5"
+          android:stepSize="1"
+          android:rating="3"
+          android:id="@+id/actividad_Calificacion_profesor"/>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="COMENTARIOS"
+          />
+      <EditText
+          android:text=""
+          android:layout_width="300dp"
+          android:layout_height="100dp"
+          />
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Calificar"
+    android:id="@+id/bt_calificar_actividad"/>
+
+
+  </LinearLayout>
+</FrameLayout>
