@@ -1,17 +1,17 @@
-package co.highusoft.viveicesi.view;
+package co.highusoft.viveicesi;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
-
-import co.highusoft.viveicesi.R;
-//import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class PasswordLogin extends AppCompatActivity {
 
@@ -33,8 +33,18 @@ public class PasswordLogin extends AppCompatActivity {
         btn_sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  actionCodeSettings=new ActionCodeSettings();
-                //auth.sendSignInLinkToEmail();
+                final String email=et_email.getText().toString();
+                auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(PasswordLogin.this, "El correo se envió a "+email, Toast.LENGTH_LONG).show();
+                            finish();
+                        }else{
+                            Toast.makeText(PasswordLogin.this, "Ocurrió un error", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }
         });
 

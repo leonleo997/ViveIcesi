@@ -48,7 +48,26 @@
                 android:id="@+id/nav_sesion"
                 android:icon="@mipmap/sesion"
                 android:title="Cerrar sesión" />
+
         </menu>
     </item>
 
+
+    <item android:title="Otras funcionalidades">
+        <menu>
+            <item
+                android:id="@+id/add_event"
+                android:icon="@mipmap/perfil"
+                android:title="Agregar Evento" />
+            <item
+                android:id="@+id/cuestionario"
+                android:icon="@mipmap/sesion"
+                android:title="Encuesta" />
+            <item
+                android:id="@+id/actividad_222"
+                android:icon="@mipmap/sesion"
+                android:title="Actividad" />
+
+        </menu>
+    </item>
 </menu>

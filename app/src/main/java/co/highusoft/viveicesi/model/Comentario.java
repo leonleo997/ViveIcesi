@@ -2,7 +2,7 @@ package co.highusoft.viveicesi.model;
 
 import java.util.HashMap;
 
-public class Comentario {
+public class    Comentario {
 
     private String id;
     private String contenido;

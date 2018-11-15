@@ -19,10 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.Home"></activity>
+        <activity android:name=".view.Home" />
         <activity android:name=".view.Registro" />
         <activity android:name=".view.Login" />
-        <activity android:name=".view.PasswordLogin" />
         <activity
             android:name=".view.MenuBienestar"
             android:label="@string/title_activity_menu_bienestar"
@@ -33,8 +32,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ContenedoraFragments"></activity>
-        <activity android:name=".FragMostrarEventos"></activity>
+        <activity android:name=".view.ContenedoraFragments" />
+        <activity android:name=".FragMostrarEventos" />
+        <activity android:name=".PasswordLogin"></activity>
     </application>
 
 </manifest>

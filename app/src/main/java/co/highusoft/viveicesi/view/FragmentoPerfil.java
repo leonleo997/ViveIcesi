@@ -38,8 +38,8 @@ public class FragmentoPerfil extends FragmentActivity {
         btn_contrasenha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(FragmentoPerfil.this, PasswordLogin.class);
-                startActivity(i);
+//                Intent i = new Intent(FragmentoPerfil.this, PasswordLogin.class);
+//                startActivity(i);
                 finish();
 
             }
