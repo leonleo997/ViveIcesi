@@ -3,13 +3,24 @@ package co.highusoft.viveicesi;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import co.highusoft.viveicesi.adapters.Adaptador;
+import co.highusoft.viveicesi.model.Comentario;
+import co.highusoft.viveicesi.model.Evento;
 
 
 /**
@@ -66,6 +77,7 @@ public class FragMostrarEvento extends Fragment {
 
     private Adaptador adaptador;
     private ListView view_eventos;
+    private FirebaseDatabase db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,6 +88,36 @@ public class FragMostrarEvento extends Fragment {
         adaptador=new Adaptador(view.getContext());
         view_eventos.setAdapter(adaptador);
 
+        db=FirebaseDatabase.getInstance();
+        DatabaseReference eventos_ref = db.getReference().child("Eventos");
+        eventos_ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Evento evento=dataSnapshot.getValue(Evento.class);
+                adaptador.addEvent(evento);
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         return view;
     }

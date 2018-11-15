@@ -94,7 +94,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Comentario comentario=dataSnapshot.getValue(Comentario.class);
-                adaptador.addComment(comentario);
+//                adaptador.addComment(comentario);
             }
 
             @Override

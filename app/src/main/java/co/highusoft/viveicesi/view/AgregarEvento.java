@@ -125,10 +125,19 @@ public class AgregarEvento extends Fragment {
 
                 EditText nombreEvento = view.findViewById(R.id.et_name);
                 EditText descripcion = view.findViewById(R.id.et_descripcion);
+                EditText lugar = view.findViewById(R.id.et_lugar);
                 String area = sp_tipo_area.getSelectedItem().toString();
-                Evento evento = new Evento(nombreEvento.getText().toString(), area
-                        , descripcion.getText().toString(), mYear, mMonth, mDay, hour, min);
+                Evento evento = new Evento();
 
+                evento.setNombre(nombreEvento.getText().toString());
+                evento.setArea(area);
+                evento.setLugar(lugar.getText().toString());
+                evento.setDescripcion(descripcion.getText().toString());
+                evento.setHour(hour);
+                evento.setmYear(mYear);
+                evento.setmMonth(mMonth);
+                evento.setmDay(mDay);
+                evento.setMin(min);
                 dbr.setValue(evento);
             }
         });

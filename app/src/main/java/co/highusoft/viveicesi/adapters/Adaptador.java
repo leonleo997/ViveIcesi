@@ -1,6 +1,7 @@
 package co.highusoft.viveicesi.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.model.Comentario;
+import co.highusoft.viveicesi.model.Evento;
 
 /**
  * Created by Domiciano on 01/05/2018.
@@ -22,22 +24,22 @@ import co.highusoft.viveicesi.model.Comentario;
     DEBE TAMBIÉN USAR 
 */
 public class Adaptador extends BaseAdapter {
-    ArrayList<Comentario> comentarios;
+    ArrayList<Evento> arreglo;
     Context context;
 
     public Adaptador(Context context) {
         this.context = context;
-        comentarios = new ArrayList<Comentario>();
+        arreglo = new ArrayList<Evento>();
     }
 
     @Override
     public int getCount() {
-        return comentarios.size();
+        return arreglo.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return comentarios.get(position);
+        return arreglo.get(position);
     }
 
     @Override
@@ -50,16 +52,32 @@ public class Adaptador extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View renglon = inflater.inflate(R.layout.renglon, null);
-        TextView tv_comentario =renglon.findViewById(R.id.tv_comentario);
-        Button btn_like=renglon.findViewById(R.id.like_btn);
+        Evento evento = arreglo.get(position);
 
-        tv_comentario.setText(comentarios.get(position).getContenido());
+        TextView titulo=renglon.findViewById(R.id.tv_titulo);
+        TextView area=renglon.findViewById(R.id.tv_area);
+        TextView fecha=renglon.findViewById(R.id.tv_fecha);
+        TextView lugar=renglon.findViewById(R.id.tv_lugar);
+        TextView descripción=renglon.findViewById(R.id.tv_descripcion);
+
+        Log.e(">>",evento.getNombre());
+        titulo.setText(evento.getNombre());
+        area.setText(evento.getArea());
+        fecha.setText(evento.getmDay()+"/"+evento.getmMonth()+"/"+evento.getmYear()+"  "+evento.getHour()+":"+evento.getMin());
+        lugar.setText(evento.getLugar());
+        descripción.setText(evento.getDescripcion());
+
 
         return renglon;
     }
 
-    public void addComment(Comentario comentario){
-        comentarios.add(comentario);
+//    public void addComment(Comentario comentario){
+//        comentarios.add(comentario);
+//        notifyDataSetChanged();
+//    }
+
+    public void addEvent(Evento evento) {
+        arreglo.add(evento);
         notifyDataSetChanged();
     }
 }

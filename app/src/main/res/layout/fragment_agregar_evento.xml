@@ -35,16 +35,6 @@
                 android:textColorHint="@color/blue_sky"
                 android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/et_descripcion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Descripción"
-                android:textColor="@color/blue_sky"
-                android:textColorHint="@color/blue_sky"
-                android:textSize="20sp" />
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,6 +87,14 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <EditText
+                android:id="@+id/et_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descripción"
+                android:textColor="@color/blue_sky"
+                android:textColorHint="@color/blue_sky"
+                android:textSize="20sp" />
 
             <Spinner
                 android:id="@+id/sp_tipo_area"
@@ -104,6 +102,14 @@
                 android:layout_height="wrap_content"
                 ></Spinner>
 
+            <EditText
+                android:id="@+id/et_lugar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Lugar actividad"
+                android:textColor="@color/blue_sky"
+                android:textColorHint="@color/blue_sky"
+                android:textSize="20sp" />
 
             <Button
                 android:layout_marginTop="50dp"

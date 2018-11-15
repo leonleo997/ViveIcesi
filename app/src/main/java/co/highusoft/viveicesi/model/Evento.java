@@ -3,6 +3,7 @@ package co.highusoft.viveicesi.model;
 public class Evento {
     private String nombre;
     private String area;
+    private String lugar;
     private String descripcion;
 
     public int mYear;
@@ -12,16 +13,7 @@ public class Evento {
     public int hour;
     public int min;
 
-    public Evento(String nombre, String area, String descripcion, int mYear, int mMonth, int mDay, int hour, int min) {
-
-        this.nombre = nombre;
-        this.area = area;
-        this.descripcion = descripcion;
-        this.mYear = mYear;
-        this.mMonth = mMonth;
-        this.mDay = mDay;
-        this.hour = hour;
-        this.min = min;
+    public Evento() {
     }
 
     public String getNombre() {
@@ -40,6 +32,14 @@ public class Evento {
         this.area = area;
     }
 
+    public String getLugar() {
+        return lugar;
+    }
+
+    public void setLugar(String lugar) {
+        this.lugar = lugar;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -49,7 +49,6 @@ public class Evento {
     }
 
     public int getmYear() {
-
         return mYear;
     }
 
