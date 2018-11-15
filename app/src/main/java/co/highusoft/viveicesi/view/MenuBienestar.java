@@ -17,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import co.highusoft.viveicesi.FragActividad;
 import co.highusoft.viveicesi.FragCalendario;
 import co.highusoft.viveicesi.FragContrasenia;
@@ -27,6 +29,8 @@ import co.highusoft.viveicesi.R;
 public class MenuBienestar extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragPerfil.OnFragmentInteractionListener, FragItems.OnFragmentInteractionListener, FragmentoInfo.OnFragmentInteractionListener,
         FragCalendario.OnFragmentInteractionListener, AgregarEvento.OnFragmentInteractionListener {
+
+
     private FragCalendario fragCalendario;
     private FragmentoInfo fragmentoInfo;
     private FragPerfil fragPerfil;
@@ -34,6 +38,9 @@ public class MenuBienestar extends AppCompatActivity
     private FragContrasenia fragContrasenia;
     private AgregarEvento fragAgregarEvento;
     private FragActividad fragActividad ;
+
+    FirebaseAuth auth;
+
     String FRAGMENT_ITEMS = "items";
     String FRAGMENT_INFORMACION = "informacion";
     String FRAGMENT_CALENDARIO = "calendario";
@@ -43,7 +50,7 @@ public class MenuBienestar extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        auth=FirebaseAuth.getInstance();
         //
         fragCalendario = new FragCalendario();
         fragmentoInfo = new FragmentoInfo();
@@ -116,26 +123,6 @@ public class MenuBienestar extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-
-//        switch (fragmentSolicitado) {
-//            case "calendario":
-//                fragmentTransaction.replace(R.id.contenedorFragments, fragCalendario);
-//                break;
-//            case "informacion":
-//                fragmentTransaction.replace(R.id.contenedorFragments, fragmentoInfo);
-//                break;
-//            case "items":
-//                fragmentTransaction.replace(R.id.contenedorFragments, fragItems);
-//                break;
-//            case "perfil":
-//                fragmentTransaction.replace(R.id.contenedorFragments, fragPerfil);
-//                break;
-//        }
-
-        //fragmentTransaction.commit();
-
-
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -152,6 +139,7 @@ public class MenuBienestar extends AppCompatActivity
 
             fragmentTransaction.replace(R.id.contenedorFragments, fragActividad).commit();
         } else if (id == R.id.nav_sesion) {
+            auth.signOut();
             Intent i = new Intent(MenuBienestar.this, Login.class);
             startActivity(i);
             finish();

@@ -63,7 +63,7 @@ public class Login extends AppCompatActivity {
                     //startActivity(new Intent(Login.this, singin_activity.class));
                 } else {
                     Toast.makeText(getApplicationContext(), "Succed to connect", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(Login.this, Home.class);
+                    Intent i = new Intent(Login.this, MenuBienestar.class);
                     startActivity(i);
                     finish();
                 }
@@ -136,7 +136,7 @@ public class Login extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(Login.this, "Inicio de sesión exitoso: ", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(Login.this, Home.class);
+                    Intent i = new Intent(Login.this, MenuBienestar.class);
                     startActivity(i);
                     finish();
                 } else {
