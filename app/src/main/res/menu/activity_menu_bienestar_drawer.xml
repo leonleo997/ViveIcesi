@@ -57,16 +57,20 @@
         <menu>
             <item
                 android:id="@+id/add_event"
-                android:icon="@mipmap/perfil"
+                android:icon="@mipmap/agregar"
                 android:title="Agregar Evento" />
             <item
                 android:id="@+id/cuestionario"
-                android:icon="@mipmap/sesion"
+                android:icon="@mipmap/encuesta"
                 android:title="Encuesta" />
             <item
                 android:id="@+id/actividad_222"
-                android:icon="@mipmap/sesion"
+                android:icon="@mipmap/actividad"
                 android:title="Actividad" />
+            <item
+                android:id="@+id/escaner"
+                android:icon="@mipmap/actividad"
+                android:title="Escaner asistencia" />
 
         </menu>
     </item>
