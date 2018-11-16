@@ -44,6 +44,7 @@ public class MenuBienestar extends AppCompatActivity
 
     private FragMostrarEvento fragMostrarEventos ;
 
+    private FloatingActionButton fb_home;
 
     FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -92,12 +93,15 @@ public class MenuBienestar extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fb_home = (FloatingActionButton) findViewById(R.id.fab);
+        fb_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.contenedorFragments, fragMostrarEventos).commit();
+                fb_home.setVisibility(View.GONE);
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
 
@@ -112,6 +116,7 @@ public class MenuBienestar extends AppCompatActivity
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contenedorFragments, fragMostrarEventos).commit();
+        fb_home.setVisibility(View.GONE);
 
     }
 
@@ -160,6 +165,7 @@ public class MenuBienestar extends AppCompatActivity
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
+        fb_home.setVisibility(View.VISIBLE);
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -183,11 +189,8 @@ public class MenuBienestar extends AppCompatActivity
             finish();
         } else if (id == R.id.nav_salud) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragItems).commit();
-
         } else if (id == R.id.nav_psu) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragItems).commit();
-
-
         } else if (id == R.id.nav_perfil) {
            // fragmentTransaction.replace(R.id.contenedorFragments,fragAgregarEvento).commit();
             fragmentTransaction.replace(R.id.contenedorFragments, fragPerfil).commit();

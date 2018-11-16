@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import co.highusoft.viveicesi.adapters.Adaptador;
 import co.highusoft.viveicesi.model.Comentario;
 import co.highusoft.viveicesi.model.Evento;
+import co.highusoft.viveicesi.view.MenuBienestar;
 
 
 /**
@@ -88,6 +91,7 @@ public class FragMostrarEvento extends Fragment {
         adaptador=new Adaptador(view.getContext());
         view_eventos.setAdapter(adaptador);
 
+
         db=FirebaseDatabase.getInstance();
         DatabaseReference eventos_ref = db.getReference().child("Eventos");
         eventos_ref.addChildEventListener(new ChildEventListener() {
@@ -119,10 +123,18 @@ public class FragMostrarEvento extends Fragment {
             }
         });
 
+
+//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
