@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -21,16 +20,17 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 import co.highusoft.viveicesi.CalificacionActividades;
-import co.highusoft.viveicesi.FragActividad;
-import co.highusoft.viveicesi.FragCalendario;
-import co.highusoft.viveicesi.FragItems;
-import co.highusoft.viveicesi.FragMostrarEvento;
-import co.highusoft.viveicesi.FragPerfil;
+import co.highusoft.viveicesi.view.fragments.FragActividad;
+import co.highusoft.viveicesi.view.fragments.FragCalendario;
+import co.highusoft.viveicesi.view.fragments.FragItems;
+import co.highusoft.viveicesi.view.fragments.FragMostrarEvento;
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.view.fragments.FragCambiarContrasenia;
+import co.highusoft.viveicesi.view.fragments.FragPerfil;
 
 public class MenuBienestar extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragPerfil.OnFragmentInteractionListener, FragItems.OnFragmentInteractionListener, FragmentoInfo.OnFragmentInteractionListener,
-        FragCalendario.OnFragmentInteractionListener, AgregarEvento.OnFragmentInteractionListener, FragMostrarEvento.OnFragmentInteractionListener, FragCambiarContrasenia.OnFragmentInteractionListener,FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener{
+        FragCalendario.OnFragmentInteractionListener, AgregarEvento.OnFragmentInteractionListener, FragMostrarEvento.OnFragmentInteractionListener, FragCambiarContrasenia.OnFragmentInteractionListener, FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener {
 
 
     private FragCalendario fragCalendario;
@@ -39,10 +39,10 @@ public class MenuBienestar extends AppCompatActivity
     private FragItems fragItems;
     private FragCambiarContrasenia fragCambiarContrasenia;
     private AgregarEvento fragAgregarEvento;
-    private FragActividad fragActividad ;
+    private FragActividad fragActividad;
     private CalificacionActividades calificacionActividades;
 
-    private FragMostrarEvento fragMostrarEventos ;
+    private FragMostrarEvento fragMostrarEventos;
 
     private FloatingActionButton fb_home;
 
@@ -58,18 +58,18 @@ public class MenuBienestar extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        auth=FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         //
         fragCalendario = new FragCalendario();
         fragmentoInfo = new FragmentoInfo();
         fragPerfil = new FragPerfil();
         fragItems = new FragItems();
-        fragAgregarEvento= new AgregarEvento();
+        fragAgregarEvento = new AgregarEvento();
         fragActividad = new FragActividad();
-        fragMostrarEventos= new FragMostrarEvento();
-        fragCambiarContrasenia= new FragCambiarContrasenia();
+        fragMostrarEventos = new FragMostrarEvento();
+        fragCambiarContrasenia = new FragCambiarContrasenia();
         fragActividad = new FragActividad();
-        calificacionActividades= new CalificacionActividades();
+        calificacionActividades = new CalificacionActividades();
 
         //
 
@@ -171,17 +171,12 @@ public class MenuBienestar extends AppCompatActivity
 
 
         if (id == R.id.nav_deporte) {
-//
             fragmentTransaction.replace(R.id.contenedorFragments, fragItems).commit();
-//finish();
-
         } else if (id == R.id.nav_cultura) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragItems).commit();
         } else if (id == R.id.nav_calendario) {
 
             fragmentTransaction.replace(R.id.contenedorFragments, fragCalendario).commit();
-
-            //fragmentTransaction.replace(R.id.contenedorFragments, fragActividad).commit();
         } else if (id == R.id.nav_sesion) {
             auth.signOut();
             Intent i = new Intent(MenuBienestar.this, Login.class);
@@ -192,20 +187,18 @@ public class MenuBienestar extends AppCompatActivity
         } else if (id == R.id.nav_psu) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragItems).commit();
         } else if (id == R.id.nav_perfil) {
-           // fragmentTransaction.replace(R.id.contenedorFragments,fragAgregarEvento).commit();
             fragmentTransaction.replace(R.id.contenedorFragments, fragPerfil).commit();
         } else if (id == R.id.nav_informacion) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragmentoInfo).commit();
         } else if (id == R.id.nav_contrasenha) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragCambiarContrasenia).commit();
-        }else if (id == R.id.add_event) {
+        } else if (id == R.id.add_event) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragAgregarEvento).commit();
-        }else if (id == R.id.actividad_222) {
+        } else if (id == R.id.actividad_222) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragActividad).commit();
-        }else if (id == R.id.cuestionario) {
+        } else if (id == R.id.cuestionario) {
             fragmentTransaction.replace(R.id.contenedorFragments, calificacionActividades).commit();
         }
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

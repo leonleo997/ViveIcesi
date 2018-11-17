@@ -1,7 +1,5 @@
-package co.highusoft.viveicesi;
+package co.highusoft.viveicesi.view.fragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,31 +7,36 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.model.Usuario;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragCrearActividad.OnFragmentInteractionListener} interface
+ * {@link FragPerfil.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragCrearActividad#newInstance} factory method to
+ * Use the {@link FragPerfil#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragCrearActividad extends Fragment {
+public class FragPerfil extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Button btn_contrasenha;
+    private  Button btn_registrarAdmin;
+    private  Button btn_datos;
 
-
-    Dialog dialog;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public FragCrearActividad() {
+    public FragPerfil() {
         // Required empty public constructor
     }
 
@@ -43,11 +46,11 @@ public class FragCrearActividad extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragCrearActividad.
+     * @return A new instance of fragment FragPerfil.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragCrearActividad newInstance(String param1, String param2) {
-        FragCrearActividad fragment = new FragCrearActividad();
+    public static FragPerfil newInstance(String param1, String param2) {
+        FragPerfil fragment = new FragPerfil();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -57,8 +60,6 @@ public class FragCrearActividad extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -69,8 +70,15 @@ public class FragCrearActividad extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View viewInflate=inflater.inflate(R.layout.fragment_frag_perfil,null);
+
+        btn_contrasenha=viewInflate.findViewById(R.id.btn_contrasenha);
+        btn_datos=viewInflate.findViewById(R.id.btn_datos);
+        btn_registrarAdmin=viewInflate.findViewById(R.id.btn_registrarAdmin);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_crear_actividad, container, false);
+        return inflater.inflate(R.layout.fragment_frag_perfil, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -104,17 +112,11 @@ public class FragCrearActividad extends Fragment {
      * activity.
      * <p>
      * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/comm unicating.html"
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-
-    public void showAlertDialog(View v) {
-
-//        AlertDialog.Builder builderAlert = new AlertDialog.Builder(FragCrearActividad.this);
     }
 }

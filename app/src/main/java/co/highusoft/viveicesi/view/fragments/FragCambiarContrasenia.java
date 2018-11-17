@@ -1,32 +1,38 @@
-package co.highusoft.viveicesi;
+package co.highusoft.viveicesi.view.fragments;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.FirebaseAuth;
+
+import co.highusoft.viveicesi.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragItems.OnFragmentInteractionListener} interface
+ * {@link FragCambiarContrasenia.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragItems#newInstance} factory method to
+ * Use the {@link FragCambiarContrasenia#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragItems extends Fragment {
+public class FragCambiarContrasenia extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private TextView tv_item;
-    private ListView lv_items;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -34,7 +40,7 @@ public class FragItems extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FragItems() {
+    public FragCambiarContrasenia() {
         // Required empty public constructor
     }
 
@@ -44,11 +50,11 @@ public class FragItems extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragItems.
+     * @return A new instance of fragment FragCambiarContrasenia.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragItems newInstance(String param1, String param2) {
-        FragItems fragment = new FragItems();
+    public static FragCambiarContrasenia newInstance(String param1, String param2) {
+        FragCambiarContrasenia fragment = new FragCambiarContrasenia();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,15 +71,39 @@ public class FragItems extends Fragment {
         }
     }
 
+    private EditText et_email;
+    private ImageButton btn_sendEmail;
+    private ActionCodeSettings actionCodeSettings;
+    private FirebaseAuth auth;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View inflateeView=inflater.inflate(R.layout.fragment_frag_items,null);
-        tv_item=inflateeView.findViewById(R.id.tv_item);
-        lv_items=inflateeView.findViewById(R.id.lv_deportes);
-
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_items, container, false);
+        final View view = inflater.inflate(R.layout.fragment_frag_cambiar_contrasenia, container, false);
+        auth = FirebaseAuth.getInstance();
+
+        et_email = view.findViewById(R.id.et_emailPass);
+
+        btn_sendEmail = view.findViewById(R.id.btn_sendEmail);
+        btn_sendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String email = et_email.getText().toString();
+                auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(view.getContext(), "El correo se envió a " + email, Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(view.getContext(), "Ocurrió un error", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

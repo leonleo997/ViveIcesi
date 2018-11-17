@@ -1,4 +1,4 @@
-package co.highusoft.viveicesi.view;
+package co.highusoft.viveicesi.view.fragments;
 
 import android.content.Context;
 import android.net.Uri;

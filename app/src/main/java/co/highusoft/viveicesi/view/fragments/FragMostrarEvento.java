@@ -1,38 +1,40 @@
-package co.highusoft.viveicesi;
+package co.highusoft.viveicesi.view.fragments;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.adapters.Adaptador;
+import co.highusoft.viveicesi.model.Evento;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragCalendario.OnFragmentInteractionListener} interface
+ * {@link FragMostrarEvento.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragCalendario#newInstance} factory method to
+ * Use the {@link FragMostrarEvento#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragCalendario extends Fragment {
+public class FragMostrarEvento extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private CalendarView calendarView;
-    private TextView tv_mes;
-    private ListView lv_agenda;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -40,7 +42,7 @@ public class FragCalendario extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FragCalendario() {
+    public FragMostrarEvento() {
         // Required empty public constructor
     }
 
@@ -50,11 +52,11 @@ public class FragCalendario extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragCalendario.
+     * @return A new instance of fragment FragMostrarEvento.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragCalendario newInstance(String param1, String param2) {
-        FragCalendario fragment = new FragCalendario();
+    public static FragMostrarEvento newInstance(String param1, String param2) {
+        FragMostrarEvento fragment = new FragMostrarEvento();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,28 +73,64 @@ public class FragCalendario extends Fragment {
         }
     }
 
+
+    private Adaptador adaptador;
+    private ListView view_eventos;
+    private FirebaseDatabase db;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view= inflater.inflate(R.layout.fragment_frag_mostrar_evento, container, false);
+        view_eventos=view.findViewById(R.id.list_eventos);
+        adaptador=new Adaptador(view.getContext());
+        view_eventos.setAdapter(adaptador);
 
-        View inflate =inflater.inflate(R.layout.fragment_frag_calendario,null);
 
-        calendarView=inflate.findViewById(R.id.cv_calendar);
-        tv_mes=inflate.findViewById(R.id.tv_mes);
-        lv_agenda=inflate.findViewById(R.id.lv_agenda);
-
-
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        db=FirebaseDatabase.getInstance();
+        DatabaseReference eventos_ref = db.getReference().child("Eventos");
+        eventos_ref.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Evento evento=dataSnapshot.getValue(Evento.class);
+                adaptador.addEvent(evento);
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_calendario, container, false);
+
+
+//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

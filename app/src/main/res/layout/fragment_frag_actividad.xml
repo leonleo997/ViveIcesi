@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragActividad">
+    tools:context=".view.fragments.FragActividad">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
 
         android:orientation="vertical"
-        tools:context=".view.FragmentoItems">
+        tools:context=".view.fragments.FragmentoItems">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"

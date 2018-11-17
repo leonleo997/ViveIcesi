@@ -1,39 +1,37 @@
-package co.highusoft.viveicesi.view;
+package co.highusoft.viveicesi.view.fragments;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.ActionCodeSettings;
-import com.google.firebase.auth.FirebaseAuth;
-
-import co.highusoft.viveicesi.PasswordLogin;
+import co.highusoft.viveicesi.CalificacionActividades;
 import co.highusoft.viveicesi.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragCambiarContrasenia.OnFragmentInteractionListener} interface
+ * {@link FragActividad.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragCambiarContrasenia#newInstance} factory method to
+ * Use the {@link FragActividad#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragCambiarContrasenia extends Fragment {
+public class FragActividad extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    ImageView imagenActividad;
+    Button botonCalificarActividad;
+    TextView textViewInformacionActividad;
+    CalificacionActividades calificacionActividades;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -41,7 +39,7 @@ public class FragCambiarContrasenia extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FragCambiarContrasenia() {
+    public FragActividad() {
         // Required empty public constructor
     }
 
@@ -51,11 +49,11 @@ public class FragCambiarContrasenia extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragCambiarContrasenia.
+     * @return A new instance of fragment FragActividad.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragCambiarContrasenia newInstance(String param1, String param2) {
-        FragCambiarContrasenia fragment = new FragCambiarContrasenia();
+    public static FragActividad newInstance(String param1, String param2) {
+        FragActividad fragment = new FragActividad();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,45 +64,44 @@ public class FragCambiarContrasenia extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
-    private EditText et_email;
-    private ImageButton btn_sendEmail;
-    private ActionCodeSettings actionCodeSettings;
-    private FirebaseAuth auth;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        calificacionActividades = new CalificacionActividades();
+
+       View viewInflater = inflater.inflate(R.layout.fragment_frag_actividad, null);
+
+        imagenActividad = viewInflater.findViewById(R.id.imagen_actividad);
+        textViewInformacionActividad = viewInflater.findViewById(R.id.tv_informacion_actividad);
+        botonCalificarActividad = viewInflater.findViewById(R.id.bt_pasar_calificar_actividad);
+
+botonCalificarActividad.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+
+
+//        getActivity().getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.contenedorFragments,calificacionActividades).commit();
+
+    }
+});
+
+
+//
+
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_frag_cambiar_contrasenia, container, false);
-        auth = FirebaseAuth.getInstance();
-
-        et_email = view.findViewById(R.id.et_emailPass);
-
-        btn_sendEmail = view.findViewById(R.id.btn_sendEmail);
-        btn_sendEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String email = et_email.getText().toString();
-                auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(view.getContext(), "El correo se envió a " + email, Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(view.getContext(), "Ocurrió un error", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
-        });
-        return view;
+        return inflater.inflate(R.layout.fragment_frag_actividad, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

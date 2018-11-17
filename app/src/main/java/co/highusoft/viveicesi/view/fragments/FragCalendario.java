@@ -1,35 +1,40 @@
-package co.highusoft.viveicesi;
+package co.highusoft.viveicesi.view.fragments;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.CalendarView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import co.highusoft.viveicesi.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragActividad.OnFragmentInteractionListener} interface
+ * {@link FragCalendario.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragActividad#newInstance} factory method to
+ * Use the {@link FragCalendario#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragActividad extends Fragment {
+public class FragCalendario extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    ImageView imagenActividad;
-    Button botonCalificarActividad;
-    TextView textViewInformacionActividad;
-    CalificacionActividades calificacionActividades;
+    private CalendarView calendarView;
+    private TextView tv_mes;
+    private ListView lv_agenda;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -37,7 +42,7 @@ public class FragActividad extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FragActividad() {
+    public FragCalendario() {
         // Required empty public constructor
     }
 
@@ -47,11 +52,11 @@ public class FragActividad extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragActividad.
+     * @return A new instance of fragment FragCalendario.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragActividad newInstance(String param1, String param2) {
-        FragActividad fragment = new FragActividad();
+    public static FragCalendario newInstance(String param1, String param2) {
+        FragCalendario fragment = new FragCalendario();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,11 +67,6 @@ public class FragActividad extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -76,30 +76,22 @@ public class FragActividad extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        calificacionActividades = new CalificacionActividades();
 
-       View viewInflater = inflater.inflate(R.layout.fragment_frag_actividad, null);
+        View inflate =inflater.inflate(R.layout.fragment_frag_calendario,null);
 
-        imagenActividad = viewInflater.findViewById(R.id.imagen_actividad);
-        textViewInformacionActividad = viewInflater.findViewById(R.id.tv_informacion_actividad);
-        botonCalificarActividad = viewInflater.findViewById(R.id.bt_pasar_calificar_actividad);
-
-botonCalificarActividad.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
+        calendarView=inflate.findViewById(R.id.cv_calendar);
+        tv_mes=inflate.findViewById(R.id.tv_mes);
+        lv_agenda=inflate.findViewById(R.id.lv_agenda);
 
 
-//        getActivity().getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.contenedorFragments,calificacionActividades).commit();
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-    }
-});
-
-
-//
-
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_actividad, container, false);
+        return inflater.inflate(R.layout.fragment_frag_calendario, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
