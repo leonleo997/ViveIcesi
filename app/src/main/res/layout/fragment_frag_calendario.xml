@@ -8,7 +8,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <CalendarView
             android:layout_width="wrap_content"
@@ -17,6 +18,12 @@
             android:id="@+id/cv_calendar"
             >
         </CalendarView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Actividades del día"
+            android:textColor="#1a1a1a"
+            android:textSize="15dp"/>
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
