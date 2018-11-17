@@ -1,14 +1,15 @@
 package co.highusoft.viveicesi.view;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
-import co.highusoft.viveicesi.FragCalendario;
-import co.highusoft.viveicesi.FragItems;
-import co.highusoft.viveicesi.FragPerfil;
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.view.fragments.FragCalendario;
+import co.highusoft.viveicesi.view.fragments.FragItems;
+import co.highusoft.viveicesi.view.fragments.FragPerfil;
+import co.highusoft.viveicesi.view.fragments.FragmentoInfo;
 
 public class ContenedoraFragments extends AppCompatActivity implements FragPerfil.OnFragmentInteractionListener, FragItems.OnFragmentInteractionListener, FragmentoInfo.OnFragmentInteractionListener, FragCalendario.OnFragmentInteractionListener {
     FragCalendario fragCalendario;

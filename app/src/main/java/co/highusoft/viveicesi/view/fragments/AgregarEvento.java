@@ -1,10 +1,8 @@
-package co.highusoft.viveicesi.view;
+package co.highusoft.viveicesi.view.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

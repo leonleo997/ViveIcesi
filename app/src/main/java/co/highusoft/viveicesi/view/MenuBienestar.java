@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 import co.highusoft.viveicesi.CalificacionActividades;
+import co.highusoft.viveicesi.view.fragments.AgregarEvento;
 import co.highusoft.viveicesi.view.fragments.FragActividad;
 import co.highusoft.viveicesi.view.fragments.FragCalendario;
 import co.highusoft.viveicesi.view.fragments.FragItems;
@@ -27,6 +28,7 @@ import co.highusoft.viveicesi.view.fragments.FragMostrarEvento;
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.view.fragments.FragCambiarContrasenia;
 import co.highusoft.viveicesi.view.fragments.FragPerfil;
+import co.highusoft.viveicesi.view.fragments.FragmentoInfo;
 
 public class MenuBienestar extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragPerfil.OnFragmentInteractionListener, FragItems.OnFragmentInteractionListener, FragmentoInfo.OnFragmentInteractionListener,
