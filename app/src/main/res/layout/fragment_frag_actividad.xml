@@ -5,69 +5,79 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.FragActividad">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-
-        android:orientation="vertical"
-        tools:context=".view.fragments.FragmentoItems">
+        android:layout_height="match_parent">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/tv_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Deporte \n y Actividad Física"
-                android:textAlignment="center"
-                android:textSize="25dp" />
-
-            <ImageView
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-                android:layout_marginLeft="50dp"
-                android:src="@drawable/icesilogo" />
-
-        </LinearLayout>
-
-        <LinearLayout
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            tools:context=".view.fragments.FragmentoItems">
 
-            <TextView
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Nombre Actividad"
-                android:textSize="30dp"
-                android:textAlignment="center"/>
-
-            <ImageView
-                android:layout_marginTop="10dp"
-                android:id="@+id/imagen_actividad"
-                android:layout_width="320dp"
-                android:layout_height="120dp" />
-
-            <TextView
-                android:layout_width="300dp"
-                android:layout_height="150dp"
-                android:id="@+id/tv_informacion_actividad"/>
-            <Button
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Calificar"
-                android:id="@+id/bt_pasar_calificar_actividad"
-                />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="Deporte \n y Actividad Física"
+                    android:textAlignment="center"
+                    android:textSize="25dp" />
+
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_marginLeft="50dp"
+                    android:src="@drawable/icesilogo" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Nombre Actividad"
+                    android:textAlignment="center"
+                    android:textSize="30dp" />
+
+                <ImageView
+                    android:id="@+id/imagen_actividad"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="20sp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:id="@+id/tv_informacion_actividad"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_height="wrap_content" />
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/list_horarios"/>
+                <Button
+                    android:id="@+id/bt_pasar_calificar_actividad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calificar" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

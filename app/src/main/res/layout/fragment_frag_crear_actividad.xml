@@ -109,15 +109,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></Spinner>
 
-            <EditText
-                android:id="@+id/etaa_lugar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Lugar actividad"
-                android:textColor="@color/blue_sky"
-                android:textColorHint="@color/blue_sky"
-                android:textSize="20sp" />
-
             <Button
                 android:id="@+id/btn_guardar_evento"
                 android:layout_width="match_parent"
