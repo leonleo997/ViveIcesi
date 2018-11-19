@@ -3,6 +3,7 @@ package co.highusoft.viveicesi.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -27,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.adapters.UtilDomi;
 import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.model.Usuario;
 
@@ -35,6 +38,7 @@ public class Registro extends AppCompatActivity {
     FirebaseDatabase db;
     FirebaseAuth auth;
 
+    private static final int REQUEST_GALLERY = 101;
     private EditText et_usr;
     private EditText et_email;
     private EditText et_name;
@@ -42,6 +46,8 @@ public class Registro extends AppCompatActivity {
     private EditText et_con_pwd;
 
     private Button btn_registrar;
+    private ImageButton btn_anhadirFoto;
+
 
     private RadioGroup rg_tipoUsuario;
     private CheckBox cb_terminos;
@@ -49,6 +55,8 @@ public class Registro extends AppCompatActivity {
     private Spinner sp_tipo_area;
 
     private FirebaseAuth.AuthStateListener authStateListener;
+
+    private String path;
 
 
     @Override
@@ -89,6 +97,17 @@ public class Registro extends AppCompatActivity {
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
         sp_tipo_area.setAdapter(spinnerArrayAdapter);
 
+        btn_anhadirFoto=findViewById(R.id.btn_anhadirFoto);
+        btn_anhadirFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent();
+                i.setType("image/*");
+                i.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(i, REQUEST_GALLERY);
+
+            }
+        });
 
         loadComponents();
 
@@ -141,7 +160,7 @@ public class Registro extends AppCompatActivity {
 
                  if(aceptado) {
                  RadioButton rb=findViewById(rg_tipoUsuario.getCheckedRadioButtonId());
-                 Usuario user = new Usuario("", et_usr.getText().toString(), et_email.getText().toString(), et_name.getText().toString(),sp_tipo_area.getSelectedItem().toString(),rb.getText().toString());
+                 Usuario user = new Usuario("", et_usr.getText().toString(), et_email.getText().toString(), et_name.getText().toString(),sp_tipo_area.getSelectedItem().toString(),rb.getText().toString(),path);
                  registrarUsuario(user);
                  }else{
                      Toast.makeText(Registro.this, "Debe aceptar los términos y condiciones", Toast.LENGTH_SHORT).show();
@@ -187,5 +206,13 @@ public class Registro extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_GALLERY && resultCode == RESULT_OK){
+            path = UtilDomi.getPath(Registro.this, data.getData());
+            Log.e("holi", "onActivityResult: " );
+        }
     }
 }

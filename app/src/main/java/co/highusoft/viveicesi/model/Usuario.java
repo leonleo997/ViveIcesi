@@ -1,5 +1,7 @@
 package co.highusoft.viveicesi.model;
 
+import android.graphics.Bitmap;
+
 public class Usuario {
     private String uid;
     private String usuario;
@@ -7,18 +9,20 @@ public class Usuario {
     private String nombre;
     private String area;
     private String tipoUsuario;
+    private String foto;
 
 
     public Usuario() {
     }
 
-    public Usuario(String uid, String usuario, String correo, String nombre, String area, String tipoUsuario) {
+    public Usuario(String uid, String usuario, String correo, String nombre, String area, String tipoUsuario, String foto) {
         this.uid = uid;
         this.usuario = usuario;
         this.correo = correo;
         this.nombre = nombre;
         this.area = area;
         this.tipoUsuario = tipoUsuario;
+        this.foto=foto;
     }
 
     public String getArea() {
@@ -41,9 +45,11 @@ public class Usuario {
         return uid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
+    public void setUid(String uid) { this.uid = uid; }
+
+    public String getFoto() { return foto; }
+
+    public void setFoto(String foto) { this.foto = foto; }
 
     public String getUsuario() {
         return usuario;

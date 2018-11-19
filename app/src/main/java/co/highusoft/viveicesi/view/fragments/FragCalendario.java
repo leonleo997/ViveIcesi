@@ -80,7 +80,7 @@ public class FragCalendario extends Fragment {
         View inflate =inflater.inflate(R.layout.fragment_frag_calendario,null);
 
         calendarView=inflate.findViewById(R.id.cv_calendar);
-        tv_mes=inflate.findViewById(R.id.tv_mes);
+      //  tv_mes=inflate.findViewById(R.id.tv_mes);
         lv_agenda=inflate.findViewById(R.id.lv_agenda);
 
 
