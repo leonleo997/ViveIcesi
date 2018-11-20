@@ -1,9 +1,11 @@
 package co.highusoft.viveicesi.view;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +25,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +44,7 @@ public class Registro extends AppCompatActivity {
 
     FirebaseDatabase db;
     FirebaseAuth auth;
+    FirebaseStorage storage;
 
     private static final int REQUEST_GALLERY = 101;
     private EditText et_usr;
@@ -66,6 +74,7 @@ public class Registro extends AppCompatActivity {
 
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -85,6 +94,11 @@ public class Registro extends AppCompatActivity {
         DatabaseReference dbr = db.getReference().child("estudiantes");
 
         sp_tipo_area = findViewById(R.id.sp_tipo_area);
+
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        }, 11);
 
 
         String[] mensaje = {"Seleccionar tipo usuario"};
@@ -193,7 +207,22 @@ public class Registro extends AppCompatActivity {
                     user.setUid(auth.getCurrentUser().getUid());
                     Log.i("USUARIO", "onComplete: " + user.getNombre());
                     DatabaseReference dbr = db.getReference().child("Usuarios").child(user.getUid());
+
+                    //String id_imagen = dbr.getKey();
+                    //user.setFoto(id_imagen);
+
                     dbr.setValue(user);
+
+                    //if(path != null){TODO
+                    //    try {
+                    //        StorageReference ref = storage.getReference().child("fotos").child(user.getFoto());
+                    //        FileInputStream file = new FileInputStream(new File(path));
+                            //Sube la foto
+                    //        ref.putStream(file);
+                    //    }catch (FileNotFoundException ex){
+
+                    //    }
+                    //}
 
                     Intent i = new Intent(Registro.this, Home.class);
                     startActivity(i);
@@ -210,6 +239,7 @@ public class Registro extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.e("holi", "onActivityResult: " );
         if(requestCode == REQUEST_GALLERY && resultCode == RESULT_OK){
             path = UtilDomi.getPath(Registro.this, data.getData());
             Log.e("holi", "onActivityResult: " );
