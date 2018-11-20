@@ -75,7 +75,7 @@ public class FragPerfil extends Fragment {
 
         btn_contrasenha=viewInflate.findViewById(R.id.btn_contrasenha);
         btn_datos=viewInflate.findViewById(R.id.btn_datos);
-        btn_registrarAdmin=viewInflate.findViewById(R.id.btn_registrarAdmin);
+//        btn_registrarAdmin=viewInflate.findViewById(R.id.btn_registrarAdmin);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_frag_perfil, container, false);

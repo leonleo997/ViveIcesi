@@ -20,11 +20,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:text="Agregar Actividad"
+                android:layout_marginBottom="30dp"
+                android:text="Crear Actividad"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
-                android:textSize="50sp"
+                android:textSize="40sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -36,64 +36,10 @@
                 android:textColorHint="@color/blue_sky"
                 android:textSize="20sp" />
 
-            <LinearLayout
+            <Spinner
+                android:id="@+id/sp_tipo_area"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="30dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20sp"
-                        android:text="Días:"
-                        android:textColor="@color/blue_sky"
-                        android:textColorHint="@color/blue_sky"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/etaa_Date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="AAAA/MM/DD"
-                        android:textColorHint="@color/blue_sky"
-                        android:textSize="20sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20sp"
-                        android:text="Hora:"
-                        android:textColor="@color/blue_sky"
-                        android:textColorHint="@color/blue_sky"
-                        android:textSize="20sp" />
-
-                    <EditText
-                        android:id="@+id/etaa_hora"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Descripción de Horarios"
-                        android:textColor="@color/blue_sky"
-                        android:textColorHint="@color/blue_sky"
-                        android:textSize="12sp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_height="wrap_content"/>
 
             <EditText
                 android:id="@+id/etaa_descripcion"
@@ -104,10 +50,91 @@
                 android:textColorHint="@color/blue_sky"
                 android:textSize="20sp" />
 
-            <Spinner
-                android:id="@+id/sp_tipo_area"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></Spinner>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="20sp"
+                android:layout_gravity="left">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20sp"
+                        android:text="Hora Inicio:"
+                        android:layout_weight="2"
+                        android:textColor="@color/blue_sky"
+                        android:textColorHint="@color/blue_sky"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_hora_inicio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="HH:MM"
+                        android:layout_weight="2"
+                        android:textColorHint="@color/blue_sky"
+                        android:textSize="20sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20sp"
+                        android:layout_weight="2"
+                        android:text="Hora Fin:"
+                        android:textColor="@color/blue_sky"
+                        android:textColorHint="@color/blue_sky"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_hora_fin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="HH:MM"
+                        android:textColorHint="@color/blue_sky"
+                        android:textSize="20sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/sp_dia_semana"
+                        android:layout_weight="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:id="@+id/et_lugar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="Lugar"
+                        android:textColorHint="@color/blue_sky"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/btn_guardar_evento"
