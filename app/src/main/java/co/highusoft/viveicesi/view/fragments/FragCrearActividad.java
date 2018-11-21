@@ -131,7 +131,7 @@ public class FragCrearActividad extends Fragment {
         mDisplayTimeFinish = view.findViewById(R.id.tv_hora_fin);
 
 
-        mDisplayTimeFinish.setOnClickListener(new View.OnClickListener() {
+        mDisplayTimeStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
