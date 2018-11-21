@@ -36,7 +36,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.ContenedoraFragments" />
-        <activity android:name=".FragMostrarEventos" />
         <activity android:name=".PasswordLogin" />
         <activity android:name=".Escaner" />
         <activity android:name=".view.Terminos"></activity>
