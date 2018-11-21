@@ -20,12 +20,13 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 import co.highusoft.viveicesi.CalificacionActividades;
+import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.view.fragments.AgregarEvento;
 import co.highusoft.viveicesi.view.fragments.FragActividad;
 import co.highusoft.viveicesi.view.fragments.FragCalendario;
 import co.highusoft.viveicesi.view.fragments.FragItems;
 import co.highusoft.viveicesi.view.fragments.FragMostrarEvento;
-import co.highusoft.viveicesi.R;
+
 import co.highusoft.viveicesi.view.fragments.FragCambiarContrasenia;
 import co.highusoft.viveicesi.view.fragments.FragPerfil;
 import co.highusoft.viveicesi.view.fragments.FragmentoInfo;
@@ -47,6 +48,7 @@ public class MenuBienestar extends AppCompatActivity
     private FragMostrarEvento fragMostrarEventos;
 
     private FloatingActionButton fb_home;
+    private FloatingActionButton fb_agregar_actividad;
 
     FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -92,8 +94,20 @@ public class MenuBienestar extends AppCompatActivity
 
 
         setContentView(R.layout.activity_menu_bienestar);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+       fb_agregar_actividad = findViewById(R.id.fab_anhadir);
+        fb_agregar_actividad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.contenedorFragments,fragAgregarEvento).commit();
+                fb_agregar_actividad.setVisibility(View.GONE);
+                fb_home.setVisibility(View.VISIBLE);
+            }
+        });
+
 
         fb_home = (FloatingActionButton) findViewById(R.id.fab);
         fb_home.setOnClickListener(new View.OnClickListener() {
@@ -102,29 +116,35 @@ public class MenuBienestar extends AppCompatActivity
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.contenedorFragments, fragMostrarEventos).commit();
                 fb_home.setVisibility(View.GONE);
+                fb_agregar_actividad.setVisibility(View.VISIBLE);
+
+
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contenedorFragments, fragMostrarEventos).commit();
         fb_home.setVisibility(View.GONE);
 
+fb_agregar_actividad.setVisibility(View.VISIBLE);
+
+
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -168,6 +188,9 @@ public class MenuBienestar extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         fb_home.setVisibility(View.VISIBLE);
+        fb_agregar_actividad.setVisibility(View.INVISIBLE);
+
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -203,7 +226,7 @@ public class MenuBienestar extends AppCompatActivity
         }
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
