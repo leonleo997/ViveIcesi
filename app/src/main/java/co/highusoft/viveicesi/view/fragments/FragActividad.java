@@ -204,7 +204,7 @@ public class FragActividad extends Fragment {
         //
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_actividad, container, false);
+        return viewInflater;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
