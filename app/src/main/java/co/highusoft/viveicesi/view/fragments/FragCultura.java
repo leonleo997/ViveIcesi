@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import co.highusoft.viveicesi.R;
 
@@ -27,6 +28,7 @@ public class FragCultura extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    ListView listViewCulturaa;
 
     private OnFragmentInteractionListener mListener;
 
