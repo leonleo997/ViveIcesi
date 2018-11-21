@@ -1,6 +1,7 @@
 package co.highusoft.viveicesi.view.fragments;
 
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,8 +9,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.model.Constantes;
 
 
 /**
@@ -25,6 +36,16 @@ public class FragCrearActividad extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private TimePickerDialog.OnTimeSetListener onTimeStartSetListener;
+    private TextView mDisplayTimeStart;
+    private int hourS;
+    private int minS;
+
+    private TimePickerDialog.OnTimeSetListener onTimeFinishSetListener;
+    private TextView mDisplayTimeFinish;
+    private int hourF;
+    private int minF;
 
 
     Dialog dialog;
@@ -67,11 +88,34 @@ public class FragCrearActividad extends Fragment {
         }
     }
 
+    public Spinner sp_tipo_actividad;
+    public Spinner sp_dias_semana;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_crear_actividad, container, false);
+        final List<String> plantsList = new ArrayList<>(Arrays.asList(Constantes.TIPOS_ACTIVIDADES));
+        final View view=inflater.inflate(R.layout.fragment_frag_crear_actividad, container, false);
+
+        inicializarComponentes(view);
+        sp_tipo_actividad=view.findViewById(R.id.sp_tipo_area);
+        final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                this.getContext(), R.layout.spinner_item, plantsList);
+
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        sp_tipo_actividad.setAdapter(spinnerArrayAdapter);
+
+        final List<String> diasList = new ArrayList<>(Arrays.asList(Constantes.DIAS_SEMANA));
+        sp_dias_semana=view.findViewById(R.id.sp_dia_semana);
+        final ArrayAdapter<String> spinnerArrayAdapterDias = new ArrayAdapter<String>(
+                this.getContext(), R.layout.spinner_item, diasList);
+
+        spinnerArrayAdapterDias.setDropDownViewResource(R.layout.spinner_item);
+        sp_dias_semana.setAdapter(spinnerArrayAdapterDias);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -79,6 +123,71 @@ public class FragCrearActividad extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    private void inicializarComponentes(final View view){
+
+        mDisplayTimeStart = view.findViewById(R.id.tv_hora_inicio);
+        mDisplayTimeFinish = view.findViewById(R.id.tv_hora_fin);
+
+
+        mDisplayTimeFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        view.getContext(),
+                        onTimeStartSetListener,
+                        hour,
+                        minute,
+                        false
+                );
+
+                timePickerDialog.show();
+            }
+        });
+
+        mDisplayTimeFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        view.getContext(),
+                        onTimeFinishSetListener,
+                        hour,
+                        minute,
+                        false
+                );
+
+                timePickerDialog.show();
+            }
+        });
+
+
+        onTimeStartSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                mDisplayTimeStart.setText(hourOfDay + ":" + minute);
+                hourS = hourOfDay;
+                minS = minute;
+            }
+        };
+
+
+        onTimeFinishSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                mDisplayTimeFinish.setText(hourOfDay + ":" + minute);
+                hourF = hourOfDay;
+                minF = minute;
+            }
+        };
     }
 
     @Override

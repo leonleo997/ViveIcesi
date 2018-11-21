@@ -226,7 +226,7 @@ public class Registro extends AppCompatActivity {
                         }
                     }
 
-                    Intent i = new Intent(Registro.this, Home.class);
+                    Intent i = new Intent(Registro.this, MenuBienestar.class);
                     startActivity(i);
                     finish();
                     //Aquí va para el perfil

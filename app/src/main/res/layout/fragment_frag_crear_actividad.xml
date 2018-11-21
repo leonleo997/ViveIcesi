@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:gravity="center"
-                        android:text="Lugar"
+                        android:hint="Ubicación"
                         android:textColorHint="@color/blue_sky"
                         android:textSize="15sp" />
                 </LinearLayout>

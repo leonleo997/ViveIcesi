@@ -24,6 +24,7 @@ import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.view.fragments.AgregarEvento;
 import co.highusoft.viveicesi.view.fragments.FragActividad;
 import co.highusoft.viveicesi.view.fragments.FragCalendario;
+import co.highusoft.viveicesi.view.fragments.FragCrearActividad;
 import co.highusoft.viveicesi.view.fragments.FragItems;
 import co.highusoft.viveicesi.view.fragments.FragMostrarEvento;
 
@@ -33,7 +34,8 @@ import co.highusoft.viveicesi.view.fragments.FragmentoInfo;
 
 public class MenuBienestar extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragPerfil.OnFragmentInteractionListener, FragItems.OnFragmentInteractionListener, FragmentoInfo.OnFragmentInteractionListener,
-        FragCalendario.OnFragmentInteractionListener, AgregarEvento.OnFragmentInteractionListener, FragMostrarEvento.OnFragmentInteractionListener, FragCambiarContrasenia.OnFragmentInteractionListener, FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener {
+        FragCalendario.OnFragmentInteractionListener, AgregarEvento.OnFragmentInteractionListener, FragMostrarEvento.OnFragmentInteractionListener, FragCambiarContrasenia.OnFragmentInteractionListener,
+        FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener, FragCrearActividad.OnFragmentInteractionListener {
 
 
     private FragCalendario fragCalendario;
@@ -43,6 +45,7 @@ public class MenuBienestar extends AppCompatActivity
     private FragCambiarContrasenia fragCambiarContrasenia;
     private AgregarEvento fragAgregarEvento;
     private FragActividad fragActividad;
+    private FragCrearActividad fragCrearActividad;
     private CalificacionActividades calificacionActividades;
 
     private FragMostrarEvento fragMostrarEventos;
@@ -74,6 +77,7 @@ public class MenuBienestar extends AppCompatActivity
         fragCambiarContrasenia = new FragCambiarContrasenia();
         fragActividad = new FragActividad();
         calificacionActividades = new CalificacionActividades();
+        fragCrearActividad= new FragCrearActividad();
 
         //
 
@@ -218,7 +222,8 @@ fb_agregar_actividad.setVisibility(View.VISIBLE);
         } else if (id == R.id.nav_contrasenha) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragCambiarContrasenia).commit();
         } else if (id == R.id.add_event) {
-            fragmentTransaction.replace(R.id.contenedorFragments, fragAgregarEvento).commit();
+//            fragmentTransaction.replace(R.id.contenedorFragments, fragAgregarEvento).commit();
+            fragmentTransaction.replace(R.id.contenedorFragments, fragCrearActividad).commit();
         } else if (id == R.id.actividad_222) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragActividad).commit();
         } else if (id == R.id.cuestionario) {
