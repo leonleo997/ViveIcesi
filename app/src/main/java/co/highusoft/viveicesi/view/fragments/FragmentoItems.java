@@ -27,7 +27,6 @@ public class FragmentoItems extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-      //  return inflater.inflate(R.layout.fragment_fragmento_items, container, false);
         return null;
     }
 

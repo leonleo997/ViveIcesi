@@ -22,9 +22,9 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:src="@drawable/logo_vive_icesi"
+            android:layout_gravity="center"
             android:layout_marginBottom="20dp"
-            android:layout_gravity="center"/>
+            android:src="@drawable/logo_vive_icesi" />
 
         <EditText
             android:id="@+id/et_name"
@@ -114,22 +114,35 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"></Spinner>
 
-        <ImageButton
-            android:id="@+id/btn_anhadirFoto"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/boton_redondo"
-            android:src="@mipmap/fotoperfil"
-            android:layout_gravity="center"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:layout_weight="1"
+                android:id="@+id/foto_registro"/>
+
+            <ImageButton
+                android:id="@+id/btn_anhadirFoto"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:background="@drawable/boton_redondo"
+                android:src="@mipmap/fotoperfil" />
+
+        </LinearLayout>
 
         <CheckBox
             android:id="@+id/cb_terminos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:textColor="@color/claroViveIcesi"
             android:text="Acepto los términos y conddicciones"
+            android:textColor="@color/claroViveIcesi"
             android:textSize="10dp" />
 
         <Button
@@ -138,10 +151,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_shape_green"
             android:text="Registrar"
-            android:textColorHint="@color/colorAccent"
             android:textColor="@color/white"
+            android:textColorHint="@color/colorAccent"
             android:textStyle="bold" />
-
 
 
     </LinearLayout>

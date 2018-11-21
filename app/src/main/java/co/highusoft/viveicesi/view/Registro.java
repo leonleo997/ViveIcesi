@@ -2,6 +2,8 @@ package co.highusoft.viveicesi.view;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -213,16 +216,15 @@ public class Registro extends AppCompatActivity {
 
                     dbr.setValue(user);
 
-                    //if(path != null){TODO
-                    //    try {
-                    //        StorageReference ref = storage.getReference().child("fotos").child(user.getFoto());
-                    //        FileInputStream file = new FileInputStream(new File(path));
-                            //Sube la foto
-                    //        ref.putStream(file);
-                    //    }catch (FileNotFoundException ex){
+                    if(path != null){
+                        try {
+                            StorageReference ref = storage.getReference().child("fotos").child(user.getFoto());
+                            FileInputStream file = new FileInputStream(new File(path));
+                            ref.putStream(file);
+                        }catch (FileNotFoundException ex){
 
-                    //    }
-                    //}
+                        }
+                    }
 
                     Intent i = new Intent(Registro.this, Home.class);
                     startActivity(i);
@@ -242,6 +244,9 @@ public class Registro extends AppCompatActivity {
         Log.e("holi", "onActivityResult: " );
         if(requestCode == REQUEST_GALLERY && resultCode == RESULT_OK){
             path = UtilDomi.getPath(Registro.this, data.getData());
+            Bitmap m = BitmapFactory.decodeFile(path);
+            ImageView img_foto=findViewById(R.id.foto_registro);
+            img_foto.setImageBitmap(m);
             Log.e("holi", "onActivityResult: " );
         }
     }

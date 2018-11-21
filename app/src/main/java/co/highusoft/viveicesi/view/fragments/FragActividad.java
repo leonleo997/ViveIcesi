@@ -1,18 +1,40 @@
 package co.highusoft.viveicesi.view.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import co.highusoft.viveicesi.CalificacionActividades;
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.model.Usuario;
 
 
 /**
@@ -66,36 +88,116 @@ public class FragActividad extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-
-
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
+    FirebaseDatabase db;
+    FirebaseAuth auth;
+    FirebaseStorage storage;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        db = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
+        storage=FirebaseStorage.getInstance();
+
         calificacionActividades = new CalificacionActividades();
 
-       View viewInflater = inflater.inflate(R.layout.fragment_frag_actividad, null);
+        final View viewInflater = inflater.inflate(R.layout.fragment_frag_actividad, null);
 
         imagenActividad = viewInflater.findViewById(R.id.imagen_actividad);
+//        imagenActividad.set
+
         textViewInformacionActividad = viewInflater.findViewById(R.id.tv_informacion_actividad);
         botonCalificarActividad = viewInflater.findViewById(R.id.bt_pasar_calificar_actividad);
-
-botonCalificarActividad.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
+        Toast.makeText(getContext(), "aaaa", Toast.LENGTH_LONG).show();
+        Log.e(">>>", auth.getCurrentUser().getEmail());
 
 
-//        getActivity().getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.contenedorFragments,calificacionActividades).commit();
+        //borrar
+        DatabaseReference myRef = db.getReference("Usuarios");
+        Log.e(">>>",auth.getCurrentUser().getEmail());
+        myRef.orderByChild("correo").equalTo(auth.getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Usuario user = dataSnapshot.getValue(Usuario.class);
+                StorageReference storageReference=storage.getReference().child("fotos").child(user.getFoto());
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        imagenActividad.setImageURI(uri);
+                        Log.e(">>>",uri.toString());
+                        Log.e(">>>","ENTRAAAAAAAAA");
+                        ImageView imv = viewInflater.findViewById(R.id.img_prueba);
+                        Glide.with(getActivity()).load(uri)
+                                .into(imv);
 
-    }
-});
+                    }
+                });
+                Log.e(">>>",user.getArea());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //
+        botonCalificarActividad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e(">>>", auth.getCurrentUser().getEmail());
+                DatabaseReference myRef = db.getReference("Usuarios");
+                myRef.orderByChild("correo").equalTo(auth.getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        Usuario user = dataSnapshot.getValue(Usuario.class);
+                        Bitmap m = BitmapFactory.decodeFile(user.getFoto());
+                        imagenActividad.setImageBitmap(m);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
 
 
 //
