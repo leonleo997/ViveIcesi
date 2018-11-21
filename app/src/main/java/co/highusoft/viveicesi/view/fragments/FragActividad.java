@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,14 +131,13 @@ public class FragActividad extends Fragment {
                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        imagenActividad.setImageURI(uri);
-                        Log.e(">>>", uri.toString());
                         Log.e(">>>", "ENTRAAAAAAAAA");
                         ImageView imv = viewInflater.findViewById(R.id.img_prueba);
-                        Glide.with(FragActividad.this.getActivity()).load(uri)
+                        Glide.with(FragActividad.this).load(uri)
                                 .into(imv);
                         Log.e(">>>", "Terminaaaaaaa");
-
+//                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                        ft.detach(FragActividad.this).attach(FragActividad.this).commit();
                     }
                 });
                 Log.e(">>>", user.getArea());

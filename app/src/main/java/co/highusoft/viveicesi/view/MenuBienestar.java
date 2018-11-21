@@ -223,7 +223,9 @@ fb_agregar_actividad.setVisibility(View.VISIBLE);
             fragmentTransaction.replace(R.id.contenedorFragments, fragCambiarContrasenia).commit();
         } else if (id == R.id.add_event) {
 //            fragmentTransaction.replace(R.id.contenedorFragments, fragAgregarEvento).commit();
-            fragmentTransaction.replace(R.id.contenedorFragments, fragCrearActividad).commit();
+//            fragmentTransaction.replace(R.id.contenedorFragments, fragCrearActividad).commit();
+            Intent i = new Intent(MenuBienestar.this,borrador.class);
+            startActivity(i);
         } else if (id == R.id.actividad_222) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragActividad).commit();
         } else if (id == R.id.cuestionario) {

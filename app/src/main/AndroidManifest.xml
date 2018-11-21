@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".view.Home" />
-        <activity android:name=".view.Registro"></activity>
+        <activity android:name=".view.Registro" />
         <activity android:name=".view.Login" />
         <activity
             android:name=".view.MenuBienestar"
@@ -38,7 +38,8 @@
         <activity android:name=".view.ContenedoraFragments" />
         <activity android:name=".PasswordLogin" />
         <activity android:name=".Escaner" />
-        <activity android:name=".view.Terminos"></activity>
+        <activity android:name=".view.Terminos" />
+        <activity android:name=".view.borrador"></activity>
     </application>
 
 </manifest>
