@@ -3,12 +3,23 @@ package co.highusoft.viveicesi.view.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.adapters.Adaptador;
+import co.highusoft.viveicesi.model.Actividad;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +38,12 @@ public class FragCultura extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ListView listViewCulturaa;
+
+    private Adaptador adaptador;
+
+    private FirebaseDatabase db;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,8 +81,50 @@ public class FragCultura extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+
+        View view = inflater.inflate(R.layout.fragment_frag_cultura, container, false);
+
+        listViewCulturaa=view.findViewById(R.id.lista_cultura);
+        adaptador= new Adaptador(view.getContext());
+        listViewCulturaa.setAdapter(adaptador);
+
+
+        db=FirebaseDatabase.getInstance();
+        final DatabaseReference actividades_ref = db.getReference().child("Eventos");
+        actividades_ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Actividad actividad =  dataSnapshot.getValue(Actividad.class);
+              //  adaptador.addEvent(actividad);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }});
+
+
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_cultura, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
