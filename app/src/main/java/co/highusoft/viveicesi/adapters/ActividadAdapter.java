@@ -16,13 +16,12 @@ import co.highusoft.viveicesi.model.Actividad;
 public class ActividadAdapter extends BaseAdapter {
 
 
-
     ArrayList<Actividad> arreglo;
     Context context;
 
-    public ActividadAdapter(Context context){
+    public ActividadAdapter(Context context) {
 
-        this.context= context;
+        this.context = context;
         arreglo = new ArrayList<Actividad>();
     }
 
@@ -52,7 +51,7 @@ public class ActividadAdapter extends BaseAdapter {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View renglonActividad = inflater.inflate(R.layout.renglon_actividad, null);
-Actividad actividad= arreglo.get(i);
+        Actividad actividad = arreglo.get(i);
 
 
         TextView textViewPorcentaje = renglonActividad.findViewById(R.id.tvrg_porcentaje);
@@ -61,6 +60,6 @@ Actividad actividad= arreglo.get(i);
 //       textViewPorcentaje.setText(actividad.getPorcentaje());
         textViewTitulo.setText(actividad.getNombre());
 
-        return renglonActividad ;
+        return renglonActividad;
     }
 }

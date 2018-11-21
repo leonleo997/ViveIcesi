@@ -10,9 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +26,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.adapters.Adaptador;
+import co.highusoft.viveicesi.adapters.HorarioAdapter;
+import co.highusoft.viveicesi.model.Actividad;
 import co.highusoft.viveicesi.model.Constantes;
+import co.highusoft.viveicesi.model.Horario;
 
 
 /**
@@ -47,6 +57,19 @@ public class FragCrearActividad extends Fragment {
     private int hourF;
     private int minF;
 
+    private int diaSemana;
+
+    private Spinner sp_tipo_actividad;
+    private Spinner sp_dias_semana;
+    private ListView view_horarios;
+
+    private EditText et_nombre;
+    private EditText et_descripcion;
+
+
+    private HorarioAdapter horarioAdapter;
+
+    private FirebaseDatabase bd;
 
     Dialog dialog;
     // TODO: Rename and change types of parameters
@@ -88,8 +111,7 @@ public class FragCrearActividad extends Fragment {
         }
     }
 
-    public Spinner sp_tipo_actividad;
-    public Spinner sp_dias_semana;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,10 +120,11 @@ public class FragCrearActividad extends Fragment {
 
         // Inflate the layout for this fragment
         final List<String> plantsList = new ArrayList<>(Arrays.asList(Constantes.TIPOS_ACTIVIDADES));
-        final View view=inflater.inflate(R.layout.fragment_frag_crear_actividad, container, false);
+        final View view = inflater.inflate(R.layout.fragment_frag_crear_actividad, container, false);
 
         inicializarComponentes(view);
-        sp_tipo_actividad=view.findViewById(R.id.sp_tipo_area);
+
+        sp_tipo_actividad = view.findViewById(R.id.sp_tipo_area);
         final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                 this.getContext(), R.layout.spinner_item, plantsList);
 
@@ -109,13 +132,38 @@ public class FragCrearActividad extends Fragment {
         sp_tipo_actividad.setAdapter(spinnerArrayAdapter);
 
         final List<String> diasList = new ArrayList<>(Arrays.asList(Constantes.DIAS_SEMANA));
-        sp_dias_semana=view.findViewById(R.id.sp_dia_semana);
+        sp_dias_semana = view.findViewById(R.id.sp_dia_semana);
         final ArrayAdapter<String> spinnerArrayAdapterDias = new ArrayAdapter<String>(
                 this.getContext(), R.layout.spinner_item, diasList);
 
         spinnerArrayAdapterDias.setDropDownViewResource(R.layout.spinner_item);
         sp_dias_semana.setAdapter(spinnerArrayAdapterDias);
+
+
+        //Horario renglon--------------------------------------
+        view_horarios=view.findViewById(R.id.lv_horario);
+        horarioAdapter=new HorarioAdapter(this.getActivity());
+        view_horarios.setAdapter(horarioAdapter);
+        //-----------------------------------------------------
+        final EditText et_lugar=view.findViewById(R.id.et_lugar);
+
+        Button btn_horario=view.findViewById(R.id.btn_add_horario);
+        btn_horario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Horario horario=new Horario();
+                horario.setDiaSemana(sp_dias_semana.getSelectedItem().toString());
+                horario.setHoraEntrada(hourS+":"+minS);
+                horario.setHoraSalida(hourF+":"+minF);
+                horario.setLugar(et_lugar.getText().toString());
+                horarioAdapter.addHorario(horario);
+            }
+        });
+
+
         return view;
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -125,7 +173,7 @@ public class FragCrearActividad extends Fragment {
         }
     }
 
-    private void inicializarComponentes(final View view){
+    private void inicializarComponentes(final View view) {
 
         mDisplayTimeStart = view.findViewById(R.id.tv_hora_inicio);
         mDisplayTimeFinish = view.findViewById(R.id.tv_hora_fin);
@@ -137,8 +185,9 @@ public class FragCrearActividad extends Fragment {
                 final Calendar c = Calendar.getInstance();
                 int hour = c.get(Calendar.HOUR_OF_DAY);
                 int minute = c.get(Calendar.MINUTE);
+                diaSemana=c.get(Calendar.DAY_OF_WEEK);
 
-                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(
                         view.getContext(),
                         onTimeStartSetListener,
                         hour,
@@ -154,6 +203,7 @@ public class FragCrearActividad extends Fragment {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
+
                 int hour = c.get(Calendar.HOUR_OF_DAY);
                 int minute = c.get(Calendar.MINUTE);
 
@@ -188,6 +238,28 @@ public class FragCrearActividad extends Fragment {
                 minF = minute;
             }
         };
+
+
+        et_nombre=view.findViewById(R.id.et_name);
+        et_descripcion=view.findViewById(R.id.et_descripcion);
+
+        final Button btn_crear_actividad=view.findViewById(R.id.btn_crear_actividad);
+        btn_crear_actividad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bd=FirebaseDatabase.getInstance();
+
+                Actividad actividad= new Actividad();
+                actividad.setDescripcion(et_descripcion.getText().toString());
+                actividad.setImg("VACIOOOO");
+                actividad.setNombre(et_nombre.getText().toString());
+                actividad.setHorarios(horarioAdapter.getHorarios());
+
+                DatabaseReference dbr=bd.getReference().child("Actividades")
+                        .child(sp_tipo_actividad.getSelectedItem().toString()).push();
+                dbr.setValue(actividad);
+            }
+        });
     }
 
     @Override

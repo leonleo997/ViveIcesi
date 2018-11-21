@@ -77,7 +77,7 @@ public class MenuBienestar extends AppCompatActivity
         fragCambiarContrasenia = new FragCambiarContrasenia();
         fragActividad = new FragActividad();
         calificacionActividades = new CalificacionActividades();
-        fragCrearActividad= new FragCrearActividad();
+        fragCrearActividad = new FragCrearActividad();
 
         //
 
@@ -101,12 +101,12 @@ public class MenuBienestar extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       fb_agregar_actividad = findViewById(R.id.fab_anhadir);
+        fb_agregar_actividad = findViewById(R.id.fab_anhadir);
         fb_agregar_actividad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.contenedorFragments,fragAgregarEvento).commit();
+                fragmentTransaction.replace(R.id.contenedorFragments, fragAgregarEvento).commit();
                 fb_agregar_actividad.setVisibility(View.GONE);
                 fb_home.setVisibility(View.VISIBLE);
             }
@@ -141,7 +141,7 @@ public class MenuBienestar extends AppCompatActivity
         fragmentTransaction.replace(R.id.contenedorFragments, fragMostrarEventos).commit();
         fb_home.setVisibility(View.GONE);
 
-fb_agregar_actividad.setVisibility(View.VISIBLE);
+        fb_agregar_actividad.setVisibility(View.VISIBLE);
 
 
     }
@@ -223,9 +223,9 @@ fb_agregar_actividad.setVisibility(View.VISIBLE);
             fragmentTransaction.replace(R.id.contenedorFragments, fragCambiarContrasenia).commit();
         } else if (id == R.id.add_event) {
 //            fragmentTransaction.replace(R.id.contenedorFragments, fragAgregarEvento).commit();
-//            fragmentTransaction.replace(R.id.contenedorFragments, fragCrearActividad).commit();
-            Intent i = new Intent(MenuBienestar.this,borrador.class);
-            startActivity(i);
+            fragmentTransaction.replace(R.id.contenedorFragments, fragCrearActividad).commit();
+//            Intent i = new Intent(MenuBienestar.this,borrador.class);
+//            startActivity(i);
         } else if (id == R.id.actividad_222) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragActividad).commit();
         } else if (id == R.id.cuestionario) {

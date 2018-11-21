@@ -12,11 +12,18 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.model.Actividad;
 import co.highusoft.viveicesi.model.Horario;
 
 public class HorarioAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Horario> horarios;
+
+    public HorarioAdapter(Context context){
+
+        this.context= context;
+        horarios = new ArrayList<Horario>();
+    }
 
     @Override
     public int getCount() {
@@ -51,5 +58,18 @@ public class HorarioAdapter extends BaseAdapter {
         tv_ubicacion.setText(horario.getLugar());
 
         return renglon;
+    }
+
+    public void addHorario(Horario horario) {
+        horarios.add(horario);
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<Horario> getHorarios() {
+        return horarios;
+    }
+
+    public void setHorarios(ArrayList<Horario> horarios) {
+        this.horarios = horarios;
     }
 }
