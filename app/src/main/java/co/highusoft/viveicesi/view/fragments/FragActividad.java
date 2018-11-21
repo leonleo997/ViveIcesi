@@ -104,14 +104,14 @@ public class FragActividad extends Fragment {
 
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
-        storage=FirebaseStorage.getInstance();
+        storage = FirebaseStorage.getInstance();
 
         calificacionActividades = new CalificacionActividades();
 
         final View viewInflater = inflater.inflate(R.layout.fragment_frag_actividad, null);
 
         imagenActividad = viewInflater.findViewById(R.id.imagen_actividad);
-//        imagenActividad.set
+        //        imagenActividad.set
 
         textViewInformacionActividad = viewInflater.findViewById(R.id.tv_informacion_actividad);
         botonCalificarActividad = viewInflater.findViewById(R.id.bt_pasar_calificar_actividad);
@@ -121,25 +121,26 @@ public class FragActividad extends Fragment {
 
         //borrar
         DatabaseReference myRef = db.getReference("Usuarios");
-        Log.e(">>>",auth.getCurrentUser().getEmail());
+        Log.e(">>>", auth.getCurrentUser().getEmail());
         myRef.orderByChild("correo").equalTo(auth.getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Usuario user = dataSnapshot.getValue(Usuario.class);
-                StorageReference storageReference=storage.getReference().child("fotos").child(user.getFoto());
+                StorageReference storageReference = storage.getReference().child("fotos").child(user.getFoto());
                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         imagenActividad.setImageURI(uri);
-                        Log.e(">>>",uri.toString());
-                        Log.e(">>>","ENTRAAAAAAAAA");
+                        Log.e(">>>", uri.toString());
+                        Log.e(">>>", "ENTRAAAAAAAAA");
                         ImageView imv = viewInflater.findViewById(R.id.img_prueba);
-                        Glide.with(getActivity()).load(uri)
+                        Glide.with(FragActividad.this.getActivity()).load(uri)
                                 .into(imv);
+                        Log.e(">>>", "Terminaaaaaaa");
 
                     }
                 });
-                Log.e(">>>",user.getArea());
+                Log.e(">>>", user.getArea());
             }
 
             @Override
@@ -200,7 +201,7 @@ public class FragActividad extends Fragment {
         });
 
 
-//
+        //
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_frag_actividad, container, false);
