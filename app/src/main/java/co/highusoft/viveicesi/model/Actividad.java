@@ -8,7 +8,7 @@ public class Actividad {
     private String img;
 
     private ArrayList<Horario> horarios;
-
+//private ArrayList<Encuesta> encuestas;
     public Actividad() {
 
     }
