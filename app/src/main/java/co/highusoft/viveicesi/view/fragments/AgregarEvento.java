@@ -89,7 +89,7 @@ public class AgregarEvento extends Fragment {
         }
     }
 
-    private FirebaseDatabase db;
+    private FirebaseDatabase x  ;
     private FirebaseAuth auth;
 
     public int mYear;
