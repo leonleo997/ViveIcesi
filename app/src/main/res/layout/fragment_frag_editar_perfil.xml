@@ -146,10 +146,12 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
         android:background="@drawable/boton_redondo"
         android:backgroundTint="@color/colorAccent"
-        android:src="@mipmap/home" />
+        android:src="@mipmap/save"
+        android:layout_marginBottom="30dp"/>
+
+
 
 
 </LinearLayout>

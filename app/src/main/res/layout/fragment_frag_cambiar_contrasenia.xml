@@ -45,11 +45,14 @@
             android:textAlignment="center" />
 
         <ImageButton
+
             android:id="@+id/btn_sendEmail"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_marginTop="60dp"
-            android:background="@mipmap/gmail" />
+            android:background="@drawable/boton_redondo"
+            android:src="@mipmap/send" />
     </LinearLayout>
+
 </FrameLayout>
