@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,12 +17,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import co.highusoft.viveicesi.CalificacionActividades;
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.model.Usuario;
 import co.highusoft.viveicesi.view.fragments.AgregarEvento;
 import co.highusoft.viveicesi.view.fragments.FragActividad;
 import co.highusoft.viveicesi.view.fragments.FragCalendario;
@@ -66,8 +79,11 @@ public class MenuBienestar extends AppCompatActivity
 
     private FloatingActionButton fb_home;
     private FloatingActionButton fb_agregar_actividad;
+    private ImageView img_usuario;
 
     FirebaseAuth auth;
+    FirebaseDatabase db;
+    FirebaseStorage storage;
     private FirebaseAuth.AuthStateListener authStateListener;
 
     String FRAGMENT_ITEMS = "items";
@@ -79,7 +95,9 @@ public class MenuBienestar extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
         //
         fragCalendario = new FragCalendario();
         fragmentoInfo = new FragmentoInfo();
@@ -96,6 +114,50 @@ public class MenuBienestar extends AppCompatActivity
         fragCultura=new FragCultura();
         fragSalud=new FragSalud();
         fragDeportes = new FragDeportes();
+
+        img_usuario=findViewById(R.id.img_usuario);
+        DatabaseReference myRef = db.getReference("Usuarios");
+        Log.e(">>>", auth.getCurrentUser().getEmail());
+        myRef.orderByChild("correo").equalTo(auth.getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Usuario user = dataSnapshot.getValue(Usuario.class);
+                StorageReference storageReference = storage.getReference().child("fotos").child(user.getFoto());
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.e(">>>", "ENTRAAAAAAAAA");
+                        Glide.with(MenuBienestar.this).load(uri)
+                                .into(img_usuario);
+                        Log.e(">>>", "Terminaaaaaaa");
+//                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                        ft.detach(FragActividad.this).attach(FragActividad.this).commit();
+                    }
+                });
+                Log.e(">>>", user.getArea());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         //
 

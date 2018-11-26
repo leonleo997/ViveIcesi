@@ -135,6 +135,10 @@
                 android:src="@mipmap/fotoperfil" />
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/cb_terminos"
@@ -144,6 +148,13 @@
             android:text="Términos y condiciones"
             android:textColor="@color/claroViveIcesi"
             android:textSize="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Términos y condiciones"/>
+
+        </LinearLayout>
 
 
         <Button
