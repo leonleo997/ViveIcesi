@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -84,7 +85,6 @@ public class MenuBienestar extends AppCompatActivity
     FirebaseAuth auth;
     FirebaseDatabase db;
     FirebaseStorage storage;
-    private FirebaseAuth.AuthStateListener authStateListener;
 
     String FRAGMENT_ITEMS = "items";
     String FRAGMENT_INFORMACION = "informacion";
@@ -94,6 +94,8 @@ public class MenuBienestar extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_menu_bienestar);
+
 
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -110,12 +112,17 @@ public class MenuBienestar extends AppCompatActivity
         calificacionActividades = new CalificacionActividades();
         fragCrearActividad = new FragCrearActividad();
 
-        fragPSU=new FragPSU();
-        fragCultura=new FragCultura();
-        fragSalud=new FragSalud();
+        fragPSU = new FragPSU();
+        fragCultura = new FragCultura();
+        fragSalud = new FragSalud();
         fragDeportes = new FragDeportes();
 
-        img_usuario=findViewById(R.id.img_usuario);
+        NavigationView navigationView=findViewById(R.id.nav_view);
+        View headerLayout =
+                navigationView.inflateHeaderView(R.layout.nav_header_menu_bienestar);
+//        View header = headerLayout.findViewById(R.id.viewId);
+        img_usuario = headerLayout.findViewById(R.id.img_usuario);
+
         DatabaseReference myRef = db.getReference("Usuarios");
         Log.e(">>>", auth.getCurrentUser().getEmail());
         myRef.orderByChild("correo").equalTo(auth.getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {
@@ -127,12 +134,15 @@ public class MenuBienestar extends AppCompatActivity
                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Log.e(">>>", "ENTRAAAAAAAAA");
-                        Glide.with(MenuBienestar.this).load(uri)
+                        if(getApplicationContext()==null)
+                            Log.e(">>>", "contexto nulo");
+                        if(img_usuario==null)
+                            Log.e(">>>", "img usuario nula");
+
+                        Glide.with(getApplicationContext()).load(uri)
+                                .apply(RequestOptions.circleCropTransform())
                                 .into(img_usuario);
                         Log.e(">>>", "Terminaaaaaaa");
-//                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                        ft.detach(FragActividad.this).attach(FragActividad.this).commit();
                     }
                 });
                 Log.e(">>>", user.getArea());
@@ -161,23 +171,14 @@ public class MenuBienestar extends AppCompatActivity
 
         //
 
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() == null) {
-                    Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(MenuBienestar.this, Login.class);
-                    startActivity(i);
-                    finish();
-                    //startActivity(new Intent(Login.this, singin_activity.class));
-                } else {
-                    Toast.makeText(getApplicationContext(), "Succed to connect", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(MenuBienestar.this, Login.class);
+            startActivity(i);
+            finish();
+        }
 
 
-        setContentView(R.layout.activity_menu_bienestar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -214,7 +215,6 @@ public class MenuBienestar extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -246,8 +246,6 @@ public class MenuBienestar extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        auth.addAuthStateListener(authStateListener);
-
     }
 
     @Override

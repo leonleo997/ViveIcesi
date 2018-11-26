@@ -3,12 +3,24 @@ package co.highusoft.viveicesi.view.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.adapters.EventoAdapter;
+import co.highusoft.viveicesi.model.Evento;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,12 +73,38 @@ public class FragPSU extends Fragment {
         }
     }
 
+    private EventoAdapter adaptador;
+    private ListView view_eventos;
+    private FirebaseDatabase db;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_psu, container, false);
+        View view = inflater.inflate(R.layout.fragment_frag_psu, container, false);
+        view_eventos = view.findViewById(R.id.list_eventos);
+        adaptador = new EventoAdapter(view.getContext());
+        view_eventos.setAdapter(adaptador);
+
+
+        db = FirebaseDatabase.getInstance();
+        db.getReference().child("Eventos").orderByChild("area").equalTo("PSU")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
+                            Evento evento=postsnapshot.getValue(Evento.class);
+                            adaptador.addEvent(evento);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        return view;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

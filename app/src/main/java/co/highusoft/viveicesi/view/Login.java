@@ -59,10 +59,7 @@ public class Login extends AppCompatActivity {
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() == null) {
-                    Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
-                    //startActivity(new Intent(Login.this, singin_activity.class));
-                } else {
+                if (firebaseAuth.getCurrentUser() != null) {
                     Toast.makeText(getApplicationContext(), "Succed to connect", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(Login.this, MenuBienestar.class);
                     startActivity(i);

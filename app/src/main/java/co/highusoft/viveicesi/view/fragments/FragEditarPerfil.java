@@ -37,18 +37,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
 import co.highusoft.viveicesi.R;
-import co.highusoft.viveicesi.adapters.UtilDomi;
+import co.highusoft.viveicesi.utilities.UtilDomi;
 import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.model.Usuario;
-import co.highusoft.viveicesi.view.Registro;
-
-import static co.highusoft.viveicesi.R.layout.spinner_item;
 
 /**
  * A simple {@link Fragment} subclass.

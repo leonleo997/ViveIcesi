@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,11 +41,10 @@ import java.util.List;
 
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.adapters.HorarioAdapter;
-import co.highusoft.viveicesi.adapters.UtilDomi;
+import co.highusoft.viveicesi.utilities.UtilDomi;
 import co.highusoft.viveicesi.model.Actividad;
 import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.model.Horario;
-import co.highusoft.viveicesi.view.Registro;
 
 
 /**
