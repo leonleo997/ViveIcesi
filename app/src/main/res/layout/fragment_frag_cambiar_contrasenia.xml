@@ -5,21 +5,37 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.FragCambiarContrasenia">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@color/white"
-            android:src="@drawable/recuperar_contrasenha" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recuperar  contraseña"
+                android:textSize="30dp"
+                android:layout_marginTop="30dp"
+                android:textAlignment="center"
+                android:id="@+id/tv_item"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"/>
+            <ImageView
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:src="@drawable/icesilogo"
+                android:layout_marginLeft="50dp"/>
+
+        </LinearLayout>
+
+
 
         <EditText
             android:id="@+id/et_emailPass"
@@ -32,12 +48,14 @@
             android:textAlignment="center" />
 
         <ImageButton
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:id="@+id/btn_sendEmail"
             android:layout_marginTop="60dp"
-            android:background="@mipmap/gmail"
+            android:src="@mipmap/send"
+            android:background="@drawable/boton_redondo"
             android:layout_gravity="center"
             />
     </LinearLayout>
+
 </FrameLayout>

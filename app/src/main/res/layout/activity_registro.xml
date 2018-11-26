@@ -9,6 +9,12 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/bienestar" />
 
         <TextView
             android:layout_width="match_parent"
@@ -19,12 +25,6 @@
             android:textSize="50sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/logo_vive_icesi" />
 
         <EditText
             android:id="@+id/et_name"
@@ -141,9 +141,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Acepto los términos y condiciones"
+            android:text="Términos y condiciones"
             android:textColor="@color/claroViveIcesi"
             android:textSize="10dp" />
+
 
         <Button
             android:id="@+id/btn_registrar"
