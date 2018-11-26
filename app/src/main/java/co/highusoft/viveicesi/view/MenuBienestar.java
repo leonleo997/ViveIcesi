@@ -236,7 +236,7 @@ public class MenuBienestar extends AppCompatActivity
             fragmentTransaction.replace(R.id.contenedorFragments, fragmentoInfo).commit();
         } else if (id == R.id.nav_contrasenha) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragCambiarContrasenia).commit();
-        } else if (id == R.id.add_event) {
+        } else if (id == R.id.add_activity) {
 //            fragmentTransaction.replace(R.id.contenedorFragments, fragAgregarEvento).commit();
             fragmentTransaction.replace(R.id.contenedorFragments, fragCrearActividad).commit();
 //            Intent i = new Intent(MenuBienestar.this,borrador.class);

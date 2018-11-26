@@ -55,9 +55,9 @@
     <item android:title="Otras funcionalidades">
         <menu>
             <item
-                android:id="@+id/add_event"
+                android:id="@+id/add_activity"
                 android:icon="@mipmap/agregar"
-                android:title="Agregar Evento" />
+                android:title="Crear Actividad" />
             <item
                 android:id="@+id/cuestionario"
                 android:icon="@mipmap/encuesta"

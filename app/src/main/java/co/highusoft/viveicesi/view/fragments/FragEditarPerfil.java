@@ -1,11 +1,15 @@
 package co.highusoft.viveicesi.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,24 +17,36 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.adapters.UtilDomi;
 import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.model.Usuario;
+import co.highusoft.viveicesi.view.Registro;
 
 import static co.highusoft.viveicesi.R.layout.spinner_item;
 
@@ -47,18 +63,26 @@ public class FragEditarPerfil extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int REQUEST_GALLERY = 101;
+
+    private String path;
 
 
     private EditText editTextNombre;
     private EditText editTextUsuario;
     private EditText editTextCorreoElectronico;
+    private EditText et_tipo_user;
     private Spinner spinnerAreadeTrabajo;
     private Spinner spinnerRol;
-    private ImageButton imageButtonFotoPerfil;
+
+    private ImageView iv_foto;
+    private ImageButton btn_cambiarFoto;
     private ImageButton imageButtonGuardar;
     private FirebaseDatabase db;
     private FirebaseAuth auth;
     private FirebaseStorage storage;
+
+    private Usuario currentUser;
 
 
     // TODO: Rename and change types of parameters
@@ -110,40 +134,130 @@ public class FragEditarPerfil extends Fragment {
 
         editTextUsuario = viewInflater.findViewById(R.id.et_user);
         editTextCorreoElectronico = viewInflater.findViewById(R.id.et_correo);
+        et_tipo_user = viewInflater.findViewById(R.id.et_tipo_user);
 
         editTextNombre = viewInflater.findViewById(R.id.et_nombre);
-        imageButtonFotoPerfil = viewInflater.findViewById(R.id.btn_cambiarFoto);
+        btn_cambiarFoto = viewInflater.findViewById(R.id.btn_cambiarFoto);
+        iv_foto = viewInflater.findViewById(R.id.foto);
+
         imageButtonGuardar = viewInflater.findViewById(R.id.btn_save_changes);
 
         spinnerAreadeTrabajo = viewInflater.findViewById(R.id.sp_area);
 
+        btn_cambiarFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent();
+                i.setType("image/*");
+                i.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(i, REQUEST_GALLERY);
+            }
+        });
 
-//
+        imageButtonGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference myRef = db.getReference("Usuarios");
+                myRef.orderByChild("correo").equalTo(auth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.e(">>", "Entra al boton guardar");
+                        for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
+                            String key = postsnapshot.getKey();
+                            Usuario user = postsnapshot.getValue(Usuario.class);
+                            user.setNombre(editTextNombre.getText().toString());
+                            user.setUsuario(editTextUsuario.getText().toString());
+                            user.setArea(spinnerAreadeTrabajo.getSelectedItem().toString());
+
+                            if (path != null) {
+                                try {
+                                    StorageReference ref = storage.getReference().child("fotos").child(user.getFoto());
+                                    ref.delete();
+
+                                    user.setFoto(path);
+                                    ref = storage.getReference().child("fotos").child(user.getFoto());
+                                    FileInputStream file = new FileInputStream(new File(path));
+                                    ref.putStream(file);
+                                } catch (FileNotFoundException ex) {
+
+                                }
+                            }
+
+                            postsnapshot.getRef().setValue(user);
+                            Log.e(">>", user.getNombre());
+                            Log.e(">> Que elimine?", "" + key);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
+        cargarDatos();
 
 
-        //Implemento el setOnItemSelectedListener: para realizar acciones cuando se seleccionen los ítems
+        return viewInflater;
 
-        //Convierto la variable List<> en un ArrayList<>()
-        final ArrayList listaOpciones = new ArrayList<>();
-        //Arreglo con nombre de frutas
-        final String[] opcionesEstudiantes = Constantes.ESTUDIANTES;
-        final String[] opcionesTrabadores = Constantes.TRABAJADORES;
+    }
 
-        //Agrego las frutas del arreglo `strFrutas` a la listaFrutas
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_GALLERY && resultCode == getActivity().RESULT_OK) {
+            path = UtilDomi.getPath(getContext(), data.getData());
+            Bitmap m = BitmapFactory.decodeFile(path);
+            iv_foto.setImageBitmap(m);
+        }
+    }
 
-//
-
-
+    private void cargarDatos() {
         DatabaseReference myRef = db.getReference("Usuarios");
 
         myRef.orderByChild("correo").equalTo(auth.getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Usuario user = dataSnapshot.getValue(Usuario.class);
+                currentUser = user;
+
+                final ArrayList listaOpciones = new ArrayList<>();
+                final String[] opcionesEstudiantes = Constantes.ESTUDIANTES;
+                final String[] opcionesTrabadores = Constantes.TRABAJADORES;
+
                 editTextNombre.setText(user.getNombre());
                 editTextCorreoElectronico.setText(user.getCorreo());
                 editTextUsuario.setText(user.getUsuario());
+                et_tipo_user.setText(user.gettipoUsuario());
 
+                storage = FirebaseStorage.getInstance();
+                StorageReference storageReference = storage.getReference().child("fotos").child(user.getFoto());
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(getContext()).load(uri)
+                                .apply(new RequestOptions()
+                                        .centerCrop())
+                                .into(iv_foto);
+                    }
+                });
+                ArrayAdapter<String> spinnerArrayAdapter;
+                if (user.gettipoUsuario().equals("Estudiante")) {
+                    spinnerArrayAdapter = new ArrayAdapter<String>(
+                            getActivity(), R.layout.spinner_item, opcionesEstudiantes);
+                } else {
+                    spinnerArrayAdapter = new ArrayAdapter<String>(
+                            getActivity(), R.layout.spinner_item, opcionesTrabadores);
+                }
+
+
+                spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+                spinnerAreadeTrabajo.setAdapter(spinnerArrayAdapter);
+
+                int index = spinnerArrayAdapter.getPosition(user.getArea());
+                Log.e(">>Index", index+"");
+                spinnerAreadeTrabajo.setSelection(index);
 
                 //
 
@@ -181,8 +295,6 @@ public class FragEditarPerfil extends Fragment {
             }
         });
 
-
-        return viewInflater;
 
     }
 
