@@ -5,6 +5,7 @@ public class Evento {
     private String area;
     private String lugar;
     private String descripcion;
+    private String img;
 
     public int mYear;
     public int mMonth;
@@ -14,6 +15,15 @@ public class Evento {
     public int min;
 
     public Evento() {
+    }
+
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getNombre() {

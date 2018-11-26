@@ -20,8 +20,8 @@
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="$PROJECT_DIR$/../icons8-más-96.png" />
-                                      <entry key="outputName" value="evento" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Descargas/icons8-deporte-96.png" />
+                                      <entry key="outputName" value="sport_icon" />
                                     </map>
                                   </option>
                                 </PersistentState>

@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import co.highusoft.viveicesi.R;
-import co.highusoft.viveicesi.adapters.Adaptador;
+//import co.highusoft.viveicesi.adapters.Adaptador;
 import co.highusoft.viveicesi.model.Comentario;
 
 
@@ -28,7 +28,7 @@ public class Home extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseDatabase db;
 
-    private Adaptador adaptador;
+    //private Adaptador adaptador;
 
     private EditText et_comentario;
     private Button btn_comentar;
@@ -68,8 +68,8 @@ public class Home extends AppCompatActivity {
         btn_comentar=findViewById(R.id.btn_comentar);
 
         view_comentarios=findViewById(R.id.view_comentarios);
-        adaptador=new Adaptador(this);
-        view_comentarios.setAdapter(adaptador);
+//        adaptador=new Adaptador(this);
+//        view_comentarios.setAdapter(adaptador);
 
         btn_comentar.setOnClickListener(new View.OnClickListener() {
             @Override

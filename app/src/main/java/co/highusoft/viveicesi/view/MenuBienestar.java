@@ -25,23 +25,36 @@ import co.highusoft.viveicesi.view.fragments.AgregarEvento;
 import co.highusoft.viveicesi.view.fragments.FragActividad;
 import co.highusoft.viveicesi.view.fragments.FragCalendario;
 import co.highusoft.viveicesi.view.fragments.FragCrearActividad;
+import co.highusoft.viveicesi.view.fragments.FragCultura;
+import co.highusoft.viveicesi.view.fragments.FragDeportes;
 import co.highusoft.viveicesi.view.fragments.FragItems;
 import co.highusoft.viveicesi.view.fragments.FragMostrarEvento;
 
 import co.highusoft.viveicesi.view.fragments.FragCambiarContrasenia;
+import co.highusoft.viveicesi.view.fragments.FragPSU;
 import co.highusoft.viveicesi.view.fragments.FragPerfil;
+import co.highusoft.viveicesi.view.fragments.FragSalud;
 import co.highusoft.viveicesi.view.fragments.FragmentoInfo;
 
 public class MenuBienestar extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragPerfil.OnFragmentInteractionListener, FragItems.OnFragmentInteractionListener, FragmentoInfo.OnFragmentInteractionListener,
-        FragCalendario.OnFragmentInteractionListener, AgregarEvento.OnFragmentInteractionListener, FragMostrarEvento.OnFragmentInteractionListener, FragCambiarContrasenia.OnFragmentInteractionListener,
-        FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener, FragCrearActividad.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        FragPerfil.OnFragmentInteractionListener, FragDeportes.OnFragmentInteractionListener,
+        FragmentoInfo.OnFragmentInteractionListener, FragCalendario.OnFragmentInteractionListener,
+        AgregarEvento.OnFragmentInteractionListener, FragMostrarEvento.OnFragmentInteractionListener,
+        FragCambiarContrasenia.OnFragmentInteractionListener, FragSalud.OnFragmentInteractionListener,
+        FragPSU.OnFragmentInteractionListener, FragCultura.OnFragmentInteractionListener,
+        FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener,
+        FragCrearActividad.OnFragmentInteractionListener {
+
+    private FragDeportes fragDeportes;
+    private FragSalud fragSalud;
+    private FragCultura fragCultura;
+    private FragPSU fragPSU;
 
 
     private FragCalendario fragCalendario;
     private FragmentoInfo fragmentoInfo;
     private FragPerfil fragPerfil;
-    private FragItems fragItems;
     private FragCambiarContrasenia fragCambiarContrasenia;
     private AgregarEvento fragAgregarEvento;
     private FragActividad fragActividad;
@@ -70,7 +83,6 @@ public class MenuBienestar extends AppCompatActivity
         fragCalendario = new FragCalendario();
         fragmentoInfo = new FragmentoInfo();
         fragPerfil = new FragPerfil();
-        fragItems = new FragItems();
         fragAgregarEvento = new AgregarEvento();
         fragActividad = new FragActividad();
         fragMostrarEventos = new FragMostrarEvento();
@@ -78,6 +90,11 @@ public class MenuBienestar extends AppCompatActivity
         fragActividad = new FragActividad();
         calificacionActividades = new CalificacionActividades();
         fragCrearActividad = new FragCrearActividad();
+
+        fragPSU=new FragPSU();
+        fragCultura=new FragCultura();
+        fragSalud=new FragSalud();
+        fragDeportes = new FragDeportes();
 
         //
 
@@ -178,9 +195,6 @@ public class MenuBienestar extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -200,9 +214,9 @@ public class MenuBienestar extends AppCompatActivity
 
 
         if (id == R.id.nav_deporte) {
-            fragmentTransaction.replace(R.id.contenedorFragments, fragItems).commit();
+            fragmentTransaction.replace(R.id.contenedorFragments, fragDeportes).commit();
         } else if (id == R.id.nav_cultura) {
-            fragmentTransaction.replace(R.id.contenedorFragments, fragItems).commit();
+            fragmentTransaction.replace(R.id.contenedorFragments, fragCultura).commit();
         } else if (id == R.id.nav_calendario) {
 
             fragmentTransaction.replace(R.id.contenedorFragments, fragCalendario).commit();
@@ -212,9 +226,9 @@ public class MenuBienestar extends AppCompatActivity
             startActivity(i);
             finish();
         } else if (id == R.id.nav_salud) {
-            fragmentTransaction.replace(R.id.contenedorFragments, fragItems).commit();
+            fragmentTransaction.replace(R.id.contenedorFragments, fragSalud).commit();
         } else if (id == R.id.nav_psu) {
-            fragmentTransaction.replace(R.id.contenedorFragments, fragItems).commit();
+            fragmentTransaction.replace(R.id.contenedorFragments, fragPSU).commit();
         } else if (id == R.id.nav_perfil) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragPerfil).commit();
         } else if (id == R.id.nav_informacion) {

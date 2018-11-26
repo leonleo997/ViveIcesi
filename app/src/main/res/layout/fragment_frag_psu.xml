@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.fragments.FragPSU">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,26 +16,28 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">
+
             <TextView
+                android:id="@+id/tv_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Proyecto social\n PSU"
-                android:textSize="25dp"
                 android:layout_marginTop="20dp"
+                android:text="Proyecto Social\n Universitario PSU"
                 android:textAlignment="center"
-                android:id="@+id/tv_item"/>
+                android:textSize="25dp" />
+
             <ImageView
                 android:layout_width="110dp"
                 android:layout_height="110dp"
-                android:src="@drawable/icesilogo"
-                android:layout_marginLeft="70dp"/>
+                android:layout_marginLeft="70dp"
+                android:src="@drawable/icesilogo" />
 
         </LinearLayout>
 
         <ListView
+            android:id="@+id/lista_psu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/lista_psu">
+            android:layout_height="wrap_content">
 
         </ListView>
 

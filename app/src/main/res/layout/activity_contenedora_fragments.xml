@@ -4,68 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <!--
-    FUNCIONA
-       <fragment
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:id="@+id/fragInfo"
-           tools:layout="@layout/fragment_fragmento_info"
-           android:name="co.highusoft.viveicesi.view.FragmentoInfo">
-       </fragment> -->
-    <!--
-   FUNCIONA
-   <fragment
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:id="@+id/fragItems"
-              tools:layout="@layout/fragment_frag_calendario"
-              android:name="co.highusoft.viveicesi.FragCalendario">
-
-
-          </fragment>
--->
-    <!--
-FUNCIONA
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragmentoItems"
-        tools:layout="@layout/fragment_frag_items"
-        android:name="co.highusoft.viveicesi.FragItems"
-        >
-    </fragment>
-
--->
-    <!--
-        <fragment
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fragmentoItems"
-            tools:layout="@layout/fragment_frag_items"
-            android:name="co.highusoft.viveicesi.FragItems"
-            >
-        </fragment>
-        -->
-    <!-- <fragment
-        android:id="@+id/fragmentoPerfil"
-        android:name="co.highusoft.viveicesi.FragPerfil"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_frag_perfil"></fragment>
--->
+    
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="informacion"
         android:id="@+id/botonPruebaFragments"/>
 
-  <!--  <FrameLayout
-        android:id="@+id/contenedorFragments"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </FrameLayout>
--->
 </LinearLayout>

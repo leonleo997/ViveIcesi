@@ -18,7 +18,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Desarrollo Humano \n y Promoción de \n la Salud"
+                android:text="Deporte \n y Actividad Física"
                 android:textSize="25dp"
                 android:layout_marginTop="30dp"
                 android:textAlignment="center"

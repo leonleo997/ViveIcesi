@@ -6,11 +6,19 @@ public class Actividad {
     private String nombre;
     private String descripcion;
     private String img;
+    private String lugar;
 
     private ArrayList<Horario> horarios;
-//private ArrayList<Encuesta> encuestas;
     public Actividad() {
 
+    }
+
+    public String getLugar() {
+        return lugar;
+    }
+
+    public void setLugar(String lugar) {
+        this.lugar = lugar;
     }
 
     public String getNombre() {

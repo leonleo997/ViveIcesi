@@ -6,35 +6,100 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import co.highusoft.viveicesi.R;
-import co.highusoft.viveicesi.adapters.EventoAdapter;
-import co.highusoft.viveicesi.model.Evento;
+import co.highusoft.viveicesi.adapters.ActividadAdapter;
+import co.highusoft.viveicesi.model.Actividad;
+import co.highusoft.viveicesi.model.Constantes;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragMostrarEvento.OnFragmentInteractionListener} interface
+ * {@link FragDeportes.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragMostrarEvento#newInstance} factory method to
+ * Use the {@link FragDeportes#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragMostrarEvento extends Fragment {
+public class FragDeportes extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private TextView tv_item;
+    private ListView lv_items;
+
+    private FirebaseStorage storage;
+    private FirebaseDatabase db;
+
+
+    private ActividadAdapter actividadAdapter;
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View inflaterView = inflater.inflate(R.layout.fragment_frag_deportes, null);
+
+        tv_item = inflaterView.findViewById(R.id.tv_item);
+
+        actividadAdapter = new ActividadAdapter(this.getContext());
+
+
+        db = FirebaseDatabase.getInstance();
+        db.getReference().child("Actividades").child(Constantes.TIPOS_ACTIVIDADES[1]).addChildEventListener
+                (new ChildEventListener() {
+                     @Override
+                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                         Actividad actividad = dataSnapshot.getValue(Actividad.class);
+                         Log.e(">>",actividad.getNombre());
+                         actividadAdapter.addActividad(actividad);
+                     }
+
+                     @Override
+                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                     }
+
+                     @Override
+                     public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                     }
+
+                     @Override
+                     public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                     }
+
+                     @Override
+                     public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                     }
+                 }
+                );
+
+        lv_items = inflaterView.findViewById(R.id.lv_deportes);
+        lv_items.setAdapter(actividadAdapter);
+        // Inflate the layout for this fragment
+        return inflaterView;
+    }
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -42,7 +107,7 @@ public class FragMostrarEvento extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FragMostrarEvento() {
+    public FragDeportes() {
         // Required empty public constructor
     }
 
@@ -52,11 +117,11 @@ public class FragMostrarEvento extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragMostrarEvento.
+     * @return A new instance of fragment FragDeportes.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragMostrarEvento newInstance(String param1, String param2) {
-        FragMostrarEvento fragment = new FragMostrarEvento();
+    public static FragDeportes newInstance(String param1, String param2) {
+        FragDeportes fragment = new FragDeportes();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -74,53 +139,7 @@ public class FragMostrarEvento extends Fragment {
     }
 
 
-    private EventoAdapter adaptador;
-    private ListView view_eventos;
-    private FirebaseDatabase db;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_frag_mostrar_evento, container, false);
-        view_eventos=view.findViewById(R.id.list_eventos);
-        adaptador=new EventoAdapter(view.getContext());
-        view_eventos.setAdapter(adaptador);
-
-
-        db=FirebaseDatabase.getInstance();
-        DatabaseReference eventos_ref = db.getReference().child("Eventos");
-        eventos_ref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Evento evento=dataSnapshot.getValue(Evento.class);
-                adaptador.addEvent(evento);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return view;
-    }
-
+    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

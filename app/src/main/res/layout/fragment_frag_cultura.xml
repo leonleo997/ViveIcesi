@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.FragCultura">
-
+    tools:context=".view.fragments.FragDeportes">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,22 +20,21 @@
                 android:layout_height="wrap_content"
                 android:text="Cultura"
                 android:textSize="25dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
                 android:textAlignment="center"
                 android:id="@+id/tv_item"/>
             <ImageView
                 android:layout_width="110dp"
                 android:layout_height="110dp"
                 android:src="@drawable/icesilogo"
-                android:layout_marginLeft="150dp"/>
+                android:layout_marginLeft="50dp"/>
 
         </LinearLayout>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/lista_cultura">
+            android:id="@+id/lv_deportes">
 
         </ListView>
 

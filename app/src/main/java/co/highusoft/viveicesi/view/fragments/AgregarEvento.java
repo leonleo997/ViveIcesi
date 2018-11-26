@@ -3,9 +3,13 @@ package co.highusoft.viveicesi.view.fragments;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +17,29 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.adapters.UtilDomi;
+import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.model.Evento;
 
 
@@ -48,6 +61,8 @@ public class AgregarEvento extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private String path;
+
     private DatePickerDialog.OnDateSetListener mDataSetListener;
     private TextView mDisplayDate;
 
@@ -56,6 +71,8 @@ public class AgregarEvento extends Fragment {
 
     private Spinner sp_tipo_area;
 
+    private FirebaseDatabase db;
+    private FirebaseStorage storage;
     private OnFragmentInteractionListener mListener;
 
     public AgregarEvento() {
@@ -89,7 +106,7 @@ public class AgregarEvento extends Fragment {
         }
     }
 
-    private FirebaseDatabase x  ;
+    private FirebaseDatabase x;
     private FirebaseAuth auth;
 
     public int mYear;
@@ -100,6 +117,9 @@ public class AgregarEvento extends Fragment {
     public int min;
 
     private Button btn_AgregarEvento;
+    private ImageView btn_anhadirFoto;
+
+    private static final int REQUEST_GALLERY = 101;
 
 
     @Override
@@ -113,7 +133,20 @@ public class AgregarEvento extends Fragment {
         inicializarComponentes(view);
 
         db = FirebaseDatabase.getInstance();
+        storage= FirebaseStorage.getInstance();
         auth = FirebaseAuth.getInstance();
+
+        btn_anhadirFoto = view.findViewById(R.id.btn_aniadirFoto);
+        btn_anhadirFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent();
+                i.setType("image/*");
+                i.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(i, REQUEST_GALLERY);
+
+            }
+        });
 
         btn_AgregarEvento = view.findViewById(R.id.btn_guardar_evento);
         btn_AgregarEvento.setOnClickListener(new View.OnClickListener() {
@@ -134,9 +167,35 @@ public class AgregarEvento extends Fragment {
                 evento.setHour(hour);
                 evento.setmYear(mYear);
                 evento.setmMonth(mMonth);
+                evento.setImg(path);
                 evento.setmDay(mDay);
                 evento.setMin(min);
+
+
+                if (path != null) {
+                    try {
+                        StorageReference ref = storage.getReference().child("fotos").child(evento.getImg());
+                        FileInputStream file = new FileInputStream(new File(path));
+                        ref.putStream(file);
+                    } catch (FileNotFoundException ex) {
+
+                    }
+                }
+
                 dbr.setValue(evento);
+
+                nombreEvento.setText("");
+                descripcion.setText("");
+                lugar.setText("");
+
+                Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.contenedorFragments);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.detach(currentFragment);
+                fragmentTransaction.attach(currentFragment);
+                fragmentTransaction.commit();
+
+                Toast.makeText(getContext(), "El evento se ha creado exitosamente!", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -200,7 +259,11 @@ public class AgregarEvento extends Fragment {
         onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                mDisplayTime.setText(hourOfDay + ":" + minute);
+                if(minute<10) {
+                    mDisplayTime.setText(hourOfDay + ":0" + minute);
+                }else{
+                    mDisplayTime.setText(hourOfDay + ":" + minute);
+                }
                 hour = hourOfDay;
                 min = minute;
             }
@@ -208,8 +271,11 @@ public class AgregarEvento extends Fragment {
 
         // Initializing an ArrayAdapter
         sp_tipo_area = view.findViewById(R.id.sp_tipo_area);
-        String[] mensaje = {"Seleccionar Área"};
+
+        String[] mensaje = Constantes.TIPOS_ACTIVIDADES;
         final List<String> plantsList = new ArrayList<>(Arrays.asList(mensaje));
+        plantsList.add("PSU");
+        plantsList.add("General");
         final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                 view.getContext(), R.layout.spinner_item, plantsList);
 
@@ -255,5 +321,15 @@ public class AgregarEvento extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_GALLERY && resultCode == this.getActivity().RESULT_OK) {
+            path = UtilDomi.getPath(this.getContext(), data.getData());
+            Bitmap m = BitmapFactory.decodeFile(path);
+            ImageView img_foto = this.getActivity().findViewById(R.id.foto);
+            img_foto.setImageBitmap(m);
+        }
     }
 }

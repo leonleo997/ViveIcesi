@@ -1,36 +1,52 @@
 package co.highusoft.viveicesi.view.fragments;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import co.highusoft.viveicesi.R;
-import co.highusoft.viveicesi.adapters.Adaptador;
 import co.highusoft.viveicesi.adapters.HorarioAdapter;
+import co.highusoft.viveicesi.adapters.UtilDomi;
 import co.highusoft.viveicesi.model.Actividad;
 import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.model.Horario;
+import co.highusoft.viveicesi.view.Registro;
 
 
 /**
@@ -46,6 +62,11 @@ public class FragCrearActividad extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private static final int REQUEST_GALLERY = 101;
+
+    private String path;
+
 
     private TimePickerDialog.OnTimeSetListener onTimeStartSetListener;
     private TextView mDisplayTimeStart;
@@ -63,13 +84,17 @@ public class FragCrearActividad extends Fragment {
     private Spinner sp_dias_semana;
     private ListView view_horarios;
 
+    private ImageButton btn_anhadirFoto;
+
     private EditText et_nombre;
     private EditText et_descripcion;
+    private EditText et_lugar;
 
 
     private HorarioAdapter horarioAdapter;
 
     private FirebaseDatabase bd;
+    private FirebaseStorage storage;
 
     Dialog dialog;
     // TODO: Rename and change types of parameters
@@ -102,15 +127,18 @@ public class FragCrearActividad extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
+
+        storage = FirebaseStorage.getInstance();
+        ActivityCompat.requestPermissions(this.getActivity(), new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        }, 11);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
 
 
     @Override
@@ -141,25 +169,40 @@ public class FragCrearActividad extends Fragment {
 
 
         //Horario renglon--------------------------------------
-        view_horarios=view.findViewById(R.id.lv_horario);
-        horarioAdapter=new HorarioAdapter(this.getActivity());
+        view_horarios = view.findViewById(R.id.lv_horario);
+        horarioAdapter = new HorarioAdapter(this.getActivity());
         view_horarios.setAdapter(horarioAdapter);
+        view_horarios.setVisibility(View.GONE);
         //-----------------------------------------------------
-        final EditText et_lugar=view.findViewById(R.id.et_lugar);
 
-        Button btn_horario=view.findViewById(R.id.btn_add_horario);
+
+        final EditText et_lugar = view.findViewById(R.id.et_lugar);
+
+        Button btn_horario = view.findViewById(R.id.btn_add_horario);
         btn_horario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Horario horario=new Horario();
+                Horario horario = new Horario();
                 horario.setDiaSemana(sp_dias_semana.getSelectedItem().toString());
-                horario.setHoraEntrada(hourS+":"+minS);
-                horario.setHoraSalida(hourF+":"+minF);
+                horario.setHoraEntrada(hourS + ":" + minS);
+                horario.setHoraSalida(hourF + ":" + minF);
                 horario.setLugar(et_lugar.getText().toString());
                 horarioAdapter.addHorario(horario);
+                view_horarios.setVisibility(View.VISIBLE);
             }
         });
 
+        btn_anhadirFoto = view.findViewById(R.id.btn_aniadirFoto);
+        btn_anhadirFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent();
+                i.setType("image/*");
+                i.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(i, REQUEST_GALLERY);
+
+            }
+        });
 
         return view;
 
@@ -185,9 +228,9 @@ public class FragCrearActividad extends Fragment {
                 final Calendar c = Calendar.getInstance();
                 int hour = c.get(Calendar.HOUR_OF_DAY);
                 int minute = c.get(Calendar.MINUTE);
-                diaSemana=c.get(Calendar.DAY_OF_WEEK);
+                diaSemana = c.get(Calendar.DAY_OF_WEEK);
 
-                        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
                         view.getContext(),
                         onTimeStartSetListener,
                         hour,
@@ -223,7 +266,11 @@ public class FragCrearActividad extends Fragment {
         onTimeStartSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                mDisplayTimeStart.setText(hourOfDay + ":" + minute);
+                if(minute<10){
+                    mDisplayTimeStart.setText(hourOfDay + ":0" + minute);
+                }else{
+                    mDisplayTimeStart.setText(hourOfDay + ":" + minute);
+                }
                 hourS = hourOfDay;
                 minS = minute;
             }
@@ -233,31 +280,63 @@ public class FragCrearActividad extends Fragment {
         onTimeFinishSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                mDisplayTimeFinish.setText(hourOfDay + ":" + minute);
+                if(minute<10){
+                    mDisplayTimeFinish.setText(hourOfDay + ":0" + minute);
+                }else{
+                    mDisplayTimeFinish.setText(hourOfDay + ":" + minute);
+                }
                 hourF = hourOfDay;
                 minF = minute;
             }
         };
 
 
-        et_nombre=view.findViewById(R.id.et_name);
-        et_descripcion=view.findViewById(R.id.et_descripcion);
+        et_nombre = view.findViewById(R.id.et_name);
+        et_descripcion = view.findViewById(R.id.et_descripcion);
+        et_lugar = view.findViewById(R.id.et_lugar);
 
-        final Button btn_crear_actividad=view.findViewById(R.id.btn_crear_actividad);
+        final Button btn_crear_actividad = view.findViewById(R.id.btn_crear_actividad);
         btn_crear_actividad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bd=FirebaseDatabase.getInstance();
+                bd = FirebaseDatabase.getInstance();
 
-                Actividad actividad= new Actividad();
+                Actividad actividad = new Actividad();
                 actividad.setDescripcion(et_descripcion.getText().toString());
-                actividad.setImg("VACIOOOO");
+                actividad.setImg(path);
                 actividad.setNombre(et_nombre.getText().toString());
                 actividad.setHorarios(horarioAdapter.getHorarios());
+                actividad.setLugar(et_lugar.getText().toString());
 
-                DatabaseReference dbr=bd.getReference().child("Actividades")
-                        .child(sp_tipo_actividad.getSelectedItem().toString()).push();
+                if (path != null) {
+                    try {
+                        StorageReference ref = storage.getReference().child("fotos").child(actividad.getImg());
+                        FileInputStream file = new FileInputStream(new File(path));
+                        ref.putStream(file);
+                    } catch (FileNotFoundException ex) {
+
+                    }
+                }
+                String tipo_actividad = sp_tipo_actividad.getSelectedItem().toString();
+
+                DatabaseReference dbr = bd.getReference().child("Actividades")
+                        .child(tipo_actividad).push();
                 dbr.setValue(actividad);
+
+
+                et_nombre.setText("");
+                et_descripcion.setText("");
+                et_lugar.setText("");
+
+                Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.contenedorFragments);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.detach(currentFragment);
+                fragmentTransaction.attach(currentFragment);
+                fragmentTransaction.commit();
+
+                Toast.makeText(getContext(), "La actividad se ha creado exitosamente!", Toast.LENGTH_SHORT).show();
+
+
             }
         });
     }
@@ -298,5 +377,15 @@ public class FragCrearActividad extends Fragment {
     public void showAlertDialog(View v) {
 
 //        AlertDialog.Builder builderAlert = new AlertDialog.Builder(FragCrearActividad.this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_GALLERY && resultCode == this.getActivity().RESULT_OK) {
+            path = UtilDomi.getPath(this.getContext(), data.getData());
+            Bitmap m = BitmapFactory.decodeFile(path);
+            ImageView img_foto = this.getActivity().findViewById(R.id.foto_actividad);
+            img_foto.setImageBitmap(m);
+        }
     }
 }
