@@ -1,9 +1,11 @@
 package co.highusoft.viveicesi.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +29,8 @@ public class FragPerfil extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private Button btn_contrasenha;
-    private  Button btn_registrarAdmin;
-    private  Button btn_datos;
+    private Button btn_registrarAdmin;
+    private Button btn_datos;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -70,15 +72,42 @@ public class FragPerfil extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View viewInflate = inflater.inflate(R.layout.fragment_frag_perfil, null);
 
-        View viewInflate=inflater.inflate(R.layout.fragment_frag_perfil,null);
+        btn_contrasenha = viewInflate.findViewById(R.id.btn_contrasenha);
 
-        btn_contrasenha=viewInflate.findViewById(R.id.btn_contrasenha);
-        btn_datos=viewInflate.findViewById(R.id.btn_datos);
+        btn_contrasenha.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onClick(View view) {
+                //abre fragcambiarcontraseña
+                FragCambiarContrasenia fragCambiarContrasenia = new FragCambiarContrasenia();
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.contenedorFragments, fragCambiarContrasenia);
+                transaction.commit();
+
+            }
+        });
+
+
+        btn_datos = viewInflate.findViewById(R.id.btn_datos);
+
+        btn_datos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragEditarPerfil fep = new FragEditarPerfil();
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.contenedorFragments, fep);
+                transaction.commit();
+
+            }
+        });
 //        btn_registrarAdmin=viewInflate.findViewById(R.id.btn_registrarAdmin);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_perfil, container, false);
+        return viewInflate;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

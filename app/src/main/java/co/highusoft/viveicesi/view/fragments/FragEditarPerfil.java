@@ -9,37 +9,57 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.Spinner;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.model.Usuario;
 
+import static co.highusoft.viveicesi.R.layout.spinner_item;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragCambiarContrasenia.OnFragmentInteractionListener} interface
+ * {@link FragEditarPerfil.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragCambiarContrasenia#newInstance} factory method to
+ * Use the {@link FragEditarPerfil#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragCambiarContrasenia extends Fragment {
+public class FragEditarPerfil extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+
+    private EditText editTextNombre;
+    private EditText editTextUsuario;
+    private EditText editTextCorreoElectronico;
+    private Spinner spinnerAreadeTrabajo;
+    private Spinner spinnerRol;
+    private ImageButton imageButtonFotoPerfil;
+    private ImageButton imageButtonGuardar;
+    private FirebaseDatabase db;
+    private FirebaseAuth auth;
+    private FirebaseStorage storage;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -47,7 +67,7 @@ public class FragCambiarContrasenia extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FragCambiarContrasenia() {
+    public FragEditarPerfil() {
         // Required empty public constructor
     }
 
@@ -57,11 +77,11 @@ public class FragCambiarContrasenia extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragCambiarContrasenia.
+     * @return A new instance of fragment FragEditarPerfil.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragCambiarContrasenia newInstance(String param1, String param2) {
-        FragCambiarContrasenia fragment = new FragCambiarContrasenia();
+    public static FragEditarPerfil newInstance(String param1, String param2) {
+        FragEditarPerfil fragment = new FragEditarPerfil();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -78,21 +98,41 @@ public class FragCambiarContrasenia extends Fragment {
         }
     }
 
-    private EditText et_email;
-    private ImageButton btn_sendEmail;
-    private ActionCodeSettings actionCodeSettings;
-    private FirebaseAuth auth;
-    private FirebaseDatabase db;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_frag_cambiar_contrasenia, container, false);
-        auth = FirebaseAuth.getInstance();
-        et_email = view.findViewById(R.id.et_emailPass);
+        // Inflate the layout for this fragment
+
+        final View viewInflater = inflater.inflate(R.layout.fragment_frag_editar_perfil, container, false);
 
         db = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
+
+        editTextUsuario = viewInflater.findViewById(R.id.et_user);
+        editTextCorreoElectronico = viewInflater.findViewById(R.id.et_correo);
+
+        editTextNombre = viewInflater.findViewById(R.id.et_nombre);
+        imageButtonFotoPerfil = viewInflater.findViewById(R.id.btn_cambiarFoto);
+        imageButtonGuardar = viewInflater.findViewById(R.id.btn_save_changes);
+
+        spinnerAreadeTrabajo = viewInflater.findViewById(R.id.sp_area);
+
+
+//
+
+
+        //Implemento el setOnItemSelectedListener: para realizar acciones cuando se seleccionen los ítems
+
+        //Convierto la variable List<> en un ArrayList<>()
+        final ArrayList listaOpciones = new ArrayList<>();
+        //Arreglo con nombre de frutas
+        final String[] opcionesEstudiantes = Constantes.ESTUDIANTES;
+        final String[] opcionesTrabadores = Constantes.TRABAJADORES;
+
+        //Agrego las frutas del arreglo `strFrutas` a la listaFrutas
+
+//
+
 
         DatabaseReference myRef = db.getReference("Usuarios");
 
@@ -100,7 +140,24 @@ public class FragCambiarContrasenia extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Usuario user = dataSnapshot.getValue(Usuario.class);
-                et_email.setText(user.getCorreo());
+                editTextNombre.setText(user.getNombre());
+                editTextCorreoElectronico.setText(user.getCorreo());
+                editTextUsuario.setText(user.getUsuario());
+
+
+                //
+
+
+                if (user.gettipoUsuario().equals("Estudiante")) {
+
+                    Collections.addAll(listaOpciones, opcionesEstudiantes);
+                } else {
+                    Collections.addAll(listaOpciones, opcionesTrabadores);
+                }
+
+
+                //Implemento el adapter con el contexto, layout, listaFrutas
+
             }
 
             @Override
@@ -125,24 +182,8 @@ public class FragCambiarContrasenia extends Fragment {
         });
 
 
-        btn_sendEmail = view.findViewById(R.id.btn_sendEmail);
-        btn_sendEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String email = et_email.getText().toString();
-                auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(view.getContext(), "El correo se envió a " + email, Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(view.getContext(), "Ocurrió un error", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
-        });
-        return view;
+        return viewInflater;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

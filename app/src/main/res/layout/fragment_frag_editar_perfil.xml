@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragments.FragEditarPerfil"
+    android:orientation="vertical"
+    android:layout_margin="20dp">
+
+    <ImageButton
+        android:id="@+id/btn_cambiarFoto"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:background="@drawable/boton_redondo"
+        android:src="@mipmap/fotoperfil"
+        android:layout_marginBottom="30dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre:"
+            android:textColor="#000000"
+            android:id="@+id/tv_nombre"/>
+        <EditText
+            android:id="@+id/et_nombre"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/claroViveIcesi"
+            android:textColorHint="@color/claroViveIcesi"
+            android:textSize="10sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Usuario:"
+            android:textColor="#000000"/>
+        <EditText
+            android:layout_weight="2"
+            android:id="@+id/et_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/claroViveIcesi"
+            android:textColorHint="@color/claroViveIcesi"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Correo electrónico:"
+            android:textColor="#000000"
+            android:id="@+id/tv_correo"/>
+        <EditText
+            android:layout_weight="2"
+            android:id="@+id/et_correo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/claroViveIcesi"
+            android:textColorHint="@color/claroViveIcesi"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <!--    <Spinner
+            android:id="@+id/sp_tipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"/>
+
+            -->
+    <Spinner
+        android:id="@+id/sp_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"/>
+
+    <ImageButton
+        android:id="@+id/btn_save_changes"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:background="@drawable/boton_redondo"
+        android:backgroundTint="@color/colorAccent"
+        android:src="@mipmap/home"
+        android:layout_marginBottom="30dp"/>
+
+
+
+
+</LinearLayout>

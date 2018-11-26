@@ -27,6 +27,7 @@ import co.highusoft.viveicesi.view.fragments.FragCalendario;
 import co.highusoft.viveicesi.view.fragments.FragCrearActividad;
 import co.highusoft.viveicesi.view.fragments.FragCultura;
 import co.highusoft.viveicesi.view.fragments.FragDeportes;
+import co.highusoft.viveicesi.view.fragments.FragEditarPerfil;
 import co.highusoft.viveicesi.view.fragments.FragItems;
 import co.highusoft.viveicesi.view.fragments.FragMostrarEvento;
 
@@ -44,7 +45,7 @@ public class MenuBienestar extends AppCompatActivity
         FragCambiarContrasenia.OnFragmentInteractionListener, FragSalud.OnFragmentInteractionListener,
         FragPSU.OnFragmentInteractionListener, FragCultura.OnFragmentInteractionListener,
         FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener,
-        FragCrearActividad.OnFragmentInteractionListener {
+        FragCrearActividad.OnFragmentInteractionListener, FragEditarPerfil.OnFragmentInteractionListener {
 
     private FragDeportes fragDeportes;
     private FragSalud fragSalud;
