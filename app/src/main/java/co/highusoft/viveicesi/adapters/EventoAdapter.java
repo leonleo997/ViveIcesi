@@ -73,16 +73,34 @@ public class EventoAdapter extends BaseAdapter {
         Evento evento = arreglo.get(position);
 
         TextView titulo = renglon.findViewById(R.id.tv_titulo);
-        TextView area = renglon.findViewById(R.id.tv_area);
+//        TextView area = renglon.findViewById(R.id.tv_area);
         TextView fecha = renglon.findViewById(R.id.tv_fecha);
         TextView lugar = renglon.findViewById(R.id.tv_lugar);
-        TextView descripción = renglon.findViewById(R.id.tv_descripcion);
+//        TextView descripción = renglon.findViewById(R.id.tv_descripcion);
 
         titulo.setText(evento.getNombre());
-        area.setText(evento.getArea());
-        fecha.setText(evento.getmDay() + "/" + evento.getmMonth() + "/" + evento.getmYear() + "  " + evento.getHour() + ":" + evento.getMin());
+//        area.setText(evento.getArea());
+        String year=evento.getmYear()+"";
+        String month=evento.getmMonth()+"";
+        String day=evento.getmDay()+"";
+        String hour="";
+        if(evento.getHour()<10){
+            hour="0"+evento.getHour();
+        }else{
+            hour=""+evento.getHour();
+        }
+        String minute="";
+        if(evento.getMin()<10){
+            minute="0"+evento.getMin();
+        }else{
+            minute=""+evento.getMin();
+        }
+
+
+
+        fecha.setText(day + "-" + month + "-" + year + "  " + hour + ":" + minute);
         lugar.setText(evento.getLugar());
-        descripción.setText(evento.getDescripcion());
+//        descripción.setText(evento.getDescripcion());
 
         final ImageView iv_evento = renglon.findViewById(R.id.iv_foto);
 
@@ -122,6 +140,11 @@ public class EventoAdapter extends BaseAdapter {
 
     public void addEvent(Evento evento) {
         arreglo.add(evento);
+        notifyDataSetChanged();
+    }
+
+    public void clear(){
+        arreglo.clear();
         notifyDataSetChanged();
     }
 }

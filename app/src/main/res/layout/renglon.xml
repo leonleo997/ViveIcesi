@@ -27,38 +27,39 @@
                 android:id="@+id/tv_titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
                 android:text="Titulo"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_area"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Área"
-                android:textSize="20sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/tv_area"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Área"-->
+                <!--android:textSize="20sp" />-->
 
             <TextView
                 android:id="@+id/tv_fecha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
                 android:text="Fecha"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_lugar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
                 android:text="Lugar"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/tv_descripcion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Descripcion"
                 android:textSize="15sp" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_descripcion"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Descripcion"-->
+                <!--android:textSize="15sp" />-->
         </LinearLayout>
 
 

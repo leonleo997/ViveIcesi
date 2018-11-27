@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.widget.Spinner;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -171,7 +173,32 @@ public class FragEditarPerfil extends Fragment {
                                     user.setFoto(path);
                                     ref = storage.getReference().child("fotos").child(user.getFoto());
                                     FileInputStream file = new FileInputStream(new File(path));
-                                    ref.putStream(file);
+                                    Task progress = ref.putStream(file);
+                                    progress.addOnSuccessListener(new OnSuccessListener() {
+                                        @Override
+                                        public void onSuccess(Object o) {
+
+                                            NavigationView navigationView = getActivity ().findViewById(R.id.nav_view);
+                                            View headerLayout =
+                                                    navigationView.inflateHeaderView(R.layout.nav_header_menu_bienestar);
+                                            ImageView img_usuario = headerLayout.findViewById(R.id.img_usuario);
+                                            StorageReference storageReference = storage.getReference().child("fotos").child(user.getFoto());
+                                            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    if (getContext() == null)
+                                                        Log.e(">>>", "contexto nulo");
+                                                    if (img_usuario == null)
+                                                        Log.e(">>>", "img usuario nula");
+
+                                                    Glide.with(getContext()).load(uri)
+                                                            .apply(RequestOptions.circleCropTransform())
+                                                            .into(img_usuario);
+                                                    Log.e(">>>", "Terminaaaaaaa");
+                                                }
+                                            });
+                                        }
+                                    });
                                 } catch (FileNotFoundException ex) {
 
                                 }
@@ -250,7 +277,7 @@ public class FragEditarPerfil extends Fragment {
                 spinnerAreadeTrabajo.setAdapter(spinnerArrayAdapter);
 
                 int index = spinnerArrayAdapter.getPosition(user.getArea());
-                Log.e(">>Index", index+"");
+                Log.e(">>Index", index + "");
                 spinnerAreadeTrabajo.setSelection(index);
 
                 //
