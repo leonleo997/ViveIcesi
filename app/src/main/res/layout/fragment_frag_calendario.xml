@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.fragments.FragCalendario">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-        <CalendarView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar"
-            android:id="@+id/cv_calendar"
-            >
-        </CalendarView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Actividades del día"
-            android:textColor="#1a1a1a"
-            android:textSize="15dp"/>
+        <com.applandeo.materialcalendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:headerColor="@color/colorAccent" />
+
         <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/lv_agenda"
-            >
-        </ListView>
+            android:id="@+id/list_eventos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

@@ -1,4 +1,4 @@
-package co.highusoft.viveicesi.adapters;
+package co.highusoft.viveicesi.utilities;
 
 import android.content.ContentUris;
 import android.content.Context;

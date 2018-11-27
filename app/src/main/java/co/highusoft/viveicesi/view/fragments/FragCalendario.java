@@ -1,22 +1,36 @@
 package co.highusoft.viveicesi.view.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.applandeo.materialcalendarview.CalendarView;
+import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.adapters.EventoAdapter;
+import co.highusoft.viveicesi.model.Evento;
 
 
 /**
@@ -34,7 +48,11 @@ public class FragCalendario extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private CalendarView calendarView;
     private TextView tv_mes;
-    private ListView lv_agenda;
+    private ListView view_eventos;
+
+    private EventoAdapter adaptador;
+
+    private List<EventDay> events;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -73,27 +91,123 @@ public class FragCalendario extends Fragment {
         }
     }
 
+    private FirebaseDatabase db;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View inflate =inflater.inflate(R.layout.fragment_frag_calendario,null);
-
-        calendarView=inflate.findViewById(R.id.cv_calendar);
-
-        lv_agenda=inflate.findViewById(R.id.lv_agenda);
+        View inflate = inflater.inflate(R.layout.fragment_frag_calendario, null);
+        db = FirebaseDatabase.getInstance();
 
 
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        view_eventos = inflate.findViewById(R.id.list_eventos);
+        adaptador = new EventoAdapter(inflate.getContext());
+        view_eventos.setAdapter(adaptador);
+        Log.e("onSelectedDayChange: ", "a al seleccionar");
+
+
+        calendarView = inflate.findViewById(R.id.calendarView);
+        cargarCalendario();
+
+        return inflate;
+    }
+
+    private void cargarCalendario() {
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendarView.setDate(calendar);
+        } catch (OutOfDateRangeException e) {
+            e.printStackTrace();
+        }
+
+        events = new ArrayList<>();
+
+        refrescarEventos();
+
+        calendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+            public void onChange() {
+                refrescarEventos();
 
             }
         });
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frag_calendario, container, false);
-    }
 
+
+        calendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener() {
+            @Override
+            public void onChange() {
+                refrescarEventos();
+            }
+        });
+
+
+        calendarView.setOnDayClickListener(new OnDayClickListener() {
+            @Override
+            public void onDayClick(EventDay eventDay) {
+                Calendar clickedDayCalendar = eventDay.getCalendar();
+                final int year = clickedDayCalendar.get(Calendar.YEAR);
+                int month = clickedDayCalendar.get(Calendar.MONTH) + 1;
+                final int dayOfMonth = clickedDayCalendar.get(Calendar.DAY_OF_MONTH);
+                adaptador.clear();
+                Log.e("onSelectedDayChange: ", "entra al seleccionar");
+                Log.e("onSelectedDayChange: ", year + "-" + month + "-" + dayOfMonth);
+                db.getReference().child("Eventos")
+                        .orderByChild("mMonth").equalTo(month)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
+                                    Evento evento = postsnapshot.getValue(Evento.class);
+                                    if (evento.mYear == year && evento.mDay == dayOfMonth) {
+                                        Log.e("Evento: ", evento.getNombre());
+                                        adaptador.addEvent(evento);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+            }
+        });
+
+
+    }
+    public void refrescarEventos(){
+        adaptador.clear();
+        Calendar calendar= calendarView.getCurrentPageDate();
+        calendar = calendarView.getCurrentPageDate();
+        int month=calendar.get(Calendar.MONTH)+1;
+        int year=calendar.get(Calendar.YEAR);
+        db.getReference().child("Eventos")
+                .orderByChild("mMonth").equalTo(month)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        events.clear();
+                        for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
+                            Evento evento = postsnapshot.getValue(Evento.class);
+                            if (evento.mYear == year) {
+                                Log.e("Evento: ", evento.getNombre());
+                                Calendar evento_fecha=Calendar.getInstance();
+                                evento_fecha.set(evento.getmYear(),evento.getmMonth()-1,evento.getmDay());
+                                events.add(new EventDay(evento_fecha, R.drawable.check));
+                            }
+                        }
+                        calendarView.setEvents(events);
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

@@ -27,10 +27,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,11 +45,10 @@ import java.util.List;
 
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.adapters.HorarioAdapter;
-import co.highusoft.viveicesi.adapters.UtilDomi;
+import co.highusoft.viveicesi.utilities.UtilDomi;
 import co.highusoft.viveicesi.model.Actividad;
 import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.model.Horario;
-import co.highusoft.viveicesi.view.Registro;
 
 
 /**
@@ -312,7 +314,8 @@ public class FragCrearActividad extends Fragment {
                     try {
                         StorageReference ref = storage.getReference().child("fotos").child(actividad.getImg());
                         FileInputStream file = new FileInputStream(new File(path));
-                        ref.putStream(file);
+                        UploadTask task=ref.putStream(file);
+
                     } catch (FileNotFoundException ex) {
 
                     }
