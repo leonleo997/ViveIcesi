@@ -7,15 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.view.fragments.FragCalendario;
-import co.highusoft.viveicesi.view.fragments.FragItems;
 import co.highusoft.viveicesi.view.fragments.FragPerfil;
 import co.highusoft.viveicesi.view.fragments.FragmentoInfo;
 
-public class ContenedoraFragments extends AppCompatActivity implements FragPerfil.OnFragmentInteractionListener, FragItems.OnFragmentInteractionListener, FragmentoInfo.OnFragmentInteractionListener, FragCalendario.OnFragmentInteractionListener {
+public class ContenedoraFragments extends AppCompatActivity implements FragPerfil.OnFragmentInteractionListener
+        , FragmentoInfo.OnFragmentInteractionListener, FragCalendario.OnFragmentInteractionListener {
     FragCalendario fragCalendario;
     FragmentoInfo fragmentoInfo;
     FragPerfil fragPerfil;
-    FragItems fragItems;
     String fragmentPedido;
 
 
@@ -23,21 +22,20 @@ public class ContenedoraFragments extends AppCompatActivity implements FragPerfi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_contenedora_fragments);
-setContentView(R.layout.content_menu_bienestar);
+        setContentView(R.layout.content_menu_bienestar);
         fragCalendario = new FragCalendario();
         fragmentoInfo = new FragmentoInfo();
         fragPerfil = new FragPerfil();
-        fragItems= new FragItems();
 
 
-       // getSupportFragmentManager().beginTransaction().add(R.id.contenedorFragments, fragCalendario).commit();
+        // getSupportFragmentManager().beginTransaction().add(R.id.contenedorFragments, fragCalendario).commit();
 
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         Bundle bundle = new Bundle();
         bundle = getIntent().getExtras();
-String fragmentSolicitado= bundle.getString("fragment");
+        String fragmentSolicitado = bundle.getString("fragment");
 
 
         switch (fragmentSolicitado) {
@@ -46,9 +44,6 @@ String fragmentSolicitado= bundle.getString("fragment");
                 break;
             case "informacion":
                 fragmentTransaction.replace(R.id.contenedorFragments, fragmentoInfo);
-                break;
-            case "items":
-                fragmentTransaction.replace(R.id.contenedorFragments, fragItems);
                 break;
             case "perfil":
                 fragmentTransaction.replace(R.id.contenedorFragments, fragPerfil);

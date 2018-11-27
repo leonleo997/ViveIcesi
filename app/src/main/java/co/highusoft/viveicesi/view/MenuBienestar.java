@@ -42,7 +42,7 @@ import co.highusoft.viveicesi.view.fragments.FragCrearActividad;
 import co.highusoft.viveicesi.view.fragments.FragCultura;
 import co.highusoft.viveicesi.view.fragments.FragDeportes;
 import co.highusoft.viveicesi.view.fragments.FragEditarPerfil;
-import co.highusoft.viveicesi.view.fragments.FragItems;
+import co.highusoft.viveicesi.view.fragments.FragEscaner;
 import co.highusoft.viveicesi.view.fragments.FragMostrarEvento;
 
 import co.highusoft.viveicesi.view.fragments.FragCambiarContrasenia;
@@ -59,14 +59,15 @@ public class MenuBienestar extends AppCompatActivity
         FragCambiarContrasenia.OnFragmentInteractionListener, FragSalud.OnFragmentInteractionListener,
         FragPSU.OnFragmentInteractionListener, FragCultura.OnFragmentInteractionListener,
         FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener,
-        FragCrearActividad.OnFragmentInteractionListener, FragEditarPerfil.OnFragmentInteractionListener {
+        FragCrearActividad.OnFragmentInteractionListener, FragEditarPerfil.OnFragmentInteractionListener,
+        FragEscaner.OnFragmentInteractionListener{
 
     private FragDeportes fragDeportes;
     private FragSalud fragSalud;
     private FragCultura fragCultura;
     private FragPSU fragPSU;
 
-
+    private FragEscaner fragEscaner;
     private FragCalendario fragCalendario;
     private FragmentoInfo fragmentoInfo;
     private FragPerfil fragPerfil;
@@ -96,10 +97,19 @@ public class MenuBienestar extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_bienestar);
 
-
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
+
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(MenuBienestar.this, Login.class);
+            startActivity(i);
+            finish();
+            return;
+        }
+
+
         //
         fragCalendario = new FragCalendario();
         fragmentoInfo = new FragmentoInfo();
@@ -111,13 +121,14 @@ public class MenuBienestar extends AppCompatActivity
         fragActividad = new FragActividad();
         calificacionActividades = new CalificacionActividades();
         fragCrearActividad = new FragCrearActividad();
+        fragEscaner = new FragEscaner();
 
         fragPSU = new FragPSU();
         fragCultura = new FragCultura();
         fragSalud = new FragSalud();
         fragDeportes = new FragDeportes();
 
-        NavigationView navigationView=findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         View headerLayout =
                 navigationView.inflateHeaderView(R.layout.nav_header_menu_bienestar);
 //        View header = headerLayout.findViewById(R.id.viewId);
@@ -134,9 +145,9 @@ public class MenuBienestar extends AppCompatActivity
                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        if(getApplicationContext()==null)
+                        if (getApplicationContext() == null)
                             Log.e(">>>", "contexto nulo");
-                        if(img_usuario==null)
+                        if (img_usuario == null)
                             Log.e(">>>", "img usuario nula");
 
                         Glide.with(getApplicationContext()).load(uri)
@@ -170,13 +181,6 @@ public class MenuBienestar extends AppCompatActivity
         });
 
         //
-
-        if (auth.getCurrentUser() == null) {
-            Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(MenuBienestar.this, Login.class);
-            startActivity(i);
-            finish();
-        }
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -305,6 +309,8 @@ public class MenuBienestar extends AppCompatActivity
             fragmentTransaction.replace(R.id.contenedorFragments, fragActividad).commit();
         } else if (id == R.id.cuestionario) {
             fragmentTransaction.replace(R.id.contenedorFragments, calificacionActividades).commit();
+        }else if (id == R.id.escaner) {
+            fragmentTransaction.replace(R.id.contenedorFragments, fragEscaner).commit();
         }
 
 
