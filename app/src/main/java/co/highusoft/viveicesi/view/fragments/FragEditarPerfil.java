@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -171,6 +172,8 @@ public class FragEditarPerfil extends Fragment {
                                     ref.delete();
 
                                     user.setFoto(path);
+
+                                    postsnapshot.getRef().setValue(user);
                                     ref = storage.getReference().child("fotos").child(user.getFoto());
                                     FileInputStream file = new FileInputStream(new File(path));
                                     Task progress = ref.putStream(file);
@@ -178,7 +181,8 @@ public class FragEditarPerfil extends Fragment {
                                         @Override
                                         public void onSuccess(Object o) {
 
-                                            NavigationView navigationView = getActivity ().findViewById(R.id.nav_view);
+                                            NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+                                            navigationView.removeHeaderView(navigationView.getHeaderView(0));
                                             View headerLayout =
                                                     navigationView.inflateHeaderView(R.layout.nav_header_menu_bienestar);
                                             ImageView img_usuario = headerLayout.findViewById(R.id.img_usuario);
@@ -186,25 +190,35 @@ public class FragEditarPerfil extends Fragment {
                                             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                 @Override
                                                 public void onSuccess(Uri uri) {
-                                                    if (getContext() == null)
-                                                        Log.e(">>>", "contexto nulo");
-                                                    if (img_usuario == null)
-                                                        Log.e(">>>", "img usuario nula");
 
                                                     Glide.with(getContext()).load(uri)
                                                             .apply(RequestOptions.circleCropTransform())
                                                             .into(img_usuario);
-                                                    Log.e(">>>", "Terminaaaaaaa");
+                                                    FragMostrarEvento fragmento = new FragMostrarEvento();
+
+                                                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                                                    transaction.replace(R.id.contenedorFragments, fragmento);
+                                                    transaction.commit();
+                                                    Log.e(">>>", "La foto se ha actualizado correctamente");
                                                 }
                                             });
+
+
                                         }
                                     });
                                 } catch (FileNotFoundException ex) {
 
                                 }
+                            } else {
+                                postsnapshot.getRef().setValue(user);
+                                FragMostrarEvento fragmento = new FragMostrarEvento();
+
+                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                                transaction.replace(R.id.contenedorFragments, fragmento);
+                                transaction.commit();
                             }
 
-                            postsnapshot.getRef().setValue(user);
+
                             Log.e(">>", user.getNombre());
                             Log.e(">> Que elimine?", "" + key);
                         }
