@@ -194,6 +194,7 @@ public class FragEditarPerfil extends Fragment {
                                                     Glide.with(getContext()).load(uri)
                                                             .apply(RequestOptions.circleCropTransform())
                                                             .into(img_usuario);
+
                                                     FragMostrarEvento fragmento = new FragMostrarEvento();
 
                                                     FragmentTransaction transaction = getFragmentManager().beginTransaction();

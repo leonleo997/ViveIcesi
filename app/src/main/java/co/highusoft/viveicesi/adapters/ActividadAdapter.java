@@ -57,7 +57,7 @@ public class ActividadAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public Actividad getItem(int i) {
         return actividades.get(i);
     }
 

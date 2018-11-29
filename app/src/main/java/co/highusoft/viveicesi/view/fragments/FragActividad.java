@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ import com.squareup.picasso.Picasso;
 
 import co.highusoft.viveicesi.CalificacionActividades;
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.adapters.HorarioAdapter;
+import co.highusoft.viveicesi.model.Actividad;
 import co.highusoft.viveicesi.model.Usuario;
 
 
@@ -51,10 +54,19 @@ public class FragActividad extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    ImageView imagenActividad;
-    Button botonCalificarActividad;
-    TextView textViewInformacionActividad;
-    CalificacionActividades calificacionActividades;
+
+    private TextView nombre;
+    private ImageView imagenActividad;
+    private TextView descripcion;
+    private Button botonCalificarActividad;
+
+    private CalificacionActividades calificacionActividades;
+
+    private Actividad actividad;
+
+    private ListView view_horarios;
+    private HorarioAdapter horarioAdapter;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -87,7 +99,9 @@ public class FragActividad extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Bundle bundle = getArguments();
+        actividad = (Actividad) bundle.getSerializable("actividad");
+        Log.e(">>: ", actividad.getNombre());
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -110,60 +124,31 @@ public class FragActividad extends Fragment {
         calificacionActividades = new CalificacionActividades();
 
         final View viewInflater = inflater.inflate(R.layout.fragment_frag_actividad, null);
+        imagenActividad = viewInflater.findViewById(R.id.iv_imagen);
+        nombre = viewInflater.findViewById(R.id.tv_nombre);
+        descripcion = viewInflater.findViewById(R.id.tv_descripcion);
 
-        imagenActividad = viewInflater.findViewById(R.id.imagen_actividad);
-        //        imagenActividad.set
+        view_horarios = viewInflater.findViewById(R.id.list_horarios);
+        horarioAdapter = new HorarioAdapter(this.getActivity());
+        view_horarios.setAdapter(horarioAdapter);
+        horarioAdapter.setHorarios(actividad.getHorarios());
 
-        textViewInformacionActividad = viewInflater.findViewById(R.id.tv_informacion_actividad);
+        nombre.setText(actividad.getNombre());
+        descripcion.setText(actividad.getDescripcion());
+
         botonCalificarActividad = viewInflater.findViewById(R.id.bt_pasar_calificar_actividad);
-        Toast.makeText(getContext(), "aaaa", Toast.LENGTH_LONG).show();
         Log.e(">>>", auth.getCurrentUser().getEmail());
 
-
-        //borrar
-        DatabaseReference myRef = db.getReference("Usuarios");
-        Log.e(">>>", auth.getCurrentUser().getEmail());
-        myRef.orderByChild("correo").equalTo(auth.getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {
+        StorageReference storageReference = storage.getReference().child("fotos").child(actividad.getImg());
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Usuario user = dataSnapshot.getValue(Usuario.class);
-                StorageReference storageReference = storage.getReference().child("fotos").child(user.getFoto());
-                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Log.e(">>>", "ENTRAAAAAAAAA");
-                        ImageView imv = viewInflater.findViewById(R.id.img_prueba);
-                        Glide.with(FragActividad.this).load(uri)
-                                .into(imv);
-                        Log.e(">>>", "Terminaaaaaaa");
-//                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                        ft.detach(FragActividad.this).attach(FragActividad.this).commit();
-                    }
-                });
-                Log.e(">>>", user.getArea());
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onSuccess(Uri uri) {
+                Glide.with(FragActividad.this).load(uri)
+                        .into(imagenActividad);
             }
         });
-        //
+        //borrar
+
         botonCalificarActividad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

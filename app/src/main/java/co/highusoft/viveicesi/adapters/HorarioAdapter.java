@@ -71,5 +71,6 @@ public class HorarioAdapter extends BaseAdapter {
 
     public void setHorarios(ArrayList<Horario> horarios) {
         this.horarios = horarios;
+        notifyDataSetChanged();
     }
 }

@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -133,6 +135,21 @@ public class FragCultura extends Fragment {
 
         lv_items = inflaterView.findViewById(R.id.lv_deportes);
         lv_items.setAdapter(actividadAdapter);
+        lv_items.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FragActividad fragmento = new FragActividad();
+                Actividad actividad = actividadAdapter.getItem(i);
+
+                Bundle bundle= new Bundle();
+                bundle.putSerializable("actividad",actividad);
+                fragmento.setArguments(bundle);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.contenedorFragments, fragmento);
+                transaction.commit();
+            }
+        });
         // Inflate the layout for this fragment
         return inflaterView;
     }

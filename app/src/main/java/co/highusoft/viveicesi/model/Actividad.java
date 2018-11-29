@@ -1,8 +1,9 @@
 package co.highusoft.viveicesi.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Actividad {
+public class Actividad implements Serializable{
     private String nombre;
     private String descripcion;
     private String img;
