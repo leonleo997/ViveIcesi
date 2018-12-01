@@ -23,7 +23,7 @@
                 android:layout_marginBottom="30dp"
                 android:text="Crear Actividad"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorAccent"
                 android:textSize="40sp"
                 android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Nombre Actividad"
                 android:textColor="@color/blue_sky"
-                android:textColorHint="@color/blue_sky"
+                android:textColorHint="#3582C5"
                 android:textSize="20sp" />
 
             <Spinner
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Descripción"
                 android:textColor="@color/blue_sky"
-                android:textColorHint="@color/blue_sky"
+                android:textColorHint="#3582C5"
                 android:textSize="20sp" />
 
             <LinearLayout
@@ -69,8 +69,8 @@
                         android:layout_marginRight="20sp"
                         android:layout_weight="2"
                         android:text="Hora Inicio:"
-                        android:textColor="@color/blue_sky"
-                        android:textColorHint="@color/blue_sky"
+                        android:textColor="#3582C5"
+                        android:textColorHint="#3582C5"
                         android:textSize="20sp" />
 
                     <TextView
@@ -80,7 +80,8 @@
                         android:layout_weight="2"
                         android:gravity="center"
                         android:text="HH:MM"
-                        android:textColorHint="@color/blue_sky"
+                        android:textColor="#3582C5"
+                        android:textColorHint="#3582C5"
                         android:textSize="20sp" />
                 </LinearLayout>
 
@@ -96,8 +97,8 @@
                         android:layout_marginRight="20sp"
                         android:layout_weight="2"
                         android:text="Hora Fin:"
-                        android:textColor="@color/blue_sky"
-                        android:textColorHint="@color/blue_sky"
+                        android:textColor="#3582C5"
+                        android:textColorHint="#3582C5"
                         android:textSize="20sp" />
 
                     <TextView
@@ -107,7 +108,8 @@
                         android:layout_weight="2"
                         android:gravity="center"
                         android:text="HH:MM"
-                        android:textColorHint="@color/blue_sky"
+                        android:textColor="#3582C5"
+                        android:textColorHint="#3582C5"
                         android:textSize="20sp" />
                 </LinearLayout>
 
@@ -130,7 +132,7 @@
                         android:layout_weight="2"
                         android:gravity="center"
                         android:hint="Ubicación"
-                        android:textColorHint="@color/blue_sky"
+                        android:textColorHint="#3582C5"
                         android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -141,7 +143,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="50dp"
-                android:text="Agregar Horario" />
+                android:text="Agregar Horario"
+                android:textColor="#3582C5"/>
 
             <ListView
                 android:id="@+id/lv_horario"

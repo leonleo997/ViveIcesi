@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
+            android:text="Reporte de Actividad"
+            android:textAlignment="center"
+            android:textColor="@color/blue_sky"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_1"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+        </com.github.mikephil.charting.charts.PieChart>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_2"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+        </com.github.mikephil.charting.charts.PieChart>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_3"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+        </com.github.mikephil.charting.charts.PieChart>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_4"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+        </com.github.mikephil.charting.charts.PieChart>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_5"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="40dp"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_6"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="40dp"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_7"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="40dp"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_8"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="40dp"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_9"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="40dp"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_10"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="40dp"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pc_pregunta_11"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="40dp"/>
+
+
+
+
+
+
+
+
+    </LinearLayout>
+</ScrollView>
