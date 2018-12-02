@@ -21,10 +21,13 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.view.Login;
 import co.highusoft.viveicesi.view.MenuBienestar;
 
 /**
@@ -50,6 +53,9 @@ public class FragEscaner extends Fragment {
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     private String token = "";
     private String tokenanterior = "";
+
+    private FirebaseDatabase bd;
+    private FirebaseAuth auth;
 
     private OnFragmentInteractionListener mListener;
 
@@ -168,20 +174,7 @@ public class FragEscaner extends Fragment {
                         // guardamos el ultimo token proceado
                         tokenanterior = token;
                         Log.i("token", token);
-
-                        if (token.equals("artes plasticas")) {
-                            // si es una URL valida abre el navegador
-                            Intent i = new Intent(getContext(), MenuBienestar.class);
-                            startActivity(i);
-//                            finish();
-                        } else {
-                            // comparte en otras apps
-                            Intent shareIntent = new Intent();
-                            shareIntent.setAction(Intent.ACTION_SEND);
-                            shareIntent.putExtra(Intent.EXTRA_TEXT, token);
-                            shareIntent.setType("text/plain");
-                            startActivity(shareIntent);
-                        }
+                        registrarAsistencia(token);
 
                         new Thread(new Runnable() {
                             public void run() {
@@ -204,6 +197,15 @@ public class FragEscaner extends Fragment {
             }
         });
 
+    }
+
+    private void registrarAsistencia(String token) {
+        String prefijo= "http://";
+
+        if (token.equals(prefijo+"hola")) {
+            Intent i = new Intent(getContext(), Login.class);
+            startActivity(i);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

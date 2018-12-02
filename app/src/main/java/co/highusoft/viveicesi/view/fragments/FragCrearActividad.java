@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -149,37 +150,12 @@ public class FragCrearActividad extends Fragment {
 
 
         // Inflate the layout for this fragment
-        final List<String> plantsList = new ArrayList<>(Arrays.asList(Constantes.TIPOS_ACTIVIDADES));
         final View view = inflater.inflate(R.layout.fragment_frag_crear_actividad, container, false);
 
         inicializarComponentes(view);
 
-        sp_tipo_actividad = view.findViewById(R.id.sp_tipo_area);
-        final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                this.getContext(), R.layout.spinner_item, plantsList);
-
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
-        sp_tipo_actividad.setAdapter(spinnerArrayAdapter);
-
-        final List<String> diasList = new ArrayList<>(Arrays.asList(Constantes.DIAS_SEMANA));
-        sp_dias_semana = view.findViewById(R.id.sp_dia_semana);
-        final ArrayAdapter<String> spinnerArrayAdapterDias = new ArrayAdapter<String>(
-                this.getContext(), R.layout.spinner_item, diasList);
-
-        spinnerArrayAdapterDias.setDropDownViewResource(R.layout.spinner_item);
-        sp_dias_semana.setAdapter(spinnerArrayAdapterDias);
-
-
-        //Horario renglon--------------------------------------
-        view_horarios = view.findViewById(R.id.lv_horario);
-        horarioAdapter = new HorarioAdapter(this.getActivity());
-        view_horarios.setAdapter(horarioAdapter);
-        view_horarios.setVisibility(View.GONE);
-        //-----------------------------------------------------
-
 
         final EditText et_lugar = view.findViewById(R.id.et_lugar);
-
         Button btn_horario = view.findViewById(R.id.btn_add_horario);
         btn_horario.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,6 +170,7 @@ public class FragCrearActividad extends Fragment {
             }
         });
 
+
         btn_anhadirFoto = view.findViewById(R.id.btn_aniadirFoto);
         btn_anhadirFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,6 +180,14 @@ public class FragCrearActividad extends Fragment {
                 i.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(i, REQUEST_GALLERY);
 
+            }
+        });
+
+        view_horarios.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                view.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
             }
         });
 
@@ -342,6 +327,27 @@ public class FragCrearActividad extends Fragment {
 
             }
         });
+
+        final List<String> plantsList = new ArrayList<>(Arrays.asList(Constantes.TIPOS_ACTIVIDADES));
+        sp_tipo_actividad = view.findViewById(R.id.sp_tipo_area);
+        final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                this.getContext(), R.layout.spinner_item, plantsList);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        sp_tipo_actividad.setAdapter(spinnerArrayAdapter);
+
+        final List<String> diasList = new ArrayList<>(Arrays.asList(Constantes.DIAS_SEMANA));
+        sp_dias_semana = view.findViewById(R.id.sp_dia_semana);
+        final ArrayAdapter<String> spinnerArrayAdapterDias = new ArrayAdapter<String>(
+                this.getContext(), R.layout.spinner_item, diasList);
+        spinnerArrayAdapterDias.setDropDownViewResource(R.layout.spinner_item);
+        sp_dias_semana.setAdapter(spinnerArrayAdapterDias);
+
+        //Horario renglon--------------------------------------
+        view_horarios = view.findViewById(R.id.lv_horario);
+        horarioAdapter = new HorarioAdapter(this.getActivity());
+        view_horarios.setAdapter(horarioAdapter);
+        view_horarios.setVisibility(View.GONE);
+        //-----------------------------------------------------
     }
 
     @Override
