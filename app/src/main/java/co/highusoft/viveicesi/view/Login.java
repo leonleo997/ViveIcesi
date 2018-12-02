@@ -1,9 +1,11 @@
 package co.highusoft.viveicesi.view;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
+import co.highusoft.viveicesi.NotificationService;
 import co.highusoft.viveicesi.PasswordLogin;
 import co.highusoft.viveicesi.R;
 
@@ -53,6 +56,10 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //LLAMAR UN SERVICIO
+          Intent intent = new Intent(this, NotificationService.class);
+         startService(intent);
+
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
@@ -67,6 +74,8 @@ public class Login extends AppCompatActivity {
                 }
             }
         };
+
+
 
         et_email = findViewById(R.id.et_email);
         et_pwd = findViewById(R.id.et_pwd);

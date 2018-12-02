@@ -32,7 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import co.highusoft.viveicesi.CalificacionActividades;
+import co.highusoft.viveicesi.view.fragments.CalificacionActividades;
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.model.Usuario;
 import co.highusoft.viveicesi.view.fragments.AgregarEvento;
