@@ -9,13 +9,14 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Regístrate"
+            android:text="Registrar administrador"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
-            android:textSize="50sp"
+            android:textSize="40sp"
             android:textStyle="bold" />
 
 
@@ -73,39 +74,8 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <RadioGroup
-                android:id="@+id/rg_tipo_usuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_estudiante"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Estudiante"
-                    android:textColor="@color/claroViveIcesi"
-                    android:textSize="20sp" />
-
-                <RadioButton
-                    android:id="@+id/rb_trabajador"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Trabajador"
-                    android:textColor="@color/claroViveIcesi"
-                    android:textSize="20sp" />
-            </RadioGroup>
-
 
         </LinearLayout>
-
-        <Spinner
-            android:id="@+id/sp_tipo_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"></Spinner>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -128,19 +98,20 @@
                 android:src="@mipmap/fotoperfil" />
 
         </LinearLayout>
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/cb_terminos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="Términos y condiciones"
-            android:textColor="@color/claroViveIcesi"
-            android:textSize="10dp" />
+            <CheckBox
+                android:id="@+id/cb_terminos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="Términos y condiciones"
+                android:textColor="@color/claroViveIcesi"
+                android:textSize="10dp" />
 
 
         </LinearLayout>

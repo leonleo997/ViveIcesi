@@ -9,63 +9,6 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Regístrate"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="50sp"
-            android:textStyle="bold" />
-
-
-        <EditText
-            android:id="@+id/et_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre Completo"
-            android:textColor="@color/claroViveIcesi"
-            android:textColorHint="@color/claroViveIcesi"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/et_usr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Usuario"
-            android:textColor="@color/claroViveIcesi"
-            android:textColorHint="@color/claroViveIcesi"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/et_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Correo Electrónico"
-            android:textColor="@color/claroViveIcesi"
-            android:textColorHint="@color/claroViveIcesi"
-            android:textSize="20sp" />
-
-
-        <EditText
-            android:id="@+id/et_pwd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:textColor="@color/claroViveIcesi"
-            android:textColorHint="@color/claroViveIcesi"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/et_con_pwd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Confirmar Contraseña"
-            android:inputType="textPassword"
-            android:textColor="@color/claroViveIcesi"
-            android:textColorHint="@color/claroViveIcesi"
-            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -133,14 +76,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/cb_terminos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="Términos y condiciones"
-            android:textColor="@color/claroViveIcesi"
-            android:textSize="10dp" />
+            <CheckBox
+                android:id="@+id/cb_terminos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="Términos y condiciones"
+                android:textColor="@color/claroViveIcesi"
+                android:textSize="10dp" />
 
 
         </LinearLayout>
