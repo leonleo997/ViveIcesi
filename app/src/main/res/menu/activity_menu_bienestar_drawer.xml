@@ -39,15 +39,15 @@
                 android:title="Crear Actividad" />
             <item
                 android:id="@+id/add_admin"
-                android:icon="@mipmap/agregar"
+                android:icon="@mipmap/admin"
                 android:title="Agregar Administrador" />
             <item
                 android:id="@+id/ver_reportes"
-                android:icon="@mipmap/agregar"
+                android:icon="@mipmap/estadisticas"
                 android:title="Mostrar Reportes" />
             <item
                 android:id="@+id/escaner"
-                android:icon="@mipmap/actividad"
+                android:icon="@mipmap/escnaer"
                 android:title="Escaner asistencia" />
 
         </menu>
