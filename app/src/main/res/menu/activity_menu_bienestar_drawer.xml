@@ -30,6 +30,24 @@
             android:icon="@mipmap/informacion"
             android:title="Información" />
     </group>
+    <item android:title="Otras funcionalidades"
+        android:id="@+id/otras_funcionalidades">
+        <menu>
+            <item
+                android:id="@+id/add_activity"
+                android:icon="@mipmap/agregar"
+                android:title="Crear Actividad" />
+            <item
+                android:id="@+id/add_admin"
+                android:icon="@mipmap/agregar"
+                android:title="Agregar Administrador" />
+            <item
+                android:id="@+id/escaner"
+                android:icon="@mipmap/actividad"
+                android:title="Escaner asistencia" />
+
+        </menu>
+    </item>
 
     <item android:title="Usuario">
         <menu>
@@ -51,25 +69,5 @@
     </item>
 
 
-    <item android:title="Otras funcionalidades">
-        <menu>
-            <item
-                android:id="@+id/add_activity"
-                android:icon="@mipmap/agregar"
-                android:title="Crear Actividad" />
-            <item
-                android:id="@+id/cuestionario"
-                android:icon="@mipmap/encuesta"
-                android:title="Encuesta" />
-            <item
-                android:id="@+id/actividad_222"
-                android:icon="@mipmap/actividad"
-                android:title="Actividad" />
-            <item
-                android:id="@+id/escaner"
-                android:icon="@mipmap/actividad"
-                android:title="Escaner asistencia" />
 
-        </menu>
-    </item>
 </menu>

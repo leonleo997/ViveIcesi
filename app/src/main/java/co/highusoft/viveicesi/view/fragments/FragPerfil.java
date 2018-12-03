@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import co.highusoft.viveicesi.FragRegistro;
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.model.Usuario;
 
@@ -29,7 +30,6 @@ public class FragPerfil extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private Button btn_contrasenha;
-    private Button btn_registrarAdmin;
     private Button btn_datos;
 
     // TODO: Rename and change types of parameters
@@ -104,9 +104,7 @@ public class FragPerfil extends Fragment {
 
             }
         });
-//        btn_registrarAdmin=viewInflate.findViewById(R.id.btn_registrarAdmin);
 
-        // Inflate the layout for this fragment
         return viewInflate;
     }
 

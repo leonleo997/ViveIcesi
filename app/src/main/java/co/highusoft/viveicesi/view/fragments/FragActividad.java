@@ -151,7 +151,7 @@ public class FragActividad extends Fragment {
                 CalificacionActividades fragmento = new CalificacionActividades();
 
                 Bundle bundle= new Bundle();
-                bundle.putString("nombre actividad",actividad.getNombre());
+                bundle.putSerializable("actividad",actividad);
                 fragmento.setArguments(bundle);
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();

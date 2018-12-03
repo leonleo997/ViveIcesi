@@ -191,7 +191,7 @@ public class FragEditarPerfil extends Fragment {
                                                 @Override
                                                 public void onSuccess(Uri uri) {
 
-                                                    Glide.with(getContext()).load(uri)
+                                                    Glide.with(getActivity()).load(uri)
                                                             .apply(RequestOptions.circleCropTransform())
                                                             .into(img_usuario);
 

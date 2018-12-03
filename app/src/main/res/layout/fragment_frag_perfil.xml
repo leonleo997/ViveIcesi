@@ -58,17 +58,8 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/button_shape_1"
                 android:text="Editar mis datos" />
-
-
-            <Button
-                android:id="@+id/btn_registrarAdmin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/button_shape_1"
-                android:text="Registrar administrador" />
         </LinearLayout>
 
     </LinearLayout>
 
-</FrameLayout>
+</FrameLayout>                                                                      

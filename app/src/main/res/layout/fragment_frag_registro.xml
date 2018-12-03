@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Regístrate"
+            android:text="Regístrate Admin"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
             android:textSize="50sp"
@@ -67,45 +67,6 @@
             android:textColorHint="@color/claroViveIcesi"
             android:textSize="20sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <RadioGroup
-                android:id="@+id/rg_tipo_usuario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_estudiante"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Estudiante"
-                    android:textColor="@color/claroViveIcesi"
-                    android:textSize="20sp" />
-
-                <RadioButton
-                    android:id="@+id/rb_trabajador"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Trabajador"
-                    android:textColor="@color/claroViveIcesi"
-                    android:textSize="20sp" />
-            </RadioGroup>
-
-
-        </LinearLayout>
-
-        <Spinner
-            android:id="@+id/sp_tipo_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"></Spinner>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -145,13 +106,13 @@
                 android:textSize="10dp" />
 
             <TextView
+                android:id="@+id/tv_verTerminos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:text="Ver términos y condiciones"
                 android:textSize="10dp"
-                android:id="@+id/tv_verTerminos"
-                android:gravity="center"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -161,7 +122,6 @@
             android:id="@+id/btn_registrar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:background="@drawable/button_shape_green"
             android:text="Registrar"
             android:textColor="@color/white"

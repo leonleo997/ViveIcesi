@@ -3,15 +3,30 @@ package co.highusoft.viveicesi.view.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.model.Actividad;
 
 
 /**
@@ -40,8 +55,13 @@ public class CalificacionActividades extends Fragment {
     private static RatingBar ratingBarp10;
     private static RatingBar ratingBarp11;
 
+    private RatingBar[] ratingBars;
+
     private Button buttonGuardarEncuesta;
 
+    private FirebaseDatabase db;
+
+    private Actividad actividad;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -85,11 +105,13 @@ public class CalificacionActividades extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        db = FirebaseDatabase.getInstance();
 
         View viewinflate = inflater.inflate(R.layout.fragment_calificacion_actividades, container, false);
         Bundle bundle = getArguments();
         TextView tv_nombre = viewinflate.findViewById(R.id.tv_nombre);
-        tv_nombre.setText((String) bundle.get("nombre actividad"));
+        actividad = (Actividad) bundle.get("actividad");
+        tv_nombre.setText(actividad.getNombre());
 
         ratingBarp1 = viewinflate.findViewById(R.id.pregunta1);
         ratingBarp2 = viewinflate.findViewById(R.id.pregunta2);
@@ -102,12 +124,64 @@ public class CalificacionActividades extends Fragment {
         ratingBarp9 = viewinflate.findViewById(R.id.pregunta9);
         ratingBarp10 = viewinflate.findViewById(R.id.pregunta10);
         ratingBarp11 = viewinflate.findViewById(R.id.pregunta11);
+
+        ratingBars = new RatingBar[]{ratingBarp1, ratingBarp2, ratingBarp3, ratingBarp4
+                , ratingBarp5, ratingBarp6, ratingBarp7, ratingBarp8, ratingBarp9
+                , ratingBarp10, ratingBarp11};
+
+
         buttonGuardarEncuesta = viewinflate.findViewById(R.id.bt_calificar_actividad);
 
         buttonGuardarEncuesta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DatabaseReference dbr = db.getReference().child("Actividades")
+                        .orderByChild("nombre").equalTo(actividad.getNombre()).getRef();
+                dbr.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        for (DataSnapshot postSnap :
+                                dataSnapshot.getChildren()) {
+                            Actividad act = postSnap.getValue(Actividad.class);
+                            if (act.getNombre().equals(actividad.getNombre())) {
+                                for (int i = 1; i < 12; i++) {
+                                    int estrellas = (int) ratingBars[i - 1].getRating();
+                                    DatabaseReference raiz = postSnap.getRef().child("Encuestas");
+                                    raiz.child("P" + i).child(estrellas + "")
+                                            .push().setValue(new Date());
+                                }
 
+                                Toast.makeText(getActivity(), "Se ha calificado correctamente la actividad " + actividad.getNombre()
+                                        , Toast.LENGTH_LONG).show();
+                                FragMostrarEvento fep = new FragMostrarEvento();
+
+                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                                transaction.replace(R.id.contenedorFragments, fep);
+                                transaction.commit();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 

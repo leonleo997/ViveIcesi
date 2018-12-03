@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import co.highusoft.viveicesi.FragRegistro;
 import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.view.fragments.CalificacionActividades;
 import co.highusoft.viveicesi.R;
@@ -63,7 +64,8 @@ public class MenuBienestar extends AppCompatActivity
         FragPSU.OnFragmentInteractionListener, FragCultura.OnFragmentInteractionListener,
         FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener,
         FragCrearActividad.OnFragmentInteractionListener, FragEditarPerfil.OnFragmentInteractionListener,
-        FragEscaner.OnFragmentInteractionListener, FragEvento.OnFragmentInteractionListener {
+        FragEscaner.OnFragmentInteractionListener, FragEvento.OnFragmentInteractionListener,
+        FragRegistro.OnFragmentInteractionListener {
 
     private FragDeportes fragDeportes;
     private FragSalud fragSalud;
@@ -71,6 +73,7 @@ public class MenuBienestar extends AppCompatActivity
     private FragPSU fragPSU;
 
     private FragEscaner fragEscaner;
+    private FragRegistro fragRegistro;
     private FragCalendario fragCalendario;
     private FragmentoInfo fragmentoInfo;
     private FragPerfil fragPerfil;
@@ -85,6 +88,8 @@ public class MenuBienestar extends AppCompatActivity
     private FloatingActionButton fb_home;
     private FloatingActionButton fb_agregar_actividad;
     private ImageView img_usuario;
+
+    private Menu menu;
 
     FirebaseAuth auth;
     FirebaseDatabase db;
@@ -107,7 +112,9 @@ public class MenuBienestar extends AppCompatActivity
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
 
-        validarAutenticacion();
+        boolean isAuth = validarAutenticacion();
+        if (!isAuth)
+            return;
         guardarRol();
 
         fragCalendario = new FragCalendario();
@@ -121,6 +128,7 @@ public class MenuBienestar extends AppCompatActivity
         calificacionActividades = new CalificacionActividades();
         fragCrearActividad = new FragCrearActividad();
         fragEscaner = new FragEscaner();
+        fragRegistro = new FragRegistro();
 
         fragPSU = new FragPSU();
         fragCultura = new FragCultura();
@@ -130,8 +138,8 @@ public class MenuBienestar extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerLayout =
                 navigationView.inflateHeaderView(R.layout.nav_header_menu_bienestar);
-//        View header = headerLayout.findViewById(R.id.viewId);
         img_usuario = headerLayout.findViewById(R.id.img_usuario);
+
 
         DatabaseReference myRef = db.getReference("Usuarios");
         Log.e(">>>", auth.getCurrentUser().getEmail());
@@ -144,18 +152,11 @@ public class MenuBienestar extends AppCompatActivity
                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        if (getApplicationContext() == null)
-                            Log.e(">>>", "contexto nulo");
-                        if (img_usuario == null)
-                            Log.e(">>>", "img usuario nula");
-
                         Glide.with(getApplicationContext()).load(uri)
                                 .apply(RequestOptions.circleCropTransform())
                                 .into(img_usuario);
-                        Log.e(">>>", "Terminaaaaaaa");
                     }
                 });
-                Log.e(">>>", user.getArea());
             }
 
             @Override
@@ -197,9 +198,6 @@ public class MenuBienestar extends AppCompatActivity
         });
 
 
-
-
-
         fb_home = (FloatingActionButton) findViewById(R.id.fab);
         fb_home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,9 +205,9 @@ public class MenuBienestar extends AppCompatActivity
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.contenedorFragments, fragMostrarEventos).commit();
                 fb_home.setVisibility(View.GONE);
-                if(Constantes.isAdmin==false){
+                if (Constantes.isAdmin == false) {
                     fb_agregar_actividad.setVisibility(View.GONE);
-                }else{
+                } else {
                     fb_agregar_actividad.setVisibility(View.VISIBLE);
                 }
             }
@@ -234,11 +232,25 @@ public class MenuBienestar extends AppCompatActivity
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Usuario user= dataSnapshot.getValue(Usuario.class);
-                        Constantes.isAdmin=user.getAdmin();
-                        if(Constantes.isAdmin==false){
+                        Usuario user = dataSnapshot.getValue(Usuario.class);
+                        Constantes.isAdmin = user.getAdmin();
+                        if (Constantes.isAdmin == false) {
                             fb_agregar_actividad.setVisibility(View.GONE);
-                        }else{
+                            if (menu != null) {
+                                Log.e("aaa", "onClick: nonulo");
+                                NavigationView navigationView = findViewById(R.id.nav_view);
+                                navigationView.getMenu().getItem(6).getSubMenu()
+                                        .getItem(0)
+                                        .setVisible(false);
+                                navigationView.getMenu().getItem(6).getSubMenu()
+                                        .getItem(1)
+                                        .setVisible(false);
+                            } else {
+                                Log.e("aaa", "onClick: nulísimo");
+
+                            }
+
+                        } else {
                             fb_agregar_actividad.setVisibility(View.VISIBLE);
                         }
 
@@ -266,27 +278,17 @@ public class MenuBienestar extends AppCompatActivity
                 });
     }
 
-    private void validarAutenticacion() {
+    private boolean validarAutenticacion() {
+
         if (auth.getCurrentUser() == null) {
-            Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to connect", Toast.LENGTH_SHORT).show();
+            finish();
             Intent i = new Intent(MenuBienestar.this, Login.class);
             startActivity(i);
-            finish();
-            return;
+            return false;
         }
-
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() == null) {
-                    Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(MenuBienestar.this, Login.class);
-                    startActivity(i);
-                    finish();
-                    return;
-                }
-            }
-        };
+        Log.e("vaa", "validarAutenticacion: " + auth.getCurrentUser().getEmail());
+        return true;
     }
 
     @Override
@@ -303,6 +305,7 @@ public class MenuBienestar extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_bienestar, menu);
+        this.menu = menu;
         return true;
     }
 
@@ -342,7 +345,6 @@ public class MenuBienestar extends AppCompatActivity
         } else if (id == R.id.nav_cultura) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragCultura).commit();
         } else if (id == R.id.nav_calendario) {
-
             fragmentTransaction.replace(R.id.contenedorFragments, fragCalendario).commit();
         } else if (id == R.id.nav_sesion) {
             auth.signOut();
@@ -360,16 +362,11 @@ public class MenuBienestar extends AppCompatActivity
         } else if (id == R.id.nav_contrasenha) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragCambiarContrasenia).commit();
         } else if (id == R.id.add_activity) {
-//            fragmentTransaction.replace(R.id.contenedorFragments, fragAgregarEvento).commit();
             fragmentTransaction.replace(R.id.contenedorFragments, fragCrearActividad).commit();
-//            Intent i = new Intent(MenuBienestar.this,borrador.class);
-//            startActivity(i);
-        } else if (id == R.id.actividad_222) {
-            fragmentTransaction.replace(R.id.contenedorFragments, fragActividad).commit();
-        } else if (id == R.id.cuestionario) {
-            fragmentTransaction.replace(R.id.contenedorFragments, calificacionActividades).commit();
         } else if (id == R.id.escaner) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragEscaner).commit();
+        } else if (id == R.id.add_admin) {
+            fragmentTransaction.replace(R.id.contenedorFragments, fragRegistro).commit();
         }
 
 

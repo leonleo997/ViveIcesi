@@ -1,9 +1,11 @@
 package co.highusoft.viveicesi.view;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -81,21 +84,6 @@ public class Registro extends AppCompatActivity {
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
-
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() == null) {
-                    Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
-                    //startActivity(new Intent(Login.this, singin_activity.class));
-                } else {
-                    Toast.makeText(getApplicationContext(), "Succed to connect", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(Registro.this, Home.class);
-                    startActivity(i);
-                    finish();
-                }
-            }
-        };
 
         DatabaseReference dbr = db.getReference().child("estudiantes");
 
@@ -199,15 +187,21 @@ public class Registro extends AppCompatActivity {
                                                 try {
                                                     StorageReference ref = storage.getReference().child("fotos").child(user.getFoto());
                                                     FileInputStream file = new FileInputStream(new File(path));
-                                                    ref.putStream(file);
+                                                    Task tarea = ref.putStream(file);
+                                                    tarea.addOnSuccessListener(new OnSuccessListener() {
+                                                        @Override
+                                                        public void onSuccess(Object o) {
+                                                            Intent i = new Intent(Registro.this, MenuBienestar.class);
+                                                            startActivity(i);
+                                                            finish();
+                                                        }
+                                                    });
                                                 } catch (FileNotFoundException ex) {
 
                                                 }
                                             }
 
-                                            Intent i = new Intent(Registro.this, MenuBienestar.class);
-                                            startActivity(i);
-                                            finish();
+
                                         }
                                     });
                                 } catch (FileNotFoundException ex) {
@@ -292,6 +286,28 @@ public class Registro extends AppCompatActivity {
 
         cb_terminos = findViewById(R.id.cb_terminos);
 
+        TextView tv_verterminos = findViewById(R.id.tv_verTerminos);
+        tv_verterminos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                storage.getReference().child("archivos").child("Términos y condiciones.pdf")
+                        .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setDataAndType(uri, "application/pdf");
+
+                        try {
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+                            //if user doesn't have pdf reader instructing to download a pdf reader
+                        }
+                    }
+                });
+
+            }
+        });
+
 
     }
 
@@ -351,13 +367,11 @@ public class Registro extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.e("holi", "onActivityResult: ");
         if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
             path = UtilDomi.getPath(Registro.this, data.getData());
             Bitmap m = BitmapFactory.decodeFile(path);
             ImageView img_foto = findViewById(R.id.foto_registro);
             img_foto.setImageBitmap(m);
-            Log.e("holi", "onActivityResult: ");
         }
     }
 }
