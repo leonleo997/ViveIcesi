@@ -66,8 +66,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //LLAMAR UN SERVICIO
-          Intent intent = new Intent(this, NotificationService.class);
-         startService(intent);
+
 
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();

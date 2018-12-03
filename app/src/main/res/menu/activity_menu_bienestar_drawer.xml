@@ -42,6 +42,10 @@
                 android:icon="@mipmap/agregar"
                 android:title="Agregar Administrador" />
             <item
+                android:id="@+id/ver_reportes"
+                android:icon="@mipmap/agregar"
+                android:title="Mostrar Reportes" />
+            <item
                 android:id="@+id/escaner"
                 android:icon="@mipmap/actividad"
                 android:title="Escaner asistencia" />

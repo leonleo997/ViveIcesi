@@ -19,6 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -29,10 +33,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.adapters.HorarioAdapter;
 import co.highusoft.viveicesi.model.Actividad;
 import co.highusoft.viveicesi.model.Usuario;
+import co.highusoft.viveicesi.utilities.RoundedCornersTransformation;
 
 
 /**
@@ -138,7 +146,19 @@ public class FragActividad extends Fragment {
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
+                int sCorner = 15;
+                int sMargin = 2;
+                int sBorder = 10;
+                String sColor = "#2874A6";
+                List<Transformation<Bitmap>> transforms = new LinkedList<>();
+                transforms.add(new CenterCrop(getContext()));
+                transforms.add(new RoundedCornersTransformation(getContext(), sCorner, sMargin, sColor, sBorder));
+
+                MultiTransformation transformation = new MultiTransformation<Bitmap>(transforms);
+
                 Glide.with(getActivity()).load(uri)
+                        .apply(new RequestOptions()
+                                .bitmapTransform(transformation))
                         .into(imagenActividad);
                 botonCalificarActividad.setEnabled(true);
             }
@@ -150,8 +170,8 @@ public class FragActividad extends Fragment {
             public void onClick(View view) {
                 CalificacionActividades fragmento = new CalificacionActividades();
 
-                Bundle bundle= new Bundle();
-                bundle.putSerializable("actividad",actividad);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("actividad", actividad);
                 fragmento.setArguments(bundle);
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();

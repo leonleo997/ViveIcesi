@@ -1,6 +1,7 @@
 package co.highusoft.viveicesi.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import co.highusoft.viveicesi.NotificationService;
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.adapters.EventoAdapter;
 import co.highusoft.viveicesi.model.Actividad;
@@ -98,6 +100,8 @@ public class FragMostrarEvento extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Evento evento=dataSnapshot.getValue(Evento.class);
                 adaptador.addEvent(evento);
+                Intent intent = new Intent(getActivity(), NotificationService.class);
+                getActivity().startService(intent);
             }
 
             @Override

@@ -102,7 +102,7 @@ public class ActividadAdapter extends BaseAdapter {
             }
         });
 
-        tv_valoracion.setText("50 %");
+        tv_valoracion.setText(actividad.getLugar());
         tv_titulo.setText(actividad.getNombre());
 
 

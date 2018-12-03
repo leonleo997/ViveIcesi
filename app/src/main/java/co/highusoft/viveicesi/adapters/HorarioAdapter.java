@@ -19,9 +19,9 @@ public class HorarioAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Horario> horarios;
 
-    public HorarioAdapter(Context context){
+    public HorarioAdapter(Context context) {
 
-        this.context= context;
+        this.context = context;
         horarios = new ArrayList<Horario>();
     }
 
@@ -45,16 +45,26 @@ public class HorarioAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View renglon = inflater.inflate(R.layout.renglon_horario, null);
-        Horario horario= horarios.get(i);
+        Horario horario = horarios.get(i);
 
-        TextView tv_dia_semana=renglon.findViewById(R.id.tv_dia_semana);
-        TextView tv_hora_inicio=renglon.findViewById(R.id.tv_hora_inicio);
-        TextView tv_hora_fin=renglon.findViewById(R.id.tv_hora_fin);
-        TextView tv_ubicacion=renglon.findViewById(R.id.tv_ubicacion);
+        TextView tv_dia_semana = renglon.findViewById(R.id.tv_dia_semana);
+        TextView tv_hora_inicio = renglon.findViewById(R.id.tv_hora_inicio);
+        TextView tv_hora_fin = renglon.findViewById(R.id.tv_hora_fin);
+        TextView tv_ubicacion = renglon.findViewById(R.id.tv_ubicacion);
 
         tv_dia_semana.setText(horario.getDiaSemana());
-        tv_hora_inicio.setText(horario.getHoraEntrada());
-        tv_hora_fin.setText(horario.getHoraSalida());
+
+        String horaEntrada = horario.getHoraEntrada();
+        String[] he = horaEntrada.split(":");
+        if (Integer.parseInt(he[1]) < 10)
+            he[1] = "0" + he[1];
+        tv_hora_inicio.setText(he[0] + ":" + he[1]);
+
+        String horaSalida = horario.getHoraSalida();
+        String[] hs = horaSalida.split(":");
+        if (Integer.parseInt(hs[1]) < 10)
+            hs[1] = "0" + hs[1];
+        tv_hora_fin.setText(hs[0] + ":" + hs[1]);
         tv_ubicacion.setText(horario.getLugar());
 
         return renglon;

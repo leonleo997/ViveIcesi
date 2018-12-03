@@ -29,8 +29,6 @@ public class NotificationService extends Service {
         //Esto corre en el hilo principal
         crearNotificacion();
 
-
-
         //Si quieren descargar algo o hacer un network process
         //Entonces iniciamos un HILO!!!!!!!!!!!
 
@@ -48,9 +46,9 @@ public class NotificationService extends Service {
         }
         NotificationCompat.Builder builder = new NotificationCompat
                 .Builder(this, CHANNEL_ID)
-                .setContentTitle("Ejemplo")
+                .setContentTitle("Evento")
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentText("Esto es un ejemplo de notificacion")
+                .setContentText("Se ha agregado un nuevo evento")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 

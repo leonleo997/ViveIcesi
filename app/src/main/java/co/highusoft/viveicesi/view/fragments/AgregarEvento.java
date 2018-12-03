@@ -1,5 +1,6 @@
 package co.highusoft.viveicesi.view.fragments;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
@@ -122,6 +123,8 @@ public class AgregarEvento extends Fragment {
     private ImageView btn_anhadirFoto;
 
     private static final int REQUEST_GALLERY = 101;
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+
 
 
     @Override
@@ -131,6 +134,8 @@ public class AgregarEvento extends Fragment {
 
 
         final View view = inflater.inflate(R.layout.fragment_agregar_evento, container, false);
+        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
 
         inicializarComponentes(view);
 

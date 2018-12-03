@@ -21,8 +21,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:gravity="center"
+                android:layout_margin="10dp"
                 android:text="NOMBRE DE ACTIVIDAD"
-                android:textColor="#0109ea"
+                android:textColor="@color/colorAccent"
                 android:textSize="35dp" />
 
             <TextView

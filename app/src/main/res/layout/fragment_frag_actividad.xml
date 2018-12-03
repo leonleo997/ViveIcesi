@@ -69,6 +69,7 @@
                     android:id="@+id/bt_pasar_calificar_actividad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/button_shape_1"
                     android:text="Calificar" />
             </LinearLayout>
 

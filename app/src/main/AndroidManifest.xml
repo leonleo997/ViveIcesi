@@ -29,12 +29,6 @@
             android:name=".view.MenuBienestar"
             android:label="@string/title_activity_menu_bienestar"
             android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            r
         </activity>
         <activity android:name=".view.ContenedoraFragments" />
         <activity android:name=".PasswordLogin" />
@@ -47,7 +41,14 @@
 
         <activity android:name=".view.borrador" />
         <activity android:name=".RegistroAdmin" />
-        <activity android:name=".InfoGoogle"></activity>
+        <activity android:name=".InfoGoogle" />
+        <activity android:name=".view.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

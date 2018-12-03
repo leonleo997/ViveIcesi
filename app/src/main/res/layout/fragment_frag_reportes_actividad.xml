@@ -15,9 +15,29 @@
             android:layout_marginBottom="20sp"
             android:text="Reporte de Actividad"
             android:textAlignment="center"
-            android:textColor="@color/blue_sky"
+            android:textColor="@color/colorAccent"
             android:textSize="25dp"
             android:textStyle="bold" />
+        <LinearLayout
+            android:layout_marginHorizontal="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:text="Actividad:" />
+
+            <Spinner
+                android:id="@+id/sp_actividad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" />
+        </LinearLayout>
 
 
         <com.github.mikephil.charting.charts.PieChart

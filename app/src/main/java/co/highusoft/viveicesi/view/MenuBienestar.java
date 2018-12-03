@@ -52,6 +52,7 @@ import co.highusoft.viveicesi.view.fragments.FragMostrarEvento;
 import co.highusoft.viveicesi.view.fragments.FragCambiarContrasenia;
 import co.highusoft.viveicesi.view.fragments.FragPSU;
 import co.highusoft.viveicesi.view.fragments.FragPerfil;
+import co.highusoft.viveicesi.view.fragments.FragReportesActividad;
 import co.highusoft.viveicesi.view.fragments.FragSalud;
 import co.highusoft.viveicesi.view.fragments.FragmentoInfo;
 
@@ -65,7 +66,7 @@ public class MenuBienestar extends AppCompatActivity
         FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener,
         FragCrearActividad.OnFragmentInteractionListener, FragEditarPerfil.OnFragmentInteractionListener,
         FragEscaner.OnFragmentInteractionListener, FragEvento.OnFragmentInteractionListener,
-        FragRegistro.OnFragmentInteractionListener {
+        FragRegistro.OnFragmentInteractionListener, FragReportesActividad.OnFragmentInteractionListener {
 
     private FragDeportes fragDeportes;
     private FragSalud fragSalud;
@@ -73,6 +74,7 @@ public class MenuBienestar extends AppCompatActivity
     private FragPSU fragPSU;
 
     private FragEscaner fragEscaner;
+    private FragReportesActividad fragReportesActividad;
     private FragRegistro fragRegistro;
     private FragCalendario fragCalendario;
     private FragmentoInfo fragmentoInfo;
@@ -129,6 +131,7 @@ public class MenuBienestar extends AppCompatActivity
         fragCrearActividad = new FragCrearActividad();
         fragEscaner = new FragEscaner();
         fragRegistro = new FragRegistro();
+        fragReportesActividad = new FragReportesActividad();
 
         fragPSU = new FragPSU();
         fragCultura = new FragCultura();
@@ -236,13 +239,15 @@ public class MenuBienestar extends AppCompatActivity
                         Constantes.isAdmin = user.getAdmin();
                         if (Constantes.isAdmin == false) {
                             fb_agregar_actividad.setVisibility(View.GONE);
-                            Log.e("aaa", "onClick: nonulo");
                             NavigationView navigationView = findViewById(R.id.nav_view);
                             navigationView.getMenu().getItem(6).getSubMenu()
                                     .getItem(0)
                                     .setVisible(false);
                             navigationView.getMenu().getItem(6).getSubMenu()
                                     .getItem(1)
+                                    .setVisible(false);
+                            navigationView.getMenu().getItem(6).getSubMenu()
+                                    .getItem(2)
                                     .setVisible(false);
 
                         } else {
@@ -362,6 +367,8 @@ public class MenuBienestar extends AppCompatActivity
             fragmentTransaction.replace(R.id.contenedorFragments, fragEscaner).commit();
         } else if (id == R.id.add_admin) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragRegistro).commit();
+        } else if (id==R.id.ver_reportes){
+            fragmentTransaction.replace(R.id.contenedorFragments, fragReportesActividad).commit();
         }
 
 
