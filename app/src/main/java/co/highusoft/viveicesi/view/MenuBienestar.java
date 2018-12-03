@@ -236,19 +236,14 @@ public class MenuBienestar extends AppCompatActivity
                         Constantes.isAdmin = user.getAdmin();
                         if (Constantes.isAdmin == false) {
                             fb_agregar_actividad.setVisibility(View.GONE);
-                            if (menu != null) {
-                                Log.e("aaa", "onClick: nonulo");
-                                NavigationView navigationView = findViewById(R.id.nav_view);
-                                navigationView.getMenu().getItem(6).getSubMenu()
-                                        .getItem(0)
-                                        .setVisible(false);
-                                navigationView.getMenu().getItem(6).getSubMenu()
-                                        .getItem(1)
-                                        .setVisible(false);
-                            } else {
-                                Log.e("aaa", "onClick: nulísimo");
-
-                            }
+                            Log.e("aaa", "onClick: nonulo");
+                            NavigationView navigationView = findViewById(R.id.nav_view);
+                            navigationView.getMenu().getItem(6).getSubMenu()
+                                    .getItem(0)
+                                    .setVisible(false);
+                            navigationView.getMenu().getItem(6).getSubMenu()
+                                    .getItem(1)
+                                    .setVisible(false);
 
                         } else {
                             fb_agregar_actividad.setVisibility(View.VISIBLE);
