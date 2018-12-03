@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -185,25 +187,33 @@ public class AgregarEvento extends Fragment {
                     try {
                         StorageReference ref = storage.getReference().child("fotos").child(evento.getImg());
                         FileInputStream file = new FileInputStream(new File(path));
-                        ref.putStream(file);
+                        Task tarea=ref.putStream(file);
+                        tarea.addOnSuccessListener(new OnSuccessListener() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                dbr.setValue(evento);
+
+                                nombreEvento.setText("");
+                                descripcion.setText("");
+                                lugar.setText("");
+
+                                Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.contenedorFragments);
+                                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                fragmentTransaction.detach(currentFragment);
+                                fragmentTransaction.attach(currentFragment);
+                                fragmentTransaction.commit();
+
+                                Toast.makeText(getContext(), "El evento se creó exitosamente!", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                        Toast.makeText(getContext(), "El evento se ha creado exitosamente! Espere mientras se sube la foto", Toast.LENGTH_LONG).show();
+
                     } catch (FileNotFoundException ex) {
 
                     }
                 }
 
-                dbr.setValue(evento);
-
-                nombreEvento.setText("");
-                descripcion.setText("");
-                lugar.setText("");
-
-                Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.contenedorFragments);
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.detach(currentFragment);
-                fragmentTransaction.attach(currentFragment);
-                fragmentTransaction.commit();
-
-                Toast.makeText(getContext(), "El evento se ha creado exitosamente!", Toast.LENGTH_SHORT).show();
 
             }
         });

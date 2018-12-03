@@ -45,6 +45,8 @@ public class FragMostrarEvento extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    public Context contexto;
+
     private OnFragmentInteractionListener mListener;
 
     public FragMostrarEvento() {
@@ -100,7 +102,7 @@ public class FragMostrarEvento extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Evento evento=dataSnapshot.getValue(Evento.class);
                 adaptador.addEvent(evento);
-                Intent intent = new Intent(getActivity(), NotificationService.class);
+                Intent intent = new Intent(contexto, NotificationService.class);
                 getActivity().startService(intent);
             }
 
@@ -152,6 +154,8 @@ public class FragMostrarEvento extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.contexto=context;
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
