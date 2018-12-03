@@ -84,7 +84,6 @@ public class ActividadAdapter extends BaseAdapter {
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e("imagen", uri.toString());
 
                 int sCorner = 15;
                 int sMargin = 2;

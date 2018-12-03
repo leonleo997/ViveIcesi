@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -19,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.adapters.EventoAdapter;
+import co.highusoft.viveicesi.model.Actividad;
 import co.highusoft.viveicesi.model.Evento;
 
 
@@ -118,6 +121,21 @@ public class FragMostrarEvento extends Fragment {
             }
         });
 
+        view_eventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FragEvento fragmento = new FragEvento();
+                Evento evento = adaptador.getItem(i);
+
+                Bundle bundle= new Bundle();
+                bundle.putSerializable("evento",evento);
+                fragmento.setArguments(bundle);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.contenedorFragments, fragmento);
+                transaction.commit();
+            }
+        });
         return view;
     }
 

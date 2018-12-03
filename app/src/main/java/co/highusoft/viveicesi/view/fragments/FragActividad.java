@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,14 +131,16 @@ public class FragActividad extends Fragment {
         descripcion.setText(actividad.getDescripcion());
 
         botonCalificarActividad = viewInflater.findViewById(R.id.bt_pasar_calificar_actividad);
+        botonCalificarActividad.setEnabled(false);
         Log.e(">>>", auth.getCurrentUser().getEmail());
 
         StorageReference storageReference = storage.getReference().child("fotos").child(actividad.getImg());
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(FragActividad.this).load(uri)
+                Glide.with(getActivity()).load(uri)
                         .into(imagenActividad);
+                botonCalificarActividad.setEnabled(true);
             }
         });
         //borrar
@@ -145,36 +148,15 @@ public class FragActividad extends Fragment {
         botonCalificarActividad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e(">>>", auth.getCurrentUser().getEmail());
-                DatabaseReference myRef = db.getReference("Usuarios");
-                myRef.orderByChild("correo").equalTo(auth.getCurrentUser().getEmail()).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        Usuario user = dataSnapshot.getValue(Usuario.class);
-                        Bitmap m = BitmapFactory.decodeFile(user.getFoto());
-                        imagenActividad.setImageBitmap(m);
-                    }
+                CalificacionActividades fragmento = new CalificacionActividades();
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Bundle bundle= new Bundle();
+                bundle.putString("nombre actividad",actividad.getNombre());
+                fragmento.setArguments(bundle);
 
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.contenedorFragments, fragmento);
+                transaction.commit();
             }
         });
 

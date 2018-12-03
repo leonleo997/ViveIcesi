@@ -265,7 +265,7 @@ public class FragEditarPerfil extends Fragment {
                 editTextNombre.setText(user.getNombre());
                 editTextCorreoElectronico.setText(user.getCorreo());
                 editTextUsuario.setText(user.getUsuario());
-                et_tipo_user.setText(user.gettipoUsuario());
+                et_tipo_user.setText(user.getTipoUsuario());
 
                 storage = FirebaseStorage.getInstance();
                 StorageReference storageReference = storage.getReference().child("fotos").child(user.getFoto());
@@ -279,7 +279,7 @@ public class FragEditarPerfil extends Fragment {
                     }
                 });
                 ArrayAdapter<String> spinnerArrayAdapter;
-                if (user.gettipoUsuario().equals("Estudiante")) {
+                if (user.getTipoUsuario().equals("Estudiante")) {
                     spinnerArrayAdapter = new ArrayAdapter<String>(
                             getActivity(), R.layout.spinner_item, opcionesEstudiantes);
                 } else {
@@ -298,7 +298,7 @@ public class FragEditarPerfil extends Fragment {
                 //
 
 
-                if (user.gettipoUsuario().equals("Estudiante")) {
+                if (user.getTipoUsuario().equals("Estudiante")) {
 
                     Collections.addAll(listaOpciones, opcionesEstudiantes);
                 } else {

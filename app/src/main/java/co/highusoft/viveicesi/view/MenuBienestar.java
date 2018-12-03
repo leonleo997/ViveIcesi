@@ -29,9 +29,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.view.fragments.CalificacionActividades;
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.model.Usuario;
@@ -43,6 +45,7 @@ import co.highusoft.viveicesi.view.fragments.FragCultura;
 import co.highusoft.viveicesi.view.fragments.FragDeportes;
 import co.highusoft.viveicesi.view.fragments.FragEditarPerfil;
 import co.highusoft.viveicesi.view.fragments.FragEscaner;
+import co.highusoft.viveicesi.view.fragments.FragEvento;
 import co.highusoft.viveicesi.view.fragments.FragMostrarEvento;
 
 import co.highusoft.viveicesi.view.fragments.FragCambiarContrasenia;
@@ -60,7 +63,7 @@ public class MenuBienestar extends AppCompatActivity
         FragPSU.OnFragmentInteractionListener, FragCultura.OnFragmentInteractionListener,
         FragActividad.OnFragmentInteractionListener, CalificacionActividades.OnFragmentInteractionListener,
         FragCrearActividad.OnFragmentInteractionListener, FragEditarPerfil.OnFragmentInteractionListener,
-        FragEscaner.OnFragmentInteractionListener{
+        FragEscaner.OnFragmentInteractionListener, FragEvento.OnFragmentInteractionListener {
 
     private FragDeportes fragDeportes;
     private FragSalud fragSalud;
@@ -92,6 +95,9 @@ public class MenuBienestar extends AppCompatActivity
     String FRAGMENT_CALENDARIO = "calendario";
     String FRAGMENT_PERFIL = "perfil";
 
+    private FirebaseAuth.AuthStateListener authStateListener;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,16 +107,9 @@ public class MenuBienestar extends AppCompatActivity
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
 
-        if (auth.getCurrentUser() == null) {
-            Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(MenuBienestar.this, Login.class);
-            startActivity(i);
-            finish();
-            return;
-        }
+        validarAutenticacion();
+        guardarRol();
 
-
-        //
         fragCalendario = new FragCalendario();
         fragmentoInfo = new FragmentoInfo();
         fragPerfil = new FragPerfil();
@@ -198,6 +197,9 @@ public class MenuBienestar extends AppCompatActivity
         });
 
 
+
+
+
         fb_home = (FloatingActionButton) findViewById(R.id.fab);
         fb_home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,11 +207,11 @@ public class MenuBienestar extends AppCompatActivity
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.contenedorFragments, fragMostrarEventos).commit();
                 fb_home.setVisibility(View.GONE);
-                fb_agregar_actividad.setVisibility(View.VISIBLE);
-
-
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+                if(Constantes.isAdmin==false){
+                    fb_agregar_actividad.setVisibility(View.GONE);
+                }else{
+                    fb_agregar_actividad.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -225,9 +227,66 @@ public class MenuBienestar extends AppCompatActivity
         fragmentTransaction.replace(R.id.contenedorFragments, fragMostrarEventos).commit();
         fb_home.setVisibility(View.GONE);
 
-        fb_agregar_actividad.setVisibility(View.VISIBLE);
+    }
 
+    private void guardarRol() {
+        db.getReference().child("Usuarios").orderByChild("correo").equalTo(auth.getCurrentUser().getEmail())
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        Usuario user= dataSnapshot.getValue(Usuario.class);
+                        Constantes.isAdmin=user.getAdmin();
+                        if(Constantes.isAdmin==false){
+                            fb_agregar_actividad.setVisibility(View.GONE);
+                        }else{
+                            fb_agregar_actividad.setVisibility(View.VISIBLE);
+                        }
 
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    private void validarAutenticacion() {
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(MenuBienestar.this, Login.class);
+            startActivity(i);
+            finish();
+            return;
+        }
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    Toast.makeText(getApplicationContext(), "Failed to connect", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(MenuBienestar.this, Login.class);
+                    startActivity(i);
+                    finish();
+                    return;
+                }
+            }
+        };
     }
 
     @Override
@@ -309,7 +368,7 @@ public class MenuBienestar extends AppCompatActivity
             fragmentTransaction.replace(R.id.contenedorFragments, fragActividad).commit();
         } else if (id == R.id.cuestionario) {
             fragmentTransaction.replace(R.id.contenedorFragments, calificacionActividades).commit();
-        }else if (id == R.id.escaner) {
+        } else if (id == R.id.escaner) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragEscaner).commit();
         }
 

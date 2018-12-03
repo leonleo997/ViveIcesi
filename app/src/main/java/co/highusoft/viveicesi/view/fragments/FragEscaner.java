@@ -7,8 +7,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -16,17 +19,25 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.model.Actividad;
+import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.view.Login;
 import co.highusoft.viveicesi.view.MenuBienestar;
 
@@ -94,6 +105,10 @@ public class FragEscaner extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_frag_escaner, container, false);
+
+        auth = FirebaseAuth.getInstance();
+        bd = FirebaseDatabase.getInstance();
+
         cameraView = (SurfaceView) view.findViewById(R.id.camera_view);
         initQR();
         return view;
@@ -173,8 +188,9 @@ public class FragEscaner extends Fragment {
 
                         // guardamos el ultimo token proceado
                         tokenanterior = token;
-                        Log.i("token", token);
+
                         registrarAsistencia(token);
+
 
                         new Thread(new Runnable() {
                             public void run() {
@@ -200,12 +216,53 @@ public class FragEscaner extends Fragment {
     }
 
     private void registrarAsistencia(String token) {
-        String prefijo= "http://";
+        bd.getReference().child("Actividades").addChildEventListener(
+                new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-        if (token.equals(prefijo+"hola")) {
-            Intent i = new Intent(getContext(), Login.class);
-            startActivity(i);
-        }
+                        for (DataSnapshot value : dataSnapshot.getChildren()) {
+                            Actividad actividad = value.getValue(Actividad.class);
+//                            Log.e("nombre actividad", "|"+actividad.getNombre()+"|" );
+                            if (token.trim().equalsIgnoreCase(actividad.getNombre().trim())) {
+                                Calendar calendar = Calendar.getInstance();
+                                bd.getReference().child(("Asistencias"))
+                                        .child(actividad.getNombre())
+                                        .child(auth.getCurrentUser().getUid())
+                                        .child(calendar.get(Calendar.YEAR)+"")
+                                        .child(Constantes.MESES[calendar.get(Calendar.MONTH)])
+                                        .child("DIA")
+                                        .setValue(calendar.get(Calendar.DAY_OF_MONTH));
+
+                                Toast.makeText(getContext(), "La asistencia a la actividad "+ actividad.getNombre()+" ha sido exitosa", Toast.LENGTH_LONG).show();
+
+                                FragDeportes fragmento = new FragDeportes();
+                                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.contenedorFragments, fragmento).commit();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

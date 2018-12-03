@@ -65,6 +65,7 @@
                     android:layout_height="match_parent" />
 
                 <Button
+                    android:layout_marginTop="20dp"
                     android:id="@+id/bt_pasar_calificar_actividad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -3,36 +3,31 @@ package co.highusoft.viveicesi.view.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import co.highusoft.viveicesi.R;
-import co.highusoft.viveicesi.adapters.EventoAdapter;
+import co.highusoft.viveicesi.model.Actividad;
 import co.highusoft.viveicesi.model.Evento;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragPSU.OnFragmentInteractionListener} interface
+ * {@link FragEvento.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragPSU#newInstance} factory method to
+ * Use the {@link FragEvento#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragPSU extends Fragment {
+public class FragEvento extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,9 +37,11 @@ public class FragPSU extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Evento evento;
+
     private OnFragmentInteractionListener mListener;
 
-    public FragPSU() {
+    public FragEvento() {
         // Required empty public constructor
     }
 
@@ -54,11 +51,11 @@ public class FragPSU extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragPSU.
+     * @return A new instance of fragment FragEvento.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragPSU newInstance(String param1, String param2) {
-        FragPSU fragment = new FragPSU();
+    public static FragEvento newInstance(String param1, String param2) {
+        FragEvento fragment = new FragEvento();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -69,59 +66,66 @@ public class FragPSU extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle bundle = getArguments();
+        evento = (Evento) bundle.getSerializable("evento");
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
-    private EventoAdapter adaptador;
-    private ListView view_eventos;
-    private FirebaseDatabase db;
+    private ImageView iv_img;
+
+    private TextView tv_descripcion;
+    private TextView tv_area;
+    private TextView tv_fecha;
+    private TextView tv_hora;
+    private TextView tv_lugar;
+    private TextView tv_titulo;
+
+    private FirebaseStorage storage;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_frag_psu, container, false);
-        view_eventos = view.findViewById(R.id.list_eventos);
-        adaptador = new EventoAdapter(view.getContext());
-        view_eventos.setAdapter(adaptador);
+        // Inflate the layout for this fragment
+        View view =inflater.inflate(R.layout.fragment_frag_evento, container, false);
+
+        storage=FirebaseStorage.getInstance();
+        iv_img=view.findViewById(R.id.iv_imagen);
+        tv_descripcion=view.findViewById(R.id.tv_descripcion);
+        tv_area=view.findViewById(R.id.tv_area);
+        tv_fecha=view.findViewById(R.id.tv_fecha);
+        tv_hora=view.findViewById(R.id.tv_hora);
+        tv_lugar=view.findViewById(R.id.tv_lugar);
+        tv_titulo=view.findViewById(R.id.tv_nombre);
 
 
-        db = FirebaseDatabase.getInstance();
-        db.getReference().child("Eventos").orderByChild("area").equalTo("PSU")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
-                            Evento evento=postsnapshot.getValue(Evento.class);
-                            adaptador.addEvent(evento);
-                        }
-                    }
+        tv_lugar.setText(evento.getLugar());
+        tv_descripcion.setText(evento.getDescripcion());
+        tv_area.setText(evento.getArea());
+        tv_fecha.setText(evento.getmDay()+"/"+evento.getmMonth()+"/"+evento.getmYear());
+        tv_titulo.setText(evento.getNombre());
+        String min="";
+        if(evento.getMin()<9)
+            min="0"+evento.getMin();
+        else
+            min=""+evento.getMin();
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+        tv_hora.setText(evento.getHour()+":"+min);
 
-                    }
-                });
-        view_eventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        StorageReference storageReference = storage.getReference().child("fotos").child(evento.getImg());
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                FragEvento fragmento = new FragEvento();
-                Evento evento = adaptador.getItem(i);
-
-                Bundle bundle= new Bundle();
-                bundle.putSerializable("evento",evento);
-                fragmento.setArguments(bundle);
-
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.contenedorFragments, fragmento);
-                transaction.commit();
+            public void onSuccess(Uri uri) {
+                Glide.with(FragEvento.this).load(uri)
+                        .into(iv_img);
             }
         });
 
         return view;
     }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

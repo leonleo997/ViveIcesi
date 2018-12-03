@@ -23,6 +23,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -115,7 +117,7 @@ public class Registro extends AppCompatActivity {
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
         sp_tipo_area.setAdapter(spinnerArrayAdapter);
 
-        btn_anhadirFoto=findViewById(R.id.btn_anhadirFoto);
+        btn_anhadirFoto = findViewById(R.id.btn_anhadirFoto);
         btn_anhadirFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,6 +131,126 @@ public class Registro extends AppCompatActivity {
 
         loadComponents();
 
+        validarGoogle();
+    }
+
+    private void validarGoogle() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+
+            Usuario user = (Usuario) bundle.get("usuario");
+            if (user != null) {
+                et_email.setText(user.getCorreo());
+                et_name.setText(user.getNombre());
+
+                et_email.setEnabled(false);
+                et_name.setEnabled(false);
+                et_con_pwd.setVisibility(View.GONE);
+                et_pwd.setVisibility(View.GONE);
+
+                btn_registrar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean aceptado = cb_terminos.isChecked();
+
+                        if (rg_tipoUsuario.getCheckedRadioButtonId() == -1) {
+                            Toast.makeText(Registro.this, "Debe seleccionar ser Estudiante/Trabajador", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (aceptado) {
+                            RadioButton rb = findViewById(rg_tipoUsuario.getCheckedRadioButtonId());
+                            Usuario user = new Usuario();
+                            user.setFoto(path);
+                            user.setUsuario(et_usr.getText().toString());
+                            user.setArea(sp_tipo_area.getSelectedItem().toString());
+                            user.setNombre(et_name.getText().toString());
+                            user.setCorreo(et_email.getText().toString());
+                            user.setUid("");
+                            user.setTipoUsuario(rb.getText().toString());
+                            user.setAdmin(false);
+                            user.setUid(auth.getCurrentUser().getUid());
+                            Log.i("USUARIO", "onComplete: " + user.getNombre());
+                            DatabaseReference dbr = db.getReference().child("Usuarios").child(user.getUid());
+
+                            //String id_imagen = dbr.getKey();
+                            //user.setFoto(id_imagen);
+
+                            dbr.setValue(user);
+
+                            if (path != null) {
+                                try {
+                                    StorageReference ref = storage.getReference().child("fotos").child(user.getFoto());
+                                    FileInputStream file = new FileInputStream(new File(path));
+                                    Task res = ref.putStream(file);
+                                    res.addOnSuccessListener(new OnSuccessListener() {
+                                        @Override
+                                        public void onSuccess(Object o) {
+                                            user.setUid(auth.getCurrentUser().getUid());
+                                            Log.i("USUARIO", "onComplete: " + user.getNombre());
+                                            DatabaseReference dbr = db.getReference().child("Usuarios").child(user.getUid());
+
+                                            //String id_imagen = dbr.getKey();
+                                            //user.setFoto(id_imagen);
+
+                                            dbr.setValue(user);
+
+                                            if (path != null) {
+                                                try {
+                                                    StorageReference ref = storage.getReference().child("fotos").child(user.getFoto());
+                                                    FileInputStream file = new FileInputStream(new File(path));
+                                                    ref.putStream(file);
+                                                } catch (FileNotFoundException ex) {
+
+                                                }
+                                            }
+
+                                            Intent i = new Intent(Registro.this, MenuBienestar.class);
+                                            startActivity(i);
+                                            finish();
+                                        }
+                                    });
+                                } catch (FileNotFoundException ex) {
+
+                                }
+                            }
+                        } else {
+                            Toast.makeText(Registro.this, "Debe aceptar los términos y condiciones", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+            }
+        } else {
+            btn_registrar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean aceptado = cb_terminos.isChecked();
+
+                    if (rg_tipoUsuario.getCheckedRadioButtonId() == -1) {
+                        Toast.makeText(Registro.this, "Debe seleccionar ser Estudiante/Trabajador", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (aceptado) {
+                        RadioButton rb = findViewById(rg_tipoUsuario.getCheckedRadioButtonId());
+                        Usuario user = new Usuario();
+                        user.setFoto(path);
+                        user.setUsuario(et_usr.getText().toString());
+                        user.setArea(sp_tipo_area.getSelectedItem().toString());
+                        user.setNombre(et_name.getText().toString());
+                        user.setCorreo(et_email.getText().toString());
+                        user.setUid("");
+                        user.setTipoUsuario(rb.getText().toString());
+                        user.setAdmin(false);
+                        registrarUsuario(user);
+                    } else {
+                        Toast.makeText(Registro.this, "Debe aceptar los términos y condiciones", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+        }
     }
 
     private void loadComponents() {
@@ -166,26 +288,7 @@ public class Registro extends AppCompatActivity {
         int selected = rg_tipoUsuario.getCheckedRadioButtonId();
 
         btn_registrar = findViewById(R.id.btn_registrar);
-        btn_registrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean aceptado = cb_terminos.isChecked();
 
-                if(rg_tipoUsuario.getCheckedRadioButtonId()==-1){
-                    Toast.makeText(Registro.this, "Debe seleccionar ser Estudiante/Trabajador", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                 if(aceptado) {
-                 RadioButton rb=findViewById(rg_tipoUsuario.getCheckedRadioButtonId());
-                 Usuario user = new Usuario("", et_usr.getText().toString(), et_email.getText().toString(), et_name.getText().toString(),sp_tipo_area.getSelectedItem().toString(),rb.getText().toString(),path);
-                 registrarUsuario(user);
-                 }else{
-                     Toast.makeText(Registro.this, "Debe aceptar los términos y condiciones", Toast.LENGTH_SHORT).show();
-                 }
-
-            }
-        });
 
         cb_terminos = findViewById(R.id.cb_terminos);
 
@@ -217,19 +320,25 @@ public class Registro extends AppCompatActivity {
 
                     dbr.setValue(user);
 
-                    if(path != null){
+                    if (path != null) {
                         try {
                             StorageReference ref = storage.getReference().child("fotos").child(user.getFoto());
                             FileInputStream file = new FileInputStream(new File(path));
-                            ref.putStream(file);
-                        }catch (FileNotFoundException ex){
+                            Task tarea = ref.putStream(file);
+                            tarea.addOnSuccessListener(new OnSuccessListener() {
+                                @Override
+                                public void onSuccess(Object o) {
+                                    Intent i = new Intent(Registro.this, MenuBienestar.class);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            });
+                        } catch (FileNotFoundException ex) {
 
                         }
                     }
 
-                    Intent i = new Intent(Registro.this, MenuBienestar.class);
-                    startActivity(i);
-                    finish();
+
                     //Aquí va para el perfil
 
 
@@ -242,13 +351,13 @@ public class Registro extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.e("holi", "onActivityResult: " );
-        if(requestCode == REQUEST_GALLERY && resultCode == RESULT_OK){
+        Log.e("holi", "onActivityResult: ");
+        if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
             path = UtilDomi.getPath(Registro.this, data.getData());
             Bitmap m = BitmapFactory.decodeFile(path);
-            ImageView img_foto=findViewById(R.id.foto_registro);
+            ImageView img_foto = findViewById(R.id.foto_registro);
             img_foto.setImageBitmap(m);
-            Log.e("holi", "onActivityResult: " );
+            Log.e("holi", "onActivityResult: ");
         }
     }
 }

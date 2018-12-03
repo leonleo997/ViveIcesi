@@ -1,6 +1,8 @@
 package co.highusoft.viveicesi.model;
 
-public class Evento {
+import java.io.Serializable;
+
+public class Evento implements Serializable{
     private String nombre;
     private String area;
     private String lugar;

@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -104,8 +106,21 @@ public class FragCalendario extends Fragment {
         view_eventos = inflate.findViewById(R.id.list_eventos);
         adaptador = new EventoAdapter(inflate.getContext());
         view_eventos.setAdapter(adaptador);
-        Log.e("onSelectedDayChange: ", "a al seleccionar");
+        view_eventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FragEvento fragmento = new FragEvento();
+                Evento evento = adaptador.getItem(i);
 
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("evento", evento);
+                fragmento.setArguments(bundle);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.contenedorFragments, fragmento);
+                transaction.commit();
+            }
+        });
 
         calendarView = inflate.findViewById(R.id.calendarView);
         cargarCalendario();
@@ -176,12 +191,13 @@ public class FragCalendario extends Fragment {
 
 
     }
-    public void refrescarEventos(){
+
+    public void refrescarEventos() {
         adaptador.clear();
-        Calendar calendar= calendarView.getCurrentPageDate();
+        Calendar calendar = calendarView.getCurrentPageDate();
         calendar = calendarView.getCurrentPageDate();
-        int month=calendar.get(Calendar.MONTH)+1;
-        int year=calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int year = calendar.get(Calendar.YEAR);
         db.getReference().child("Eventos")
                 .orderByChild("mMonth").equalTo(month)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -192,8 +208,8 @@ public class FragCalendario extends Fragment {
                             Evento evento = postsnapshot.getValue(Evento.class);
                             if (evento.mYear == year) {
                                 Log.e("Evento: ", evento.getNombre());
-                                Calendar evento_fecha=Calendar.getInstance();
-                                evento_fecha.set(evento.getmYear(),evento.getmMonth()-1,evento.getmDay());
+                                Calendar evento_fecha = Calendar.getInstance();
+                                evento_fecha.set(evento.getmYear(), evento.getmMonth() - 1, evento.getmDay());
                                 events.add(new EventDay(evento_fecha, R.drawable.check));
                             }
                         }
@@ -208,6 +224,7 @@ public class FragCalendario extends Fragment {
                     }
                 });
     }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

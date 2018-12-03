@@ -2,7 +2,9 @@ package co.highusoft.viveicesi.model;
 
 import android.graphics.Bitmap;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable{
     private String uid;
     private String usuario;
     private String correo;
@@ -10,46 +12,30 @@ public class Usuario {
     private String area;
     private String tipoUsuario;
     private String foto;
+    private Boolean isAdmin;
 
 
     public Usuario() {
     }
 
-    public Usuario(String uid, String usuario, String correo, String nombre, String area, String tipoUsuario, String foto) {
+    public Usuario(String uid, String usuario, String correo, String nombre, String area, String tipoUsuario, String foto, Boolean isAdmin) {
         this.uid = uid;
         this.usuario = usuario;
         this.correo = correo;
         this.nombre = nombre;
         this.area = area;
         this.tipoUsuario = tipoUsuario;
-        this.foto=foto;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
-    }
-
-    public String gettipoUsuario() {
-        return tipoUsuario;
-    }
-
-    public void settipoUsuario(String tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
+        this.foto = foto;
+        this.isAdmin = isAdmin;
     }
 
     public String getUid() {
         return uid;
     }
 
-    public void setUid(String uid) { this.uid = uid; }
-
-    public String getFoto() { return foto; }
-
-    public void setFoto(String foto) { this.foto = foto; }
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getUsuario() {
         return usuario;
@@ -74,4 +60,37 @@ public class Usuario {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
 }
+

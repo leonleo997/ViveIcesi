@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import co.highusoft.viveicesi.R;
 
@@ -40,7 +41,6 @@ public class CalificacionActividades extends Fragment {
     private static RatingBar ratingBarp11;
 
     private Button buttonGuardarEncuesta;
-
 
 
     // TODO: Rename and change types of parameters
@@ -81,19 +81,15 @@ public class CalificacionActividades extends Fragment {
     }
 
 
-
-
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View viewinflate = inflater.inflate(R.layout.fragment_calificacion_actividades, container, false);
-
+        Bundle bundle = getArguments();
+        TextView tv_nombre = viewinflate.findViewById(R.id.tv_nombre);
+        tv_nombre.setText((String) bundle.get("nombre actividad"));
 
         ratingBarp1 = viewinflate.findViewById(R.id.pregunta1);
         ratingBarp2 = viewinflate.findViewById(R.id.pregunta2);
@@ -106,22 +102,20 @@ public class CalificacionActividades extends Fragment {
         ratingBarp9 = viewinflate.findViewById(R.id.pregunta9);
         ratingBarp10 = viewinflate.findViewById(R.id.pregunta10);
         ratingBarp11 = viewinflate.findViewById(R.id.pregunta11);
+        buttonGuardarEncuesta = viewinflate.findViewById(R.id.bt_calificar_actividad);
 
-buttonGuardarEncuesta.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        //guardar encuesta en base de datos, según la actividad
-    }
-});
+        buttonGuardarEncuesta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         //para obtener el valor de la calificación
         //ratingbar1.getRating();
 
 
-
-
-
-        return  viewinflate;
+        return viewinflate;
 
     }
 

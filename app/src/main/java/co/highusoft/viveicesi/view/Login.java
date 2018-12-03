@@ -1,11 +1,13 @@
 package co.highusoft.viveicesi.view;
 
 import android.Manifest;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -26,16 +28,23 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import co.highusoft.viveicesi.NotificationService;
 import co.highusoft.viveicesi.PasswordLogin;
 import co.highusoft.viveicesi.R;
+import co.highusoft.viveicesi.model.Usuario;
+import co.highusoft.viveicesi.view.fragments.FragMostrarEvento;
 
 public class Login extends AppCompatActivity {
 
     private FirebaseDatabase db;
     private FirebaseAuth auth;
+    private FirebaseStorage storage;
 
     private FirebaseAuth.AuthStateListener authStateListener;
 
@@ -62,6 +71,7 @@ public class Login extends AppCompatActivity {
 
         db = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+        storage=FirebaseStorage.getInstance();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -188,6 +198,34 @@ public class Login extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Succed", "signInWithCredential:success");
                             FirebaseUser user = auth.getCurrentUser();
+                            db.getReference().child("Usuarios").orderByChild("correo").equalTo(user.getEmail()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Usuario user = dataSnapshot.getValue(Usuario.class);
+
+
+                                    if (user==null){
+
+                                        Usuario usuario= new Usuario();
+                                        usuario.setCorreo(account.getEmail());
+                                        usuario.setNombre(account.getDisplayName());
+
+                                        Intent i = new Intent(Login.this,Registro.class);
+                                        Bundle bundle= new Bundle();
+                                        bundle.putSerializable("usuario",usuario);
+
+                                        i.putExtras(bundle);
+                                        startActivity(i);
+                                        finish();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
