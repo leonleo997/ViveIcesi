@@ -1,6 +1,7 @@
 package co.highusoft.viveicesi.view.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,13 +12,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import co.highusoft.viveicesi.R;
 import co.highusoft.viveicesi.model.Actividad;
 import co.highusoft.viveicesi.model.Evento;
+import co.highusoft.viveicesi.utilities.RoundedCornersTransformation;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,40 +95,53 @@ public class FragEvento extends Fragment {
     private TextView tv_titulo;
 
     private FirebaseStorage storage;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_frag_evento, container, false);
+        View view = inflater.inflate(R.layout.fragment_frag_evento, container, false);
 
-        storage=FirebaseStorage.getInstance();
-        iv_img=view.findViewById(R.id.iv_imagen);
-        tv_descripcion=view.findViewById(R.id.tv_descripcion);
-        tv_area=view.findViewById(R.id.tv_area);
-        tv_fecha=view.findViewById(R.id.tv_fecha);
-        tv_hora=view.findViewById(R.id.tv_hora);
-        tv_lugar=view.findViewById(R.id.tv_lugar);
-        tv_titulo=view.findViewById(R.id.tv_nombre);
+        storage = FirebaseStorage.getInstance();
+        iv_img = view.findViewById(R.id.iv_imagen);
+        tv_descripcion = view.findViewById(R.id.tv_descripcion);
+        tv_area = view.findViewById(R.id.tv_area);
+        tv_fecha = view.findViewById(R.id.tv_fecha);
+        tv_hora = view.findViewById(R.id.tv_hora);
+        tv_lugar = view.findViewById(R.id.tv_lugar);
+        tv_titulo = view.findViewById(R.id.tv_nombre);
 
 
         tv_lugar.setText(evento.getLugar());
         tv_descripcion.setText(evento.getDescripcion());
         tv_area.setText(evento.getArea());
-        tv_fecha.setText(evento.getmDay()+"/"+evento.getmMonth()+"/"+evento.getmYear());
+        tv_fecha.setText(evento.getmDay() + "/" + evento.getmMonth() + "/" + evento.getmYear());
         tv_titulo.setText(evento.getNombre());
-        String min="";
-        if(evento.getMin()<9)
-            min="0"+evento.getMin();
+        String min = "";
+        if (evento.getMin() < 9)
+            min = "0" + evento.getMin();
         else
-            min=""+evento.getMin();
+            min = "" + evento.getMin();
 
-        tv_hora.setText(evento.getHour()+":"+min);
+        tv_hora.setText(evento.getHour() + ":" + min);
 
         StorageReference storageReference = storage.getReference().child("fotos").child(evento.getImg());
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
+                int sCorner = 15;
+                int sMargin = 2;
+                int sBorder = 10;
+                String sColor = "#2874A6";
+                List<Transformation<Bitmap>> transforms = new LinkedList<>();
+                transforms.add(new CenterCrop(getContext()));
+                transforms.add(new RoundedCornersTransformation(getContext(), sCorner, sMargin, sColor, sBorder));
+
+                MultiTransformation transformation = new MultiTransformation<Bitmap>(transforms);
+
                 Glide.with(FragEvento.this).load(uri)
+                        .apply(new RequestOptions()
+                                .bitmapTransform(transformation))
                         .into(iv_img);
             }
         });

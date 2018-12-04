@@ -46,9 +46,9 @@ public class NotificationService extends Service {
         }
         NotificationCompat.Builder builder = new NotificationCompat
                 .Builder(this, CHANNEL_ID)
-                .setContentTitle("Evento")
+                .setContentTitle("Logout")
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentText("Se ha agregado un nuevo evento")
+                .setContentText("Se ha cerrado sesión")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 

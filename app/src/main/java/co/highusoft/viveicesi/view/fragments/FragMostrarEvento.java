@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,8 +103,21 @@ public class FragMostrarEvento extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Evento evento=dataSnapshot.getValue(Evento.class);
                 adaptador.addEvent(evento);
-                Intent intent = new Intent(contexto, NotificationService.class);
-                getActivity().startService(intent);
+//                Thread hilito = new Thread(){
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            sleep(500l);
+//                            getActivity().stopService(intent);
+//                            Log.e(">>>>", "run: se paro" );
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                };
+//
+//                hilito.start();
+
             }
 
             @Override

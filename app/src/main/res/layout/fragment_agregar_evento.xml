@@ -137,7 +137,7 @@
                 android:id="@+id/btn_guardar_evento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_shape_green"
+                android:background="#3582C5"
                 android:text="Guardar Evento"
                 android:textColor="@color/white"
                 android:textStyle="bold" />

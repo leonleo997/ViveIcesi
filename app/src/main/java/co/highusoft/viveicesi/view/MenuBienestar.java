@@ -34,6 +34,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import co.highusoft.viveicesi.FragRegistro;
+import co.highusoft.viveicesi.NotificationService;
 import co.highusoft.viveicesi.model.Constantes;
 import co.highusoft.viveicesi.view.fragments.CalificacionActividades;
 import co.highusoft.viveicesi.R;
@@ -351,6 +352,8 @@ public class MenuBienestar extends AppCompatActivity
             Intent i = new Intent(MenuBienestar.this, Login.class);
             startActivity(i);
             finish();
+            Intent intent = new Intent(this, NotificationService.class);
+            startService(intent);
         } else if (id == R.id.nav_salud) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragSalud).commit();
         } else if (id == R.id.nav_psu) {
@@ -367,7 +370,7 @@ public class MenuBienestar extends AppCompatActivity
             fragmentTransaction.replace(R.id.contenedorFragments, fragEscaner).commit();
         } else if (id == R.id.add_admin) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragRegistro).commit();
-        } else if (id==R.id.ver_reportes){
+        } else if (id == R.id.ver_reportes) {
             fragmentTransaction.replace(R.id.contenedorFragments, fragReportesActividad).commit();
         }
 

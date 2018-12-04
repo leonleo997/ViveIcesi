@@ -178,7 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
-                android:background="@drawable/button_shape_green"
+                android:background="#3582C5"
                 android:text="Guardar Actividad"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
